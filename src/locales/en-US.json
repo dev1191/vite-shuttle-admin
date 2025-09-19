@@ -1,113 +1,117 @@
 {
-    "name": "English",
-    "short-name": "Eng",
-    "title": "Shuttle Bus",
-    "common": {
-        "submit": "Submit",
-        "add": "Add",
-        "cancel": "Cancel",
-        "edit": "Edit",
-        "delete": "Delete",
-        "view": "View",
-        "search": "Search",
-        "new": "New"
-    },
-    "menu": {
-        "login": "Login",
-        "dashboard": "Dashboard",
-        "home": "Home",
-        "about": "About",
-        "contact": "Contact",
-        "forgotPassword": "Forgot Password",
-        "preferences": "Account preferences",
-        "payments": "Manage Payments",
-        "settings": "Application settings",
-        "pricing-plans": "Pricing plans",
-        "payment-methods": "Payment methods",
-        "signup": "Signup",
-        "recover-password": "Recover password",
-        "recover-password-email": "Recover password email",
-        "404": "404",
-        "faq": "FAQ",
-        "users": "Users",
-        "vendors": "Manage Vendors",
-        "roles": "Role and Permissions",
-        "projects": "Projects",
-        "manageCustomers": "Manage Customers",
-        "customers": "Customers",
-        "walletRecharge": "Wallet Recharge",
-        "walletHistory": "Wallet Histories",
-        "bookingHistory": "Booking Histories",
-        "manageDrivers": "Manage Drivers",
-        "eagleEye": "Eagle Eye",
-        "buses": "Buses",
-        "administrationTools": "Administration Tools",
-        "countries": "Countries",
-        "currencies": "Currencies",
-        "languages": "Languages",
-        "helpAndSupport": "Help & Supports",
-        "vehicles": "Vehicles",
-        "busTypes": "Bus Types",
-        "busLayouts": "Bus Layouts",
-        "createBusLayouts": "Create Bus Layouts",
-        "fixedRoutes": "Fixed Routes",
-        "stops": "Stops",
-        "routes": "Routes",
-        "busSchedules": "Bus Schedules",
-        "appSettings": "App Settings",
-        "notifications": "Notifications",
-        "passes": "Passes",
-        "coupons": "Coupons",
-        "bookings": "Manage Bookings",
-        "suggestions": "Suggestions",
-        "schedules": "Schedule",
-        "dailySchedule": "Daily Schedule",
-        "paymentGateways": "Payment Gateways",
-        "payoutPreference": "Payout Preferences",
-        "manageUsers": {
-            "title": "Manage Users",
-            "users": "Users",
-            "roles": "Roles and Permissions"
-        }
-    },
-    "settings": {
-        "title": "Settings",
-        "account": "Account",
-        "general": "General",
-        "security": "Security",
-        "notifications": "Notifications",
-        "countries": "Countries",
-        "currencies": "Currencies",
-        "languages": "Languages"
-    },
-    "auth": {
-        "login": {
-            "title": "Login",
-            "email": "Email",
-            "password": "Password",
-            "forgotPassword": "Forgot Password ?"
-        },
-        "resetPassword": {
-            "title": "Reset Password",
-            "subTitle": "Enter your email address and we'll send you a link to reset your password.",
-            "email": "Email",
-            "newPassword": "New Password",
-            "confirmNewPassword": "Confirm New Password"
-        }
-    },
+  "name": "English",
+  "short-name": "Eng",
+  "title": "Shuttle Bus",
+  "common": {
+    "submit": "Submit",
+    "add": "Add",
+    "cancel": "Cancel",
+    "back": "Back",
+    "edit": "Edit",
+    "delete": "Delete",
+    "view": "View",
+    "search": "Search",
+    "new": "New",
+    "sending": "sending..."
+  },
+  "menu": {
+    "login": "Login",
+    "dashboard": "Dashboard",
+    "home": "Home",
+    "about": "About",
+    "contact": "Contact",
+    "forgotPassword": "Forgot Password",
+    "preferences": "Account preferences",
+    "payments": "Manage Payments",
+    "settings": "Application settings",
+    "pricing-plans": "Pricing plans",
+    "payment-methods": "Payment methods",
+    "signup": "Signup",
+    "recover-password": "Recover password",
+    "recover-password-email": "Recover password email",
+    "404": "404",
+    "faq": "FAQ",
+    "users": "Users",
+    "vendors": "Manage Vendors",
+    "roles": "Role and Permissions",
+    "projects": "Projects",
+    "manageCustomers": "Manage Customers",
+    "customers": "Customers",
+    "walletRecharge": "Wallet Recharge",
+    "walletHistory": "Wallet Histories",
+    "bookingHistory": "Booking Histories",
+    "manageDrivers": "Manage Drivers",
+    "eagleEye": "Eagle Eye",
+    "buses": "Buses",
+    "administrationTools": "Administration Tools",
+    "countries": "Countries",
+    "currencies": "Currencies",
+    "languages": "Languages",
+    "helpAndSupport": "Help & Supports",
+    "vehicles": "Vehicles",
+    "busTypes": "Bus Types",
+    "busLayouts": "Bus Layouts",
+    "createBusLayouts": "Create Bus Layouts",
+    "fixedRoutes": "Fixed Routes",
+    "stops": "Stops",
+    "routes": "Routes",
+    "busSchedules": "Bus Schedules",
+    "appSettings": "App Settings",
+    "notifications": "Notifications",
+    "passes": "Passes",
+    "coupons": "Coupons",
+    "bookings": "Manage Bookings",
+    "suggestions": "Suggestions",
+    "schedules": "Schedule",
+    "dailySchedule": "Daily Schedule",
+    "paymentGateways": "Payment Gateways",
+    "payoutPreference": "Payout Preferences",
     "manageUsers": {
-        "user": {
-            "create": "Create New User"
-        },
-        "role": {
-            "create": "Create Role"
-        }
-    },
-    "validation": {
-        "required": "This {name} is required",
-        "placeholder": "Please enter a {name}",
-        "email": "Please enter a valid email address",
-        "minLength": "Minimum length is {min} characters",
-        "maxLength": "Maximum length is {max} characters"
+      "title": "Manage Users",
+      "users": "Users",
+      "roles": "Roles and Permissions"
     }
+  },
+  "settings": {
+    "title": "Settings",
+    "account": "Account",
+    "general": "General",
+    "security": "Security",
+    "notifications": "Notifications",
+    "countries": "Countries",
+    "currencies": "Currencies",
+    "languages": "Languages"
+  },
+  "auth": {
+    "login": {
+      "title": "Login",
+      "subTitle": "Please enter your account and password to login",
+      "email": "Email",
+      "password": "Password",
+      "forgotPassword": "Forgot Password ?"
+    },
+    "forgotPassword": {
+      "title": "Forgot Password",
+      "subTitle": "Enter your email address and we'll send you a link to reset your password.",
+      "email": "Email",
+      "newPassword": "New Password",
+      "confirmNewPassword": "Confirm New Password"
+    },
+    "failed": "Login failed."
+  },
+  "manageUsers": {
+    "user": {
+      "create": "Create New User"
+    },
+    "role": {
+      "create": "Create Role"
+    }
+  },
+  "validation": {
+    "required": "This {name} is required",
+    "placeholder": "Please enter a {name}",
+    "email": "Please enter a valid email address",
+    "minLength": "Minimum length is {min} characters",
+    "maxLength": "Maximum length is {max} characters"
+  }
 }

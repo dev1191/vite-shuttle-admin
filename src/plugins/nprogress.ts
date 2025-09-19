@@ -1,15 +1,12 @@
-
-import NProgress from 'nprogress';
-import type { Router } from 'vue-router';
+import NProgress from 'nprogress'
+import type { Router } from 'vue-router'
 
 /** Setup plugin NProgress */
 export function setupNProgress(router: Router) {
-
-    router.beforeEach((to, from) => {
-        if (to.path !== from.path)
-            NProgress.start()
-    })
-    router.afterEach(() => {
-        NProgress.done()
-    })
+  router.beforeEach((to, from) => {
+    if (to.path !== from.path) NProgress.start()
+  })
+  router.afterEach(() => {
+    NProgress.done()
+  })
 }

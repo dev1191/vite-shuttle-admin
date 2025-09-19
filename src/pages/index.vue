@@ -1,4 +1,8 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+definePage({
+  redirect: '/auth/login',
+})
+</script>
 
 <template>
   <div>

@@ -19,6 +19,9 @@ declare module 'vue-router/auto-routes' {
    */
   export interface RouteNamedMap {
     '/': RouteRecordInfo<'/', '/', Record<never, never>, Record<never, never>>,
+    '/[role]/dashboard/': RouteRecordInfo<'/[role]/dashboard/', '/:role/dashboard', { role: ParamValue<true> }, { role: ParamValue<false> }>,
+    '/[role]/manage-users/roles/': RouteRecordInfo<'/[role]/manage-users/roles/', '/:role/manage-users/roles', { role: ParamValue<true> }, { role: ParamValue<false> }>,
+    '/[role]/manage-users/users/': RouteRecordInfo<'/[role]/manage-users/users/', '/:role/manage-users/users', { role: ParamValue<true> }, { role: ParamValue<false> }>,
     '/auth/forgot-password': RouteRecordInfo<'/auth/forgot-password', '/auth/forgot-password', Record<never, never>, Record<never, never>>,
     '/auth/login': RouteRecordInfo<'/auth/login', '/auth/login', Record<never, never>, Record<never, never>>,
   }
@@ -36,6 +39,18 @@ declare module 'vue-router/auto-routes' {
   export interface _RouteFileInfoMap {
     'src/pages/index.vue': {
       routes: '/'
+      views: never
+    }
+    'src/pages/[role]/dashboard/index.vue': {
+      routes: '/[role]/dashboard/'
+      views: never
+    }
+    'src/pages/[role]/manage-users/roles/index.vue': {
+      routes: '/[role]/manage-users/roles/'
+      views: never
+    }
+    'src/pages/[role]/manage-users/users/index.vue': {
+      routes: '/[role]/manage-users/users/'
       views: never
     }
     'src/pages/auth/forgot-password.vue': {
