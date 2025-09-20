@@ -16,28 +16,55 @@ const showFooter = computed(() => layoutSetting.showFooter)
 </script>
 
 <template>
-  <div>
-    <a-layout class="h100vh overflow-hidden">
-      <a-layout-sider
-        v-model:collapsed="collapsed"
-        :width="sidemenuWidth"
-        :collapsedWidth="60"
-        :collapsible="true"
-        :trigger="null"
-        :theme="menuTheme"
-        :style="{ borderRight: border }"
-      >
-        <LayoutTitle v-if="showTitle" :collapsed="collapsed" />
-      </a-layout-sider>
-      <a-layout>
+  <a-layout class="app-layout">
+    <a-layout-sider
+      v-model:collapsed="collapsed"
+      :width="sidemenuWidth"
+      :collapsedWidth="60"
+      :collapsible="true"
+      :trigger="null"
+      :theme="menuTheme"
+    >
+      <LayoutTitle v-if="showTitle" :collapsed="collapsed" />
+    </a-layout-sider>
+    <a-layout class="app-main">
+      <div class="app-header">
         <LayoutHeader v-if="showHeader" v-model:collapsed="collapsed" />
-        <a-layout-content>
-          <RouterView />
-        </a-layout-content>
-        <LayoutFooter v-if="showFooter" />
-      </a-layout>
+      </div>
+
+      <div class="app-content">
+        <RouterView />
+      </div>
+      <LayoutFooter v-if="showFooter" />
     </a-layout>
-  </div>
+  </a-layout>
 </template>
 
-<style scoped></style>
+<style scoped>
+.app-layout {
+  height: 100vh;
+}
+.app-main {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+  height: 100vh;
+  overflow: auto;
+
+  .app-header {
+    position: sticky;
+    top: 0;
+    z-index: 200;
+    flex-shrink: 0;
+    width: 100%;
+  }
+  .app-content {
+    flex: 1;
+    min-height: 0;
+    overflow: auto;
+    background: var(--app-content-background);
+    padding: 24px;
+  }
+}
+</style>

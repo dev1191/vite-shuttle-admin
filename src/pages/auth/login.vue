@@ -5,7 +5,7 @@ const { t } = useI18n()
 <route lang="yaml">
 meta:
   layout: authLayout
-  title: Login
+  title: login
 </route>
 
 <template>

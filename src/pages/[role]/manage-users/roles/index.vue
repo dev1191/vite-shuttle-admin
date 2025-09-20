@@ -3,12 +3,16 @@
 <route lang="yaml">
 meta:
   layout: defaultLayout
-  title: rolesAndPermissions
+  title: manageUsers.roles
+  breadcrumb:
+    - manageUsers.title
+    - manageUsers.roles
 </route>
 
 <template>
   <div>
-    <h1>Home Page</h1>
+    <h1>Roles Page</h1>
+    <a-button type="primary">Primary Button</a-button>
   </div>
 </template>
 

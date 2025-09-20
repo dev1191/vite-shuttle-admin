@@ -5,7 +5,7 @@ const { t } = useI18n()
 <route lang="yaml">
 meta:
   layout: authLayout
-  title: 'Forgot Password'
+  title: forgotPassword
 </route>
 
 <template>

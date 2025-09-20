@@ -45,55 +45,55 @@ export const layouts = [
 /** Theme Colors */
 export const themeColors = [
     {
-        title: 'setting.techBlue',
+        title: 'settings.techBlue',
         key: 'techBlue',
         value: '#1677FF',
         tag: 'checkbox',
     },
     {
-        title: 'setting.dust',
+        title: 'settings.dust',
         key: 'dust',
         value: '#F5222D',
         tag: 'checkbox',
     },
     {
-        title: 'setting.volcano',
+        title: 'settings.volcano',
         key: 'volcano',
         value: '#FA541C',
         tag: 'checkbox',
     },
     {
-        title: 'setting.sunset',
+        title: 'settings.sunset',
         key: 'sunset',
         value: '#FAAD14',
         tag: 'checkbox',
     },
     {
-        title: 'setting.cyan',
+        title: 'settings.cyan',
         key: 'cyan',
         value: '#13C2C2',
         tag: 'checkbox',
     },
     {
-        title: 'setting.green',
+        title: 'settings.green',
         key: 'green',
         value: '#52C41A',
         tag: 'checkbox',
     },
     {
-        title: 'setting.geekBlue',
+        title: 'settings.geekBlue',
         key: 'geekblue',
         value: '#2F54EB',
         tag: 'checkbox',
     },
     {
-        title: 'setting.purple',
+        title: 'settings.purple',
         key: 'purple',
         value: '#722ED1',
         tag: 'checkbox',
     },
     {
-        title: 'setting.custom',
+        title: 'settings.custom',
         key: 'custom',
         value: '',
         tag: 'input-color',
@@ -170,12 +170,12 @@ export const watermarkAreaOptions = [
 /** Internationalization */
 export const i18nSettings = [
     {
-        label: 'setting.simpleChinese',
-        value: 'zhCN',
+        label: 'languages.english',
+        value: 'en-Us',
     },
     {
-        label: 'setting.english',
-        value: 'en',
+        label: 'languages.arabic',
+        value: 'ar-SA',
     },
 ]
 

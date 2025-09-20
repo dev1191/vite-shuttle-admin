@@ -20,7 +20,11 @@ export const useAuthStore = defineStore('auth', () => {
     function login(email: string, password: string) {
         user.value = {
             id: '1',
-            email: '                
+            email: 'user@example.com',
+            avatar: 'https://example.com/avatar.jpg',
+            roleId: '1',
+            role: 'User',
+            permissions: []
         }
     }
 

@@ -1,7 +1,9 @@
 {
-  "name": "English",
-  "short-name": "Eng",
   "title": "Shuttle Bus",
+  "languages": {
+    "english": "English",
+    "arabic": "Arabic"
+  },
   "common": {
     "submit": "Submit",
     "add": "Add",
@@ -80,7 +82,34 @@
     "notifications": "Notifications",
     "countries": "Countries",
     "currencies": "Currencies",
-    "languages": "Languages"
+    "languages": "Languages",
+    "themeColor": "Theme Color",
+    "customColor": "Custom Color",
+    "menuLayout": "Menu Layout",
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System",
+    "dust": "Dust",
+    "volcano": "Volcano",
+    "sunset": "Sunset",
+    "cyan": "Cyan",
+    "green": "Green",
+    "geekBlue": "GeekBlue",
+    "purple": "Purple",
+    "colorPrimary": "Primary Color",
+    "colorSuccess": "Success Color",
+    "colorWarning": "Warning Color",
+    "colorError": "Error Color",
+    "colorInfo": "Info Color",
+    "colorFill": "Fill Color",
+    "colorBgBase": "Background Color",
+    "colorBgLayout": "Layout Background Color",
+    "colorTextBase": "Text Color",
+    "colorTextSecondary": "Secondary Text Color",
+    "colorBorder": "Border Color",
+    "colorBorderSecondary": "Secondary Border Color",
+    "colorShadow": "Shadow Color",
+    "animation": "Animation"
   },
   "auth": {
     "login": {

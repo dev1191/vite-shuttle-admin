@@ -3,7 +3,10 @@
 <route lang="yaml">
 meta:
   layout: defaultLayout
-  title: users
+  title: manageUsers.users
+  breadcrumb:
+    - manageUsers.title
+    - manageUsers.users
 </route>
 
 <template>

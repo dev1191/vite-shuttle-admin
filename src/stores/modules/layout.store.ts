@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { defaultSettings, animations } from '@/settings/LayoutSettings'
+import { defaultSettings, animations } from '@/settings/layout.setting'
 import { theme as antdTheme } from 'ant-design-vue';
 
 
@@ -17,11 +17,24 @@ export const useLayoutSettingStore = defineStore(
             },
         })
 
+
+
         const changeNprogressBg = () => {
             const htmlDom = document.querySelector('html')
             htmlDom.style.setProperty('--nprogress-color', layoutSetting.colorPrimary)
         }
-        changeNprogressBg()
+
+        watch(
+            () => (layoutSetting),
+            (newVal) => {
+                theme.algorithm = antdTheme[newVal.algorithm] || antdTheme.defaultAlgorithm
+                theme.token.colorPrimary = newVal.colorPrimary
+                theme.token.borderRadius = newVal.borderRadius
+                changeNprogressBg()
+            },
+            { deep: true }
+        )
+
 
         const border = computed(() => {
             let border = 'none'
@@ -277,7 +290,7 @@ export const useLayoutSettingStore = defineStore(
         const headerColor = computed(() => (headerBackground.value === '#fff' ? '#000' : '#fff'))
 
 
-        const updateLayoutSetting = (settings) => {
+        const updateLayoutSetting = (settings: Partial<typeof defaultSettings>) => {
             Object.assign(layoutSetting, settings)
         }
 
