@@ -30,6 +30,7 @@ export const useLayoutSettingStore = defineStore(
                 theme.algorithm = antdTheme[newVal.algorithm] || antdTheme.defaultAlgorithm
                 theme.token.colorPrimary = newVal.colorPrimary
                 theme.token.borderRadius = newVal.borderRadius
+
                 changeNprogressBg()
             },
             { deep: true }

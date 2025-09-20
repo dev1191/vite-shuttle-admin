@@ -1,28 +1,33 @@
 /** Theme Style -- Style Algorithm */
 export const themeAlgorithmOptions = [
     {
-        label: 'setting.light',
+        label: 'settings.light',
         value: 'defaultAlgorithm',
+        icon: useRenderIcon('lucide:sun', { width: 20, height: 20 })
     },
     {
-        label: 'setting.dark',
+        label: 'settings.dark',
         value: 'darkAlgorithm',
+        icon: useRenderIcon('lucide:moon-star', { width: 20, height: 20 })
     },
-    {
-        label: 'setting.compact',
-        value: 'compactAlgorithm',
-    },
+    // {
+    //     label: 'settings.system',
+    //     value: 'compactAlgorithm',
+    //     icon: useRenderIcon('lucide:sun-dim', { width: 20, height: 20 })
+    // },
 ]
 
 /** Menu Theme */
 export const menuThemeOptions = [
     {
-        label: 'setting.light',
+        label: 'settings.light',
         value: 'light',
+
     },
     {
-        label: 'setting.dark',
+        label: 'settings.dark',
         value: 'dark',
+
     },
 ]
 
@@ -45,9 +50,9 @@ export const layouts = [
 /** Theme Colors */
 export const themeColors = [
     {
-        title: 'settings.techBlue',
-        key: 'techBlue',
-        value: '#1677FF',
+        title: 'settings.shuttleGreen',
+        key: 'shuttleGreen',
+        value: '#2d6774',
         tag: 'checkbox',
     },
     {
@@ -72,12 +77,6 @@ export const themeColors = [
         title: 'settings.cyan',
         key: 'cyan',
         value: '#13C2C2',
-        tag: 'checkbox',
-    },
-    {
-        title: 'settings.green',
-        key: 'green',
-        value: '#52C41A',
         tag: 'checkbox',
     },
     {
@@ -369,15 +368,11 @@ export const uiSettings = [
 export const defaultSettings = {
     layout: 'sidemenu',
     title: 'Vite Shuttle Admin',
-    copyright: 'IKUN❤ Studio',
     algorithm: 'defaultAlgorithm',
     menuTheme: 'light',
     sidemenuWidth: 270,
     navThemeFollowMenu: false,
     colorPrimary: '#2d6774',
-    onlyShowContent: false,
-    grayMode: false,
-    colorWeak: false,
     showTitle: true,
     showHeader: true,
     showFooter: true,
@@ -388,19 +383,10 @@ export const defaultSettings = {
     showSetting: true,
     showFullScreen: true,
     showSearchMenu: true,
-    showClearCache: true,
-    showRefreshReset: true,
-    showLockScreen: true,
-    lockScreenTime: 3, // Unit: hours
     showTabs: true,
-    cacheTabs: true,
-    tabsIcon: true,
     showProgress: true,
     borderRadius: 4,
     showAnimation: true,
     animation: 'back',
     animationDirection: 'Down',
-    watermark: false,
-    watermarkArea: 'all',
-    watermarkText: '🐥 You are so beautiful 👶👶',
 }
