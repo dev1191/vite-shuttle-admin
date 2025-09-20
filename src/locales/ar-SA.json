@@ -1,0 +1,48 @@
+{
+    "settings": {
+        "title": "إعدادات المظهر",
+        "menuLayout": "تخطيط القائمة",
+        "themeColor": "لون السمة",
+        "customColor": "لون مخصص"
+    },
+    "auth": {
+        "login": {
+            "title": "تسجيل الدخول",
+            "subTitle": "الرجاء إدخال حسابك وكلمة المرور لتسجيل الدخول",
+            "email": "البريد الإلكتروني",
+            "password": "كلمة المرور",
+            "forgotPassword": "هل نسيت كلمة المرور؟"
+        },
+        "forgotPassword": {
+            "title": "نسيت كلمة المرور",
+            "subTitle": "أدخل عنوان بريدك الإلكتروني وسنرسل لك رابطًا لإعادة تعيين كلمة المرور الخاصة بك.",
+            "email": "البريد الإلكتروني",
+            "newPassword": "كلمة مرور جديدة",
+            "confirmNewPassword": "تأكيد كلمة المرور الجديدة"
+        },
+        "failed": "فشل تسجيل الدخول."
+    },
+    "manageUsers": {
+        "user": {
+            "create": "إنشاء مستخدم جديد"
+        },
+        "role": {
+            "create": "إنشاء دور"
+        }
+    },
+    "validation": {
+        "required": "هذا {name} مطلوب",
+        "placeholder": "الرجاء إدخال {name}",
+        "email": "الرجاء إدخال عنوان بريد إلكتروني صالح",
+        "minLength": "الحد الأدنى للطول هو {min} حرفًا",
+        "maxLength": "الحد الأقصى للطول هو {max} حرفًا"
+    },
+    "layout": {
+        "general": "عام",
+        "security": "الأمان",
+        "notifications": "الإشعارات",
+        "countries": "الدول",
+        "currencies": "العملات",
+        "languages": "اللغات"
+    }
+}

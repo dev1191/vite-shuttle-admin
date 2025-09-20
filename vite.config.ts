@@ -42,7 +42,7 @@ export default defineConfig({
         VueRouterAutoImports,
         {
           // add any other imports you were relying on
-          'vue-router/auto': ['useLink'],
+          'vue-router/auto': ['useLink', 'definePage'],
         },
       ],
       dts: 'src/types/auto-imports.d.ts',
@@ -53,7 +53,7 @@ export default defineConfig({
       vueTemplate: true,
     }),
     Components({
-       resolvers: [
+      resolvers: [
         AntDesignVueResolver({
           importStyle: false, // css in js
         }),

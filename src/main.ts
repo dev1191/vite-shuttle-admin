@@ -3,26 +3,23 @@ import { createApp } from 'vue'
 import App from '@/App.vue'
 import router from '@/router'
 import i18n from '@/plugins/i18n'
-import pinia from "@/plugins/pinia"
-import "@/styles/main.css"
+import pinia from '@/plugins/pinia'
+
 import 'virtual:uno.css'
+import '@/styles/main.css'
+
 import { setupNProgress } from '@/plugins/nprogress'
 
-
 async function setupApp() {
-    const app = createApp(App)
+  const app = createApp(App)
 
+  app.use(pinia)
+  app.use(router)
+  app.use(i18n)
 
-    app.use(pinia)
-    app.use(router)
-    app.use(i18n)
+  setupNProgress(router) // Nprogress
 
-    setupNProgress(router) // Nprogress 
-
-    app.mount('#app')
-
-
+  app.mount('#app')
 }
-
 
 setupApp()

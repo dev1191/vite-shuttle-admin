@@ -1,14 +1,21 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+const { t } = useI18n()
+</script>
 
 <route lang="yaml">
 meta:
   layout: authLayout
-  title: Login
+  title: login
 </route>
 
 <template>
   <div>
-    <h1>Login Page</h1>
+    <div class="text-center mb-8">
+      <h2 class="text-2xl font-bold">Welcome back</h2>
+      <p class="text-gray-500">{{ t('auth.login.subTitle') }}</p>
+    </div>
+
+    <LoginForm />
   </div>
 </template>
 
