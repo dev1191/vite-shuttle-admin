@@ -3,17 +3,17 @@ export const themeAlgorithmOptions = [
     {
         label: 'settings.light',
         value: 'defaultAlgorithm',
-        icon: useRenderIcon('lucide:sun', { width: 20, height: 20 })
+        icon: useRenderIcon('lucide:sun', { width: 18, height: 18 })
     },
     {
         label: 'settings.dark',
         value: 'darkAlgorithm',
-        icon: useRenderIcon('lucide:moon-star', { width: 20, height: 20 })
+        icon: useRenderIcon('lucide:moon-star', { width: 18, height: 18 })
     },
     // {
     //     label: 'settings.system',
     //     value: 'compactAlgorithm',
-    //     icon: useRenderIcon('lucide:sun-dim', { width: 20, height: 20 })
+    //     icon: useRenderIcon('lucide:sun-dim', { width: 18, height: 18})
     // },
 ]
 
@@ -385,7 +385,7 @@ export const defaultSettings = {
     showSearchMenu: true,
     showTabs: true,
     showProgress: true,
-    borderRadius: 4,
+    borderRadius: 6,
     showAnimation: true,
     animation: 'back',
     animationDirection: 'Down',

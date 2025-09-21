@@ -61,9 +61,9 @@ const pageHeaderStyle = computed<Record<string, string>>(() => ({
 
     <!-- Right Section -->
     <template #extra>
-      <div class="flex items-center gap-4">
+      <div class="flex items-center gap-6">
         <!-- Profile + Settings -->
-
+        <ThemeSwitch />
         <LayoutSetting v-if="showSetting" />
         <LanguageSwitch />
         <UserProfile />
