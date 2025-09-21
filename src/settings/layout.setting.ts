@@ -176,10 +176,12 @@ export const i18nSettings = [
     {
         label: 'languages.english',
         value: 'en-Us',
+        icon: useRenderIcon('flag:us-4x3')
     },
     {
         label: 'languages.arabic',
         value: 'ar-SA',
+        icon: useRenderIcon('flag:ae-4x3')
     },
 ]
 

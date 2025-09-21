@@ -6,7 +6,7 @@ import { theme as antdTheme } from 'ant-design-vue';
 export const useLayoutSettingStore = defineStore(
     'layoutSetting',
     () => {
-        const { t, locale } = useI18n()
+        const { locale } = useI18n()
 
         const layoutSetting = reactive({ ...defaultSettings })
         const theme = reactive({
@@ -34,7 +34,19 @@ export const useLayoutSettingStore = defineStore(
                 theme.token.colorPrimary = newVal.colorPrimary
                 theme.token.borderRadius = newVal.borderRadius
                 theme.direction = newVal.direction || 'ltr'
-                locale.value = newVal.locale ? locale.value : 'en-US'
+                if (newVal.language === 'ar-SA') {
+                    locale.value = newVal.language
+                    theme.direction = 'rtl'
+                } else {
+                    locale.value = newVal.language
+                }
+
+                if (newVal.direction === 'rtl') {
+                    theme.direction = newVal.direction
+                    locale.value = 'ar-SA'
+                } else {
+                    locale.value = newVal.language
+                }
 
                 changeNprogressBg()
             },

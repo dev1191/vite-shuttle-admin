@@ -64,9 +64,10 @@ const pageHeaderStyle = computed<Record<string, string>>(() => ({
       <div class="flex items-center gap-6">
         <!-- Profile + Settings -->
         <ThemeSwitch />
-        <LayoutSetting v-if="showSetting" />
+
         <LanguageSwitch />
         <UserProfile />
+        <LayoutSetting v-if="showSetting" />
       </div>
     </template>
   </APageHeader>
