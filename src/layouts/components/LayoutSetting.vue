@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { CheckOutlined, SettingOutlined } from '@ant-design/icons-vue'
-import { themeColors, themeAlgorithmOptions } from '@/settings/layout.setting'
+import { themeColors, themeAlgorithmOptions, directionOptions } from '@/settings/layout.setting'
 import { useLayoutSettingStore } from '@/stores/modules/layout.store'
 
 const { t } = useI18n()
@@ -29,6 +29,10 @@ const handleColorPickerInput = (e) => {
   setThemeColor(e.target.value)
 }
 
+const setDirectionLayout = (direction: string) => {
+  layoutSettingStore.updateLayoutSetting({ direction })
+}
+
 const onChange = (borderRadius: number) => {
   layoutSettingStore.updateLayoutSetting({ borderRadius })
 }
@@ -47,7 +51,11 @@ watch(baseRadius, (val) => {
     <SettingOutlined spin :rotate="2" @click="showDrawer" :style="{ fontSize: '16px' }" />
   </a-tooltip>
 
-  <a-drawer v-model:open="visible" placement="right" :title="t('settings.title')">
+  <a-drawer
+    v-model:open="visible"
+    :placement="layoutSetting.direction === 'ltr' ? 'right' : 'left'"
+    :title="t('settings.title')"
+  >
     <a-descriptions :title="t('settings.themeColor')" :column="themeColors.length - 1">
       <a-descriptions-item v-for="item in themeColors" :key="item.key">
         <div class="style-checkbox-item" v-if="item.tag === 'checkbox'">
@@ -100,6 +108,27 @@ watch(baseRadius, (val) => {
         </div>
       </a-descriptions-item>
     </a-descriptions>
+
+    <!-- Direction Layout Switch -->
+    <a-descriptions :title="t('settings.directionLayout')" :column="2">
+      <a-descriptions-item>
+        <div class="flex gap-3 justify-between w-full">
+          <a-tooltip v-for="item in directionOptions" :key="item.value" :title="t(item.label)">
+            <a-button
+              block
+              size="large"
+              type="default"
+              :class="['flex items-center gap-2']"
+              @click="setDirectionLayout(item.value)"
+            >
+              <component :is="item.icon" />
+              {{ t(item.label) }}
+            </a-button>
+          </a-tooltip>
+        </div>
+      </a-descriptions-item>
+    </a-descriptions>
+
     <!-- Border Radius -->
     <a-descriptions :title="t('settings.borderRadius')"> </a-descriptions>
     <a-row>

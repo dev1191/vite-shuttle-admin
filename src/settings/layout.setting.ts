@@ -47,6 +47,11 @@ export const layouts = [
     },
 ]
 
+export const directionOptions = [
+    { label: 'settings.ltr', value: 'ltr' },
+    { label: 'settings.rtl', value: 'rtl' },
+]
+
 /** Theme Colors */
 export const themeColors = [
     {
@@ -370,6 +375,7 @@ export const defaultSettings = {
     title: 'Vite Shuttle Admin',
     algorithm: 'defaultAlgorithm',
     menuTheme: 'light',
+    direction: 'ltr',
     sidemenuWidth: 270,
     navThemeFollowMenu: false,
     colorPrimary: '#2d6774',

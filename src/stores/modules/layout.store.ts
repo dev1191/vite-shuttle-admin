@@ -14,7 +14,10 @@ export const useLayoutSettingStore = defineStore(
             token: {
                 colorPrimary: layoutSetting.colorPrimary,
                 borderRadius: layoutSetting.borderRadius,
+
             },
+            direction: layoutSetting.direction || 'ltr',
+
         })
 
 
@@ -30,6 +33,8 @@ export const useLayoutSettingStore = defineStore(
                 theme.algorithm = antdTheme[newVal.algorithm] || antdTheme.defaultAlgorithm
                 theme.token.colorPrimary = newVal.colorPrimary
                 theme.token.borderRadius = newVal.borderRadius
+                theme.direction = newVal.direction || 'ltr'
+                locale.value = newVal.locale ? locale.value : 'en-US'
 
                 changeNprogressBg()
             },
