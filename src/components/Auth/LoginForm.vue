@@ -2,6 +2,7 @@
 import { LockOutlined, MailOutlined } from '@ant-design/icons-vue'
 import type { Rule } from 'ant-design-vue/es/form'
 import { message } from 'ant-design-vue'
+import { fetchLogin } from '@/common/api/auth'
 
 const { t } = useI18n()
 
@@ -15,47 +16,51 @@ const formState = ref({
 const rules: Record<string, Rule[]> = {
   email: [
     {
-      max: 20,
       required: true,
       message: t('validation.required', { name: t('auth.login.email') }),
-      trigger: ['blur', 'change'],
+      trigger: 'blur',
     },
   ],
   password: [
     {
-      max: 20,
       required: true,
       message: t('validation.required', { name: t('auth.login.password') }),
-      trigger: ['blur', 'change'],
+      trigger: 'blur',
     },
   ],
 }
 
-const handleSubmit = () => {
-  formRef.value
-    .validate()
-    .then(() => {
-      message.loading('loading...', 0)
+const handleSubmit = async () => {
+  if (!formRef.value) return
 
-      isLoading.value = true
-      console.log('values', formState, toRaw(formState))
-    })
-    .catch((error) => {
-      console.log('error', error)
-      message.error(t('auth.failed'))
-      isLoading.value = false
-    })
+  try {
+    await formRef.value.validateFields()
+    message.loading('loading...', 0)
+
+    isLoading.value = true
+
+    const { email, password } = formState.value
+    const res = await fetchLogin({ email, password })
+    console.log('res', res)
+
+    message.destroy()
+    message.success(t('auth.success'))
+  } catch (error: unknown) {
+    console.error('Submit error:', error)
+
+    // Handle known HttpError or generic error
+    const errMsg = (error as any)?.message || t('auth.failed')
+
+    message.destroy()
+    message.error(errMsg)
+  } finally {
+    isLoading.value = false
+  }
 }
 </script>
 
 <template>
-  <a-form
-    ref="formRef"
-    layout="vertical"
-    :model="formState"
-    :rules="rules"
-    @submit.prevent="handleSubmit"
-  >
+  <a-form ref="formRef" layout="vertical" :model="formState" :rules="rules" @finish="handleSubmit">
     <!-- Email -->
     <a-form-item :label="t('auth.login.email')" name="email">
       <a-input

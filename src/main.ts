@@ -5,8 +5,8 @@ import router from '@/router'
 import i18n from '@/plugins/i18n'
 import pinia from '@/plugins/pinia'
 
-import 'virtual:uno.css'
 import '@/styles/main.css'
+import 'virtual:uno.css'
 
 import { setupNProgress } from '@/plugins/nprogress'
 

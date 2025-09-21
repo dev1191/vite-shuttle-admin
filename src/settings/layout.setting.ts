@@ -3,12 +3,12 @@ export const themeAlgorithmOptions = [
     {
         label: 'settings.light',
         value: 'defaultAlgorithm',
-        icon: useRenderIcon('lucide:sun', { width: 18, height: 18 })
+        icon: useRenderIcon('lucide:sun', { width: 16, height: 16 })
     },
     {
         label: 'settings.dark',
         value: 'darkAlgorithm',
-        icon: useRenderIcon('lucide:moon-star', { width: 18, height: 18 })
+        icon: useRenderIcon('lucide:moon-star', { width: 16, height: 16 })
     },
     // {
     //     label: 'settings.system',
@@ -175,7 +175,7 @@ export const watermarkAreaOptions = [
 export const i18nSettings = [
     {
         label: 'languages.english',
-        value: 'en-Us',
+        value: 'en-US',
         icon: useRenderIcon('flag:us-4x3')
     },
     {

@@ -27,6 +27,11 @@ export const useLayoutSettingStore = defineStore(
             htmlDom.style.setProperty('--nprogress-color', layoutSetting.colorPrimary)
         }
 
+        // Set initial nprogress color
+        onMounted(() => {
+            changeNprogressBg()
+        })
+
         watch(
             () => (layoutSetting),
             (newVal) => {
@@ -36,16 +41,22 @@ export const useLayoutSettingStore = defineStore(
                 theme.direction = newVal.direction || 'ltr'
                 if (newVal.language === 'ar-SA') {
                     locale.value = newVal.language
+                    newVal.language = newVal.language
                     theme.direction = 'rtl'
                 } else {
                     locale.value = newVal.language
+                    newVal.language = newVal.language
+                    theme.direction = 'ltr'
                 }
 
-                if (newVal.direction === 'rtl') {
+                if (newVal.direction === 'rtl') { //rtl
                     theme.direction = newVal.direction
+                    newVal.language = 'ar-SA'
                     locale.value = 'ar-SA'
                 } else {
-                    locale.value = newVal.language
+                    theme.direction = newVal.direction
+                    locale.value = 'en-US'
+                    newVal.language = 'en-US'
                 }
 
                 changeNprogressBg()

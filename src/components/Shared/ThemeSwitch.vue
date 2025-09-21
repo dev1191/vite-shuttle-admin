@@ -20,12 +20,14 @@ const darkIcon = themeAlgorithmOptions.find((opt) => opt.value === 'darkAlgorith
 </script>
 
 <template>
-  <a-switch v-model:checked="isDark" size="default">
-    <template #checkedChildren>
-      <component :is="darkIcon" class="mt-0.4" />
-    </template>
-    <template #unCheckedChildren>
-      <component :is="lightIcon" />
-    </template>
-  </a-switch>
+  <a-space direction="vertical">
+    <a-switch v-model:checked="isDark" size="default">
+      <template #checkedChildren>
+        <component :is="darkIcon" class="mt-0.4" />
+      </template>
+      <template #unCheckedChildren>
+        <component :is="lightIcon" />
+      </template>
+    </a-switch>
+  </a-space>
 </template>

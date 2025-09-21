@@ -15,4 +15,11 @@ const i18n = createI18n({
   messages,
 })
 
+interface Translation {
+  (key: string): string
+}
+
+export const $t = i18n.global.t as Translation
+
+
 export default i18n
