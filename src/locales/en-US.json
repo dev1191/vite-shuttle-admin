@@ -97,7 +97,7 @@
   },
   "user": {
     "title": "Profile",
-    "settings": "Settings",
+    "userProfile": "User Profile",
     "logout": "Logout"
   },
   "settings": {
