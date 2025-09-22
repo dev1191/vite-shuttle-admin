@@ -5,7 +5,7 @@ const { theme } = useLayoutSettingStore()
 </script>
 
 <template>
-  <AConfigProvider :theme="theme">
+  <AConfigProvider :theme="theme" :direction="theme.direction">
     <!-- Transition for route changes -->
     <router-view v-slot="{ Component, route }">
       <transition name="slide">

@@ -1,4 +1,7 @@
 :root {
   --app-header-height: 60px;
   --app-footer-height: 60px;
+  
+  /* NProgress color fallback - will be overridden by layout store */
+  --nprogress-color: #2d6774;
 }

@@ -1,12 +1,20 @@
 <script setup lang="ts">
 import { LockOutlined, MailOutlined } from '@ant-design/icons-vue'
 import type { Rule } from 'ant-design-vue/es/form'
-import { message } from 'ant-design-vue'
+import { message, notification } from 'ant-design-vue'
+import { fetchLogin, getProfile } from '@/common/api/auth'
+import { useAuthStore } from '@/stores/modules/auth.store'
+import { useUserStore } from '@/stores/modules/user.store'
+import { useLayoutSettingStore } from '@/stores/modules/layout.store'
 
 const { t } = useI18n()
-
+const authStore = useAuthStore()
+const userStore = useUserStore()
+const { layoutSetting } = useLayoutSettingStore()
+const router = useRouter()
 const isLoading = ref(false)
 const formRef = ref()
+const systemName = computed(() => layoutSetting.title)
 const formState = ref({
   email: '',
   password: '',
@@ -15,47 +23,65 @@ const formState = ref({
 const rules: Record<string, Rule[]> = {
   email: [
     {
-      max: 20,
       required: true,
       message: t('validation.required', { name: t('auth.login.email') }),
-      trigger: ['blur', 'change'],
+      trigger: 'blur',
     },
   ],
   password: [
     {
-      max: 20,
       required: true,
       message: t('validation.required', { name: t('auth.login.password') }),
-      trigger: ['blur', 'change'],
+      trigger: 'blur',
     },
   ],
 }
 
-const handleSubmit = () => {
-  formRef.value
-    .validate()
-    .then(() => {
-      message.loading('loading...', 0)
+const handleSubmit = async () => {
+  if (!formRef.value) return
 
-      isLoading.value = true
-      console.log('values', formState, toRaw(formState))
+  try {
+    await formRef.value.validateFields()
+    message.loading('loading...', 0)
+
+    isLoading.value = true
+
+    const { email, password } = formState.value
+    const res = await fetchLogin({ email, password })
+
+    authStore.setToken(res.token, res.refreshToken, res.expiresIn)
+    const profile = await getProfile() // call getProfile after login
+    userStore.setUser(profile)
+
+    router.push({ path: `/${profile.role.toLowerCase()}/dashboard` })
+
+    showLoginSuccessNotice()
+    message.destroy()
+  } catch (error: unknown) {
+    console.error('Submit error:', error)
+
+    // Handle known HttpError or generic error
+    const errMsg = (error as any)?.message || t('auth.failed')
+
+    message.destroy()
+    message.error(errMsg)
+  } finally {
+    isLoading.value = false
+  }
+}
+
+const showLoginSuccessNotice = () => {
+  setTimeout(() => {
+    notification.success({
+      message: t('auth.success.title'),
+      description: `${t('auth.success.message')}, ${systemName.value}!`,
     })
-    .catch((error) => {
-      console.log('error', error)
-      message.error(t('auth.failed'))
-      isLoading.value = false
-    })
+  }, 150)
 }
 </script>
 
 <template>
-  <a-form
-    ref="formRef"
-    layout="vertical"
-    :model="formState"
-    :rules="rules"
-    @submit.prevent="handleSubmit"
-  >
+  <a-form ref="formRef" layout="vertical" :model="formState" :rules="rules" @finish="handleSubmit">
     <!-- Email -->
     <a-form-item :label="t('auth.login.email')" name="email">
       <a-input

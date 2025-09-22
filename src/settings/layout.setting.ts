@@ -3,17 +3,17 @@ export const themeAlgorithmOptions = [
     {
         label: 'settings.light',
         value: 'defaultAlgorithm',
-        icon: useRenderIcon('lucide:sun', { width: 20, height: 20 })
+        icon: useRenderIcon('lucide:sun', { width: 16, height: 16 })
     },
     {
         label: 'settings.dark',
         value: 'darkAlgorithm',
-        icon: useRenderIcon('lucide:moon-star', { width: 20, height: 20 })
+        icon: useRenderIcon('lucide:moon-star', { width: 16, height: 16 })
     },
     // {
     //     label: 'settings.system',
     //     value: 'compactAlgorithm',
-    //     icon: useRenderIcon('lucide:sun-dim', { width: 20, height: 20 })
+    //     icon: useRenderIcon('lucide:sun-dim', { width: 18, height: 18})
     // },
 ]
 
@@ -45,6 +45,11 @@ export const layouts = [
         label: 'setting.mixinmenu',
         value: 'mixinmenu',
     },
+]
+
+export const directionOptions = [
+    { label: 'settings.ltr', value: 'ltr' },
+    { label: 'settings.rtl', value: 'rtl' },
 ]
 
 /** Theme Colors */
@@ -170,11 +175,13 @@ export const watermarkAreaOptions = [
 export const i18nSettings = [
     {
         label: 'languages.english',
-        value: 'en-Us',
+        value: 'en-US',
+        icon: useRenderIcon('flag:us-4x3')
     },
     {
         label: 'languages.arabic',
         value: 'ar-SA',
+        icon: useRenderIcon('flag:ae-4x3')
     },
 ]
 
@@ -370,6 +377,7 @@ export const defaultSettings = {
     title: 'Vite Shuttle Admin',
     algorithm: 'defaultAlgorithm',
     menuTheme: 'light',
+    direction: 'ltr',
     sidemenuWidth: 270,
     navThemeFollowMenu: false,
     colorPrimary: '#2d6774',
@@ -385,7 +393,7 @@ export const defaultSettings = {
     showSearchMenu: true,
     showTabs: true,
     showProgress: true,
-    borderRadius: 4,
+    borderRadius: 6,
     showAnimation: true,
     animation: 'back',
     animationDirection: 'Down',

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { CheckOutlined, SettingOutlined } from '@ant-design/icons-vue'
-import { themeColors, themeAlgorithmOptions } from '@/settings/layout.setting'
+import { themeColors, themeAlgorithmOptions, directionOptions } from '@/settings/layout.setting'
 import { useLayoutSettingStore } from '@/stores/modules/layout.store'
 
 const { t } = useI18n()
@@ -12,8 +12,8 @@ const colorPickerStyle = computed(() => ({
   color: '#fff',
 }))
 
-const visible = ref(false)
-const baseRadius = ref(layoutSettingStore.layoutSetting.borderRadius)
+const visible = ref<boolean>(false)
+const baseRadius = ref<number>(layoutSettingStore.layoutSetting.borderRadius)
 const showDrawer = () => {
   visible.value = true
 }
@@ -29,8 +29,8 @@ const handleColorPickerInput = (e) => {
   setThemeColor(e.target.value)
 }
 
-const setLayout = (layout: any) => {
-  layoutSettingStore.updateLayoutSetting({ layout })
+const setDirectionLayout = (direction: string) => {
+  layoutSettingStore.updateLayoutSetting({ direction })
 }
 
 const onChange = (borderRadius: number) => {
@@ -41,9 +41,9 @@ const setMenuTheme = (algorithm: string) => {
   layoutSettingStore.updateLayoutSetting({ algorithm: algorithm })
 }
 
-const onAfterChange = (borderRadius: number) => {
-  layoutSettingStore.updateLayoutSetting({ borderRadius })
-}
+watch(baseRadius, (val) => {
+  onChange(val)
+})
 </script>
 
 <template>
@@ -51,7 +51,11 @@ const onAfterChange = (borderRadius: number) => {
     <SettingOutlined spin :rotate="2" @click="showDrawer" :style="{ fontSize: '16px' }" />
   </a-tooltip>
 
-  <a-drawer v-model:open="visible" placement="right" :title="t('settings.title')">
+  <a-drawer
+    v-model:open="visible"
+    :placement="layoutSetting.direction === 'ltr' ? 'right' : 'left'"
+    :title="t('settings.title')"
+  >
     <a-descriptions :title="t('settings.themeColor')" :column="themeColors.length - 1">
       <a-descriptions-item v-for="item in themeColors" :key="item.key">
         <div class="style-checkbox-item" v-if="item.tag === 'checkbox'">
@@ -86,11 +90,12 @@ const onAfterChange = (borderRadius: number) => {
     </a-descriptions>
 
     <!-- Menu Theme Switch -->
-    <a-descriptions :title="t('settings.menuTheme')" :column="2">
+    <a-descriptions :title="t('settings.themeStyle')" :column="2">
       <a-descriptions-item>
-        <div class="flex gap-3 flex-wrap">
+        <div class="flex gap-3 justify-between w-full">
           <a-tooltip v-for="item in themeAlgorithmOptions" :key="item.value" :title="t(item.label)">
             <a-button
+              block
               size="large"
               type="default"
               :class="['flex items-center gap-2']"
@@ -103,16 +108,47 @@ const onAfterChange = (borderRadius: number) => {
         </div>
       </a-descriptions-item>
     </a-descriptions>
-    <!-- Border Radius -->
-    <a-descriptions :title="t('settings.borderRadius')">
-      <a-slider
-        v-model:value="baseRadius"
-        :min="1"
-        :max="10"
-        @change="onChange"
-        @afterChange="onAfterChange"
-      />
+
+    <!-- Direction Layout Switch -->
+    <a-descriptions :title="t('settings.directionLayout')" :column="2">
+      <a-descriptions-item>
+        <div class="flex gap-3 justify-between w-full">
+          <a-tooltip v-for="item in directionOptions" :key="item.value" :title="t(item.label)">
+            <a-button
+              block
+              size="large"
+              type="default"
+              :class="['flex items-center gap-2']"
+              @click="setDirectionLayout(item.value)"
+            >
+              <component :is="item.icon" />
+              {{ t(item.label) }}
+            </a-button>
+          </a-tooltip>
+        </div>
+      </a-descriptions-item>
     </a-descriptions>
+
+    <!-- Border Radius -->
+    <a-descriptions :title="t('settings.borderRadius')"> </a-descriptions>
+    <a-row>
+      <a-col :span="12">
+        <a-slider :tooltip-open="true" v-model:value="baseRadius" :min="1" :max="16" />
+      </a-col>
+      <a-col :span="12">
+        <div class="flex flex-wrap gap-1 justify-between">
+          <a-input-number v-model:value="baseRadius" :min="1" :max="16" style="margin-left: 16px" />
+          <a-button
+            type="link"
+            class="p-0 m-0"
+            @click="baseRadius = 6"
+            :style="{ marginLeft: '16px', padding: 0 }"
+          >
+            Reset
+          </a-button>
+        </div>
+      </a-col>
+    </a-row>
   </a-drawer>
 </template>
 

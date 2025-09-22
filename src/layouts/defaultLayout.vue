@@ -33,7 +33,13 @@ const showFooter = computed(() => layoutSetting.showFooter)
       </div>
 
       <div class="app-content">
-        <RouterView />
+        <router-view v-slot="{ Component, route }">
+          <transition name="route" mode="out-in">
+            <div :key="route.name">
+              <component :is="Component" class="relative" />
+            </div>
+          </transition>
+        </router-view>
       </div>
       <LayoutFooter v-if="showFooter" />
     </a-layout>

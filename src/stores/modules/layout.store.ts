@@ -6,7 +6,7 @@ import { theme as antdTheme } from 'ant-design-vue';
 export const useLayoutSettingStore = defineStore(
     'layoutSetting',
     () => {
-        const { t, locale } = useI18n()
+        const { locale } = useI18n()
 
         const layoutSetting = reactive({ ...defaultSettings })
         const theme = reactive({
@@ -14,7 +14,10 @@ export const useLayoutSettingStore = defineStore(
             token: {
                 colorPrimary: layoutSetting.colorPrimary,
                 borderRadius: layoutSetting.borderRadius,
+
             },
+            direction: layoutSetting.direction || 'ltr',
+
         })
 
 
@@ -24,12 +27,33 @@ export const useLayoutSettingStore = defineStore(
             htmlDom.style.setProperty('--nprogress-color', layoutSetting.colorPrimary)
         }
 
+        // Set initial nprogress color
+        onMounted(() => {
+            changeNprogressBg()
+        })
+
         watch(
             () => (layoutSetting),
-            (newVal) => {
+            (newVal, oldVal) => {
                 theme.algorithm = antdTheme[newVal.algorithm] || antdTheme.defaultAlgorithm
                 theme.token.colorPrimary = newVal.colorPrimary
                 theme.token.borderRadius = newVal.borderRadius
+
+                console.log('Layout setting newVal:', newVal.language)
+                console.log('Layout setting oldVal:', oldVal.language)
+                locale.value = newVal.language
+                layoutSetting.language = newVal.language
+                if (locale.value === 'ar-SA') {
+                    theme.direction = 'rtl'
+                    layoutSetting.direction = 'rtl'
+                } else {
+                    theme.direction = 'ltr'
+                    layoutSetting.direction = 'ltr'
+                }
+
+                if (newVal.direction !== oldVal.direction) {
+                    theme.direction = layoutSetting.direction
+                }
 
                 changeNprogressBg()
             },

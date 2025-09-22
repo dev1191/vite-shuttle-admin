@@ -4,6 +4,21 @@
     "english": "English",
     "arabic": "Arabic"
   },
+  "httpMsg": {
+    "unauthorized": "Unauthorized access, please login again",
+    "forbidden": "Access to this resource is forbidden",
+    "notFound": "The requested resource does not exist",
+    "methodNotAllowed": "Request method not allowed",
+    "requestTimeout": "Request timeout, please try again later",
+    "internalServerError": "Internal server error, please try again later",
+    "badGateway": "Bad gateway error, please try again later",
+    "serviceUnavailable": "Service temporarily unavailable, please try again later",
+    "gatewayTimeout": "Gateway timeout, please try again later",
+    "requestCancelled": "Request cancelled",
+    "networkError": "Network connection error, please check your connection",
+    "requestFailed": "Request failed",
+    "requestConfigError": "Request configuration error"
+  },
   "common": {
     "submit": "Submit",
     "add": "Add",
@@ -25,7 +40,12 @@
     "forgotPassword": "Forgot Password",
     "preferences": "Account preferences",
     "payments": "Manage Payments",
-    "settings": "Application settings",
+    "settings": {
+      "title": "Settings",
+      "account": "Account Settings",
+      "general": "General Settings",
+      "security": "Security Settings"
+    },
     "pricing-plans": "Pricing plans",
     "payment-methods": "Payment methods",
     "signup": "Signup",
@@ -34,6 +54,7 @@
     "404": "404",
     "faq": "FAQ",
     "users": "Users",
+    "profile": "Profile",
     "vendors": "Manage Vendors",
     "roles": "Role and Permissions",
     "projects": "Projects",
@@ -74,11 +95,18 @@
       "roles": "Roles and Permissions"
     }
   },
+  "user": {
+    "title": "Profile",
+    "userProfile": "User Profile",
+    "logout": "Logout"
+  },
   "settings": {
     "title": "Settings",
     "account": "Account",
     "general": "General",
     "security": "Security",
+    "logout": "Logout",
+    "profile": "Profile",
     "notifications": "Notifications",
     "countries": "Countries",
     "currencies": "Currencies",
@@ -86,6 +114,11 @@
     "themeColor": "Theme Color",
     "customColor": "Custom Color",
     "menuLayout": "Menu Layout",
+    "themeStyle": "Theme Style",
+    "ltr": "LTR",
+    "rtl": "RTL",
+    "directionLayout": "Direction Layout",
+    "borderRadius": "Border Radius",
     "light": "Light",
     "dark": "Dark",
     "system": "Follow System",
@@ -93,7 +126,7 @@
     "volcano": "Volcano",
     "sunset": "Sunset",
     "cyan": "Cyan",
-    "shuttleGreen": "shuttleGreen",
+    "shuttleGreen": "shuttle Green",
     "geekBlue": "GeekBlue",
     "purple": "Purple",
     "colorPrimary": "Primary Color",
@@ -126,7 +159,11 @@
       "newPassword": "New Password",
       "confirmNewPassword": "Confirm New Password"
     },
-    "failed": "Login failed."
+    "failed": "Login failed.",
+    "success": {
+      "title": "Login successful",
+      "message": "Welcome back"
+    }
   },
   "manageUsers": {
     "user": {
