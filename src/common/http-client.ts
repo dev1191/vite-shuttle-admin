@@ -4,6 +4,12 @@ import { ApiStatus } from './status'
 import { HttpError, handleError, showError, showSuccess } from './error'
 import { $t } from '@/plugins/i18n'
 
+interface BaseResponse<T = any> {
+    code: number;
+    msg?: string;
+    data: T;
+}
+
 
 const { VITE_API_URL, VITE_WITH_CREDENTIALS } = import.meta.env
 
@@ -49,7 +55,7 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use(
     (request: InternalAxiosRequestConfig) => {
         const { accessToken } = useAuthStore()
-        if (accessToken) request.headers.set('Authorization', accessToken)
+        if (accessToken) request.headers.set('Authorization', `Bearer ${accessToken}`)
 
         if (request.data && !(request.data instanceof FormData) && !request.headers['Content-Type']) {
             request.headers.set('Content-Type', 'application/json')
@@ -66,7 +72,7 @@ axiosInstance.interceptors.request.use(
 
 /** Response Interceptor */
 axiosInstance.interceptors.response.use(
-    (response: AxiosResponse<Http.BaseResponse>) => {
+    (response: AxiosResponse<BaseResponse>) => {
         const { code, msg } = response.data
         if (code === ApiStatus.success) return response
         if (code === ApiStatus.unauthorized) handleUnauthorizedError(msg)
@@ -165,10 +171,10 @@ async function request<T = any>(config: ExtendedAxiosRequestConfig): Promise<T> 
         config.params = undefined
     }
 
-    try {
-        const res = await axiosInstance.request<Http.BaseResponse<T>>(config)
 
-        console.log("res", res);
+
+    try {
+        const res = await axiosInstance.request<BaseResponse<T>>(config)
         // Show success message
         if (config.showSuccessMessage && res.data.msg) {
             showSuccess(res.data.msg)
@@ -176,8 +182,10 @@ async function request<T = any>(config: ExtendedAxiosRequestConfig): Promise<T> 
 
         return res.data.data as T
     } catch (error) {
+
         if (error instanceof HttpError && error.code !== ApiStatus.unauthorized) {
             const showMsg = config.showErrorMessage !== false
+            console.log("showMsg", showMsg);
             showError(error, showMsg)
         }
         return Promise.reject(error)

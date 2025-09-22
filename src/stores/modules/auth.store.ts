@@ -1,6 +1,9 @@
+import { ref } from 'vue';
 // stores/auth.ts
 import { defineStore } from 'pinia'
-import { ref } from 'vue'
+import type { User } from '@/types/users';
+import router from '@/router';
+
 // import { jwtDecode } from 'jwt-decode'
 // import { axiosWrapper } from '@/utils/axios' // adjust import path
 // import { getProfile } from '@/api/user'       // adjust import path
@@ -12,16 +15,16 @@ export const useAuthStore = defineStore('auth', () => {
     // --- state ---
     const accessToken = ref<string>('')
     const expiresIn = ref<number>(0)
-    const tokenType = ref<string>('')
     const refreshToken = ref<string>('')
     const isLoggedIn = ref<boolean>(false)
 
+
+
     // --- actions ---
-    function setToken(data: Token) {
-        accessToken.value = data.accessToken
-        expiresIn.value = data.expiresIn
-        refreshToken.value = data.refreshToken
-        tokenType.value = data.tokenType
+    function setToken(newAccessToken: string, newRefreshToken: string, newExpiresIn: number) {
+        accessToken.value = newAccessToken
+        expiresIn.value = newExpiresIn
+        refreshToken.value = newRefreshToken
         isLoggedIn.value = true
     }
 
@@ -31,12 +34,15 @@ export const useAuthStore = defineStore('auth', () => {
         accessToken.value = ''
         expiresIn.value = 0
         refreshToken.value = ''
-        tokenType.value = ''
         isLoggedIn.value = false
+
+        router.push({ path: '/auth/login' })
         // removeUser() // remove login user data
         // removePermissions() // remove permission
         //  delete axiosWrapper.defaults.headers.common['Authorization']
     }
+
+
 
     // async function getUser() {
     //     try {
@@ -89,7 +95,6 @@ export const useAuthStore = defineStore('auth', () => {
         // state
         accessToken,
         expiresIn,
-        tokenType,
         refreshToken,
         isLoggedIn,
         // actions

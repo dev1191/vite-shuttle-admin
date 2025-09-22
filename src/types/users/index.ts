@@ -1,24 +1,25 @@
 export interface Permission {
-    id: string
-    name: string
-    slug: string;
-    description?: string
+    key: string
+    value: string
 }
 
-export interface Role {
+export interface User {
     id: string
-    name: string
-    slug: string
-    description?: string
-    permissions: Permission[]
-}
-
-
-export interface UserProfile {
-    id: string
+    firstname: string
+    lastname: string
     email: string
-    avatar?: string
-    roleId: string
+    phone: string
     role: string
     permissions: Permission[]
+    picture?: string
+    address_1?: string | null
+    address_2?: string | null
+    city?: string | null
+    contact_no?: string | null
+    pincode?: string | null
+    company?: string
+    commission?: number
+    document_gst_certificate?: string
+    document_pan_card?: string
+    is_active?: string | boolean
 }

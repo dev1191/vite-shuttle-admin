@@ -22,6 +22,7 @@ declare module 'vue-router/auto-routes' {
     '/[role]/dashboard/': RouteRecordInfo<'/[role]/dashboard/', '/:role/dashboard', { role: ParamValue<true> }, { role: ParamValue<false> }>,
     '/[role]/manage-users/roles/': RouteRecordInfo<'/[role]/manage-users/roles/', '/:role/manage-users/roles', { role: ParamValue<true> }, { role: ParamValue<false> }>,
     '/[role]/manage-users/users/': RouteRecordInfo<'/[role]/manage-users/users/', '/:role/manage-users/users', { role: ParamValue<true> }, { role: ParamValue<false> }>,
+    '/[role]/profile': RouteRecordInfo<'/[role]/profile', '/:role/profile', { role: ParamValue<true> }, { role: ParamValue<false> }>,
     '/[role]/settings/general': RouteRecordInfo<'/[role]/settings/general', '/:role/settings/general', { role: ParamValue<true> }, { role: ParamValue<false> }>,
     '/auth/forgot-password': RouteRecordInfo<'/auth/forgot-password', '/auth/forgot-password', Record<never, never>, Record<never, never>>,
     '/auth/login': RouteRecordInfo<'/auth/login', '/auth/login', Record<never, never>, Record<never, never>>,
@@ -52,6 +53,10 @@ declare module 'vue-router/auto-routes' {
     }
     'src/pages/[role]/manage-users/users/index.vue': {
       routes: '/[role]/manage-users/users/'
+      views: never
+    }
+    'src/pages/[role]/profile.vue': {
+      routes: '/[role]/profile'
       views: never
     }
     'src/pages/[role]/settings/general.vue': {

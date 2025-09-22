@@ -9,6 +9,7 @@ const layoutThemeStore = useLayoutSettingStore()
 const activeLanguage = computed(() => layoutThemeStore.layoutSetting.language)
 
 const changeLocaleLanguage = (language: string) => {
+  console.log('Changing language to:', language, activeLanguage.value)
   layoutThemeStore.updateLayoutSetting({ language })
 }
 </script>

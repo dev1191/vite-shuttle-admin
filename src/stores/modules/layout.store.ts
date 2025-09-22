@@ -34,29 +34,25 @@ export const useLayoutSettingStore = defineStore(
 
         watch(
             () => (layoutSetting),
-            (newVal) => {
+            (newVal, oldVal) => {
                 theme.algorithm = antdTheme[newVal.algorithm] || antdTheme.defaultAlgorithm
                 theme.token.colorPrimary = newVal.colorPrimary
                 theme.token.borderRadius = newVal.borderRadius
-                theme.direction = newVal.direction || 'ltr'
-                if (newVal.language === 'ar-SA') {
-                    locale.value = newVal.language
-                    newVal.language = newVal.language
+
+                console.log('Layout setting newVal:', newVal.language)
+                console.log('Layout setting oldVal:', oldVal.language)
+                locale.value = newVal.language
+                layoutSetting.language = newVal.language
+                if (locale.value === 'ar-SA') {
                     theme.direction = 'rtl'
+                    layoutSetting.direction = 'rtl'
                 } else {
-                    locale.value = newVal.language
-                    newVal.language = newVal.language
                     theme.direction = 'ltr'
+                    layoutSetting.direction = 'ltr'
                 }
 
-                if (newVal.direction === 'rtl') { //rtl
-                    theme.direction = newVal.direction
-                    newVal.language = 'ar-SA'
-                    locale.value = 'ar-SA'
-                } else {
-                    theme.direction = newVal.direction
-                    locale.value = 'en-US'
-                    newVal.language = 'en-US'
+                if (newVal.direction !== oldVal.direction) {
+                    theme.direction = layoutSetting.direction
                 }
 
                 changeNprogressBg()

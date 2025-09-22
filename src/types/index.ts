@@ -5,7 +5,7 @@ import * as Users from "./users"
 
 
 export interface LoginResponse {
-    accessToken: string
+    token: string
     expiresIn: number
     refreshToken: string
     tokenType: string

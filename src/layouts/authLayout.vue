@@ -18,7 +18,7 @@ const toggleTheme = () => {
       <!-- Left Side (70%) -->
       <!-- Left Side (only show on lg and above) -->
       <div
-        class="hidden lg:flex flex-col justify-center items-center lg:w-2/2 bg-gradient-to-br from-green-400 to-emerald-600 text-white p-10 relative :dark:bg-gradient-to-br :dark:from-gray-800 :dark:to-gray-900 transition-colors duration-300"
+        class="hidden lg:flex flex-col justify-center dark:bg-slate-400 items-center lg:w-2/2 bg-gradient-to-br from-green-400 to-emerald-600 text-white p-10 relative :dark:bg-gradient-to-br :dark:from-gray-800 :dark:to-gray-900 transition-colors duration-300"
       >
         <!-- Logo -->
         <div class="absolute top-6 left-8 flex items-center space-x-2">
@@ -52,7 +52,8 @@ const toggleTheme = () => {
         <div
           class="absolute top-4 right-4 sm:top-4 sm:right-4 flex items-center space-x-3 sm:space-x-4"
         >
-          <ThemeSwitch />
+          <ThemeSwitch class="mr-2 ml-2" />
+          <LanguageSwitch />
         </div>
 
         <!-- Auth Form Slot -->

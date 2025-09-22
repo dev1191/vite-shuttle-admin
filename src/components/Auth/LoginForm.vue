@@ -1,13 +1,20 @@
 <script setup lang="ts">
 import { LockOutlined, MailOutlined } from '@ant-design/icons-vue'
 import type { Rule } from 'ant-design-vue/es/form'
-import { message } from 'ant-design-vue'
-import { fetchLogin } from '@/common/api/auth'
+import { message, notification } from 'ant-design-vue'
+import { fetchLogin, getProfile } from '@/common/api/auth'
+import { useAuthStore } from '@/stores/modules/auth.store'
+import { useUserStore } from '@/stores/modules/user.store'
+import { useLayoutSettingStore } from '@/stores/modules/layout.store'
 
 const { t } = useI18n()
-
+const authStore = useAuthStore()
+const userStore = useUserStore()
+const { layoutSetting } = useLayoutSettingStore()
+const router = useRouter()
 const isLoading = ref(false)
 const formRef = ref()
+const systemName = computed(() => layoutSetting.title)
 const formState = ref({
   email: '',
   password: '',
@@ -41,10 +48,15 @@ const handleSubmit = async () => {
 
     const { email, password } = formState.value
     const res = await fetchLogin({ email, password })
-    console.log('res', res)
 
+    authStore.setToken(res.token, res.refreshToken, res.expiresIn)
+    const profile = await getProfile() // call getProfile after login
+    userStore.setUser(profile)
+
+    router.push({ path: `/${profile.role.toLowerCase()}/dashboard` })
+
+    showLoginSuccessNotice()
     message.destroy()
-    message.success(t('auth.success'))
   } catch (error: unknown) {
     console.error('Submit error:', error)
 
@@ -56,6 +68,15 @@ const handleSubmit = async () => {
   } finally {
     isLoading.value = false
   }
+}
+
+const showLoginSuccessNotice = () => {
+  setTimeout(() => {
+    notification.success({
+      message: t('auth.success.title'),
+      description: `${t('auth.success.message')}, ${systemName.value}!`,
+    })
+  }, 150)
 }
 </script>
 
