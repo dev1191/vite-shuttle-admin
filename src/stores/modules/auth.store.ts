@@ -1,8 +1,8 @@
-import { ref } from 'vue';
+import { ref } from 'vue'
 // stores/auth.ts
 import { defineStore } from 'pinia'
-import type { User } from '@/types/users';
-import router from '@/router';
+import type { User } from '@/types/users'
+import router from '@/router'
 
 // import { jwtDecode } from 'jwt-decode'
 // import { axiosWrapper } from '@/utils/axios' // adjust import path
@@ -11,38 +11,36 @@ import router from '@/router';
 // import { usePermissionStore } from './permission'
 // import { useRoleStore } from './role'
 
-export const useAuthStore = defineStore('auth', () => {
+export const useAuthStore = defineStore(
+  'auth',
+  () => {
     // --- state ---
     const accessToken = ref<string>('')
     const expiresIn = ref<number>(0)
     const refreshToken = ref<string>('')
     const isLoggedIn = ref<boolean>(false)
 
-
-
     // --- actions ---
     function setToken(newAccessToken: string, newRefreshToken: string, newExpiresIn: number) {
-        accessToken.value = newAccessToken
-        expiresIn.value = newExpiresIn
-        refreshToken.value = newRefreshToken
-        isLoggedIn.value = true
+      accessToken.value = newAccessToken
+      expiresIn.value = newExpiresIn
+      refreshToken.value = newRefreshToken
+      isLoggedIn.value = true
     }
 
     function removeToken() {
-        // const { removeUser } = useUserStore()
-        //  const { removePermissions } = usePermissionStore()
-        accessToken.value = ''
-        expiresIn.value = 0
-        refreshToken.value = ''
-        isLoggedIn.value = false
+      // const { removeUser } = useUserStore()
+      //  const { removePermissions } = usePermissionStore()
+      accessToken.value = ''
+      expiresIn.value = 0
+      refreshToken.value = ''
+      isLoggedIn.value = false
 
-        router.push({ path: '/auth/login' })
-        // removeUser() // remove login user data
-        // removePermissions() // remove permission
-        //  delete axiosWrapper.defaults.headers.common['Authorization']
+      router.push({ path: '/auth/login' })
+      // removeUser() // remove login user data
+      // removePermissions() // remove permission
+      //  delete axiosWrapper.defaults.headers.common['Authorization']
     }
-
-
 
     // async function getUser() {
     //     try {
@@ -92,18 +90,20 @@ export const useAuthStore = defineStore('auth', () => {
     // }
 
     return {
-        // state
-        accessToken,
-        expiresIn,
-        refreshToken,
-        isLoggedIn,
-        // actions
-        setToken,
-        removeToken,
-        // getUser,
-        // checkRefreshToken,
-        // UacPermissions,
+      // state
+      accessToken,
+      expiresIn,
+      refreshToken,
+      isLoggedIn,
+      // actions
+      setToken,
+      removeToken,
+      // getUser,
+      // checkRefreshToken,
+      // UacPermissions,
     }
-}, {
+  },
+  {
     persist: true,
-})
+  },
+)

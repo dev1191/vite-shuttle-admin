@@ -2,31 +2,29 @@
 @import './nprogress.css';
 
 @layer base {
+  html,
+  body,
+  .n-drawer,
+  #app {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
 
-html,
-body,
-.n-drawer,
-#app {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
+    &.color-weak {
+      filter: invert(80%);
+    }
 
-  &.color-weak {
-    filter: invert(80%);
+    &.gray-mode {
+      filter: grayscale(100%);
+    }
   }
 
-  &.gray-mode {
-    filter: grayscale(100%);
+  body {
+    background-color: var(--background);
+    background-size: cover;
+    max-height: 100vh;
+    max-width: 100vw;
+    overflow: hidden;
   }
-}
-
-body {
-  background-color: var(--background);
-  background-size: cover;
-  max-height: 100vh;
-  max-width: 100vw;
-  overflow: hidden;
-}
-
 }

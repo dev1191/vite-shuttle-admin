@@ -4,6 +4,10 @@
 meta:
   layout: defaultLayout
   title: manageUsers.users
+  icon: UsergroupOutlined
+  order: 2
+  roles: [admin, user, manager]
+  hidden: false
   breadcrumb:
     - manageUsers.title
     - manageUsers.users

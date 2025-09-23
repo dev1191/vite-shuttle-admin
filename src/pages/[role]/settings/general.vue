@@ -4,6 +4,9 @@
 meta:
   layout: defaultLayout
   title: settings.general
+  icon: SettingOutlined
+  order: 10
+  hidden: false
   breadcrumb:
     - settings.title
     - settings.general

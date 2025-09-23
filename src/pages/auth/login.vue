@@ -6,6 +6,7 @@ const { t } = useI18n()
 meta:
   layout: authLayout
   title: login
+  hidden: true
 </route>
 
 <template>

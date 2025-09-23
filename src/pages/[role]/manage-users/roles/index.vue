@@ -4,6 +4,9 @@
 meta:
   layout: defaultLayout
   title: manageUsers.roles
+  icon: UsergroupOutlined
+  order: 3
+  hidden: false
   breadcrumb:
     - manageUsers.title
     - manageUsers.roles
