@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
-import { useSidebarMenu } from '@/composables/useSidebarMenu'
+// import { useSidebarMenu } from '@/composables/useSidebarMenu'
 import SubMenuItem from './SubMenuItem.vue'
+// import { isPermitted } from '@/utils/permission'
+// import { routes } from 'vue-router/auto-routes'
 
 const props = defineProps({
   collapsed: {
@@ -13,16 +14,17 @@ const props = defineProps({
     default: 'admin',
   },
 })
+
 const currentRoute = useRoute()
 const router = useRouter()
 
-const { sidebarMenu } = useSidebarMenu(props.userRole)
-const menuItems = sidebarMenu
+const selectedKeys = ref([])
+const openKeys = ref([])
 
-// Reactive menu state
-const selectedKeys = ref<string[]>([])
-const openKeys = ref<string[]>([])
+const { items } = useSidebarMenu(props.userRole)
+const menuItems = items
 
+// 获取当前打开的子菜单
 const getOpenKeys = () =>
   currentRoute.meta.namePath ?? currentRoute.matched.slice(1).map((item) => item.name)
 
@@ -63,7 +65,7 @@ const clickMenuItem = ({ key }) => {
 </script>
 
 <template>
-  <div>
+  <div class="mt-3">
     <a-menu
       class="border-none!"
       v-model:selectedKeys="selectedKeys"
@@ -75,7 +77,6 @@ const clickMenuItem = ({ key }) => {
       @click="clickMenuItem"
     >
       <template v-for="item in menuItems" :key="item.name">
-        <!-- Submenu with children -->
         <SubMenuItem :item="item" />
       </template>
     </a-menu>

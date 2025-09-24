@@ -6,7 +6,8 @@ export const useUserStore = defineStore(
   () => {
     // state
     const user = ref<User | null>(null)
-
+    const roles = ref<[]>([]);
+    const permissions = ref<[]>([]);
     // actions
     function setUser(userData: User) {
       user.value = userData
@@ -26,6 +27,8 @@ export const useUserStore = defineStore(
 
     return {
       user,
+      roles,
+      permissions,
       setUser,
       clearUser,
       fullName,

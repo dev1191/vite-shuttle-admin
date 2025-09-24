@@ -12,10 +12,15 @@ const { t } = useI18n()
 </script>
 
 <template>
-  <span class="ml10px text-14px" :title="item?.title || item?.meta?.title">
-    <component v-if="item?.icon" :is="item.icon" class="mr-2" />
-    {{ item?.title || item?.meta?.title || 'Unknown' }}
-  </span>
+  <div class="flex items-center px-3 py-2">
+    <!-- Icon -->
+    <component v-if="item?.icon" :is="item.icon" class="mr-3" />
+
+    <!-- Text -->
+    <span class="text-md font-medium" :title="item?.title || item?.meta?.title">
+      {{ item?.title || item?.meta?.title || 'Unknown' }}
+    </span>
+  </div>
 </template>
 
 <style scoped></style>

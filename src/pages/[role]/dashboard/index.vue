@@ -5,9 +5,10 @@ meta:
   layout: defaultLayout
   icon: fluent:apps-28-filled
   title: dashboard
+  drawerIndex: 0
   order: 1
   hidden: false
-  roles: [admin, user, manager]
+  roles: [admin, agent, staff, manager]
   breadcrumb:
     - dashboard
 </route>

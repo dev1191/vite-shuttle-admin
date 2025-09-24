@@ -63,7 +63,10 @@
     "walletRecharge": "Wallet Recharge",
     "walletHistory": "Wallet Histories",
     "bookingHistory": "Booking Histories",
-    "manageDrivers": "Manage Drivers",
+    "manageDrivers": {
+      "title": "Manage Drivers",
+      "create": "Create New Driver"
+    },
     "eagleEye": "Eagle Eye",
     "buses": "Buses",
     "administrationTools": "Administration Tools",
