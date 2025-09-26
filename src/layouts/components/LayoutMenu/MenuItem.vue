@@ -11,6 +11,7 @@ defineProps({
 
 const router = useRouter()
 const handleMenuItemClick = (item: any) => {
+  console.log('item', item)
   const { outsideLink } = item.meta || {}
   if (outsideLink) {
     window.open(item.path)

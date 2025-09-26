@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import { useRouter, useRoute } from 'vue-router'
-// import { useSidebarMenu } from '@/composables/useSidebarMenu'
-import SubMenuItem from './SubMenuItem.vue'
-// import { isPermitted } from '@/utils/permission'
-// import { routes } from 'vue-router/auto-routes'
+import { useSidebarMenu } from '@/composables/useSidebarMenu'
+import type { IMenuItem } from '@/types/menu'
+import { getRoleMenu } from '@/utils/router'
+//import SubMenuItem from './SubMenuItem.vue'
 
 const props = defineProps({
   collapsed: {
@@ -14,52 +13,73 @@ const props = defineProps({
     default: 'admin',
   },
 })
-
 const currentRoute = useRoute()
 const router = useRouter()
 
-const selectedKeys = ref([])
-const openKeys = ref([])
+const selectedKeys = ref<string[]>(['dashboard'])
+const openKeys = ref<string[]>(['dashboard'])
 
-const { items } = useSidebarMenu(props.userRole)
-const menuItems = items
+const { defaultMenus } = useSidebarMenu(props.userRole)
 
-// 获取当前打开的子菜单
-const getOpenKeys = () =>
-  currentRoute.meta.namePath ?? currentRoute.matched.slice(1).map((item) => item.name)
+const menuItems = ref([...defaultMenus])
 
-const getRouteByName = (name) => router.getRoutes().find((item) => item.name === name)
+const flashTimer = ref<number | null>(null)
+const flashMenu = (key: string) => {
+  openKeys.value = [key]
+  if (!props.collapsed) {
+    return
+  }
+  if (flashTimer.value) {
+    window.clearTimeout(flashTimer.value)
+  }
+  flashTimer.value = window.setTimeout(() => {
+    openKeys.value = []
+  }, 800)
+}
 
-// 监听菜单收缩状态
 watch(
-  () => props.collapsed,
-  () => {
-    selectedKeys.value = currentRoute.name ? [currentRoute.name] : []
-    openKeys.value = getOpenKeys()
+  () => currentRoute.path,
+  (path) => {
+    console.log('currentRoute.path', currentRoute.path)
+    const findMenuKey = (items: IMenuItem[], path: string): string | undefined => {
+      for (const item of items) {
+        if (item.path === path) return item.key
+        if (item.children) {
+          const key = findMenuKey(item.children, path)
+          if (key) {
+            flashMenu(item.key)
+            return key
+          }
+        }
+      }
+      return undefined
+    }
+
+    const key = findMenuKey(menuItems.value, path)
+    if (key) {
+      selectedKeys.value = [key]
+    }
   },
+  { immediate: true },
 )
 
-// 跟随页面路由变化，切换菜单选中状态
-watch(
-  () => currentRoute.fullPath,
-  () => {
-    selectedKeys.value = currentRoute.name ? [currentRoute.name] : []
-    openKeys.value = getOpenKeys()
-  },
-  {
-    immediate: true,
-  },
-)
+const handleMenuClick = (key: string) => {
+  console.log('key', key)
+  const findPath = (items: IMenuItem[]): string | undefined => {
+    for (const item of items) {
+      if (item.key.toLowerCase() === key.toLowerCase()) return item.path
+      if (item.children) {
+        const path = findPath(item.children)
+        if (path) return path
+      }
+    }
+    return undefined
+  }
 
-const clickMenuItem = ({ key }) => {
-  if (key === currentRoute.name) return
-  const preSelectedKeys = selectedKeys.value
-  const targetRoute = getRouteByName(key)
-  const { outsideLink } = targetRoute?.meta || {}
-  if (targetRoute && outsideLink) {
-    nextTick(() => {
-      selectedKeys.value = preSelectedKeys
-    })
+  const path = findPath(menuItems.value)
+  console.log('path :', path)
+  if (path) {
+    router.push(path)
   }
 }
 </script>
@@ -67,17 +87,38 @@ const clickMenuItem = ({ key }) => {
 <template>
   <div class="mt-3">
     <a-menu
-      class="border-none!"
-      v-model:selectedKeys="selectedKeys"
-      v-model:openKeys="openKeys"
-      mode="inline"
-      theme="light"
-      collapsible
       :inline-collapsed="collapsed"
-      @click="clickMenuItem"
+      mode="inline"
+      :selectedKeys="selectedKeys"
+      :openKeys="openKeys"
+      @select="({ key }) => handleMenuClick(key as string)"
+      style="height: 100%"
     >
-      <template v-for="item in menuItems" :key="item.name">
-        <SubMenuItem :item="item" />
+      <template v-for="item in menuItems" :key="item.key">
+        <!-- If route has children -->
+        <a-sub-menu v-if="item.children?.length" :key="item.key">
+          <template #icon>
+            <component :is="item.icon" />
+          </template>
+          <template #title>
+            <span>{{ item.meta?.title || item.name }}</span>
+          </template>
+          <a-menu-item v-for="child in item.children" :key="child.key">
+            <span>
+              {{ child.meta?.title || child.name }}
+            </span>
+          </a-menu-item>
+        </a-sub-menu>
+
+        <!-- Single route -->
+        <template v-else>
+          <a-menu-item :key="item.key">
+            <template #icon>
+              <component :is="item.icon" />
+            </template>
+            <span>{{ item.meta?.title || item.name }}</span>
+          </a-menu-item>
+        </template>
       </template>
     </a-menu>
   </div>

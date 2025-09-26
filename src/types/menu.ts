@@ -1,15 +1,10 @@
-export interface MenuItem {
-    title: string
-    icon?: string
-    route?: string
-    children?: MenuItem[]
-    permission?: string
-    badge?: string | number
-    divider?: boolean
-}
 
-export interface MenuConfig {
-    manual: MenuItem[]
-    autoGenerate: boolean
-    excludePaths?: string[]
+export interface IMenuItem {
+    key: string;
+    icon?: Component;
+    label: string;
+    name: string;
+    path?: string;
+    namePath?: string[];
+    children?: IMenuItem[];
 }

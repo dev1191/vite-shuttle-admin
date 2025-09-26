@@ -38,12 +38,10 @@ const currentRole = computed(() => user?.role.toLocaleLowerCase() || 'admin')
       </div>
 
       <div class="app-content">
-        <router-view v-slot="{ Component, route }">
-          <transition name="route" mode="out-in">
-            <div :key="route.name">
-              <component :is="Component" class="relative" />
-            </div>
-          </transition>
+        <router-view v-slot="{ Component }">
+          <keep-alive>
+            <component :is="Component" />
+          </keep-alive>
         </router-view>
       </div>
       <LayoutFooter v-if="showFooter" />

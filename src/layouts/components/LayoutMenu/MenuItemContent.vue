@@ -17,8 +17,8 @@ const { t } = useI18n()
     <component v-if="item?.icon" :is="item.icon" class="mr-3" />
 
     <!-- Text -->
-    <span class="text-md font-medium" :title="item?.title || item?.meta?.title">
-      {{ item?.title || item?.meta?.title || 'Unknown' }}
+    <span class="text-md font-medium" :label="item?.label || item?.meta?.label">
+      {{ item?.label || item?.meta?.label || 'Unknown' }}
     </span>
   </div>
 </template>

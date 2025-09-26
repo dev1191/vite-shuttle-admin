@@ -1,92 +1,135 @@
+import type { IMenuItem } from '@/types/menu';
 import { reactive } from 'vue'
 import { useI18n } from 'vue-i18n'
 export function useSidebarMenu(role: string) {
     const { t } = useI18n()
 
-    const items = reactive([
+    const defaultMenus: IMenuItem[] = [
         {
-            key: `${role}-dashboard`,
+            key: `dashboard`,
             icon: useRenderIcon('hugeicons:home-13', { style: { fontSize: '24px' } }),
             label: t('menu.dashboard'),
-            title: t('menu.dashboard'),
+            name: t('menu.dashboard'),
             path: `/${role}/dashboard`,
+            namePath: [t('menu.dashboard')],
         },
         {
-            key: `${role}-users`,
+            key: `eagleEye`,
+            icon: useRenderIcon('hugeicons:maps-global-01', { style: { fontSize: '24px' } }),
+            label: t('menu.eagleEye'),
+            name: t('menu.eagleEye'),
+            path: `/${role}/eagle-eye`,
+            namePath: [t('menu.eagleEye')],
+        },
+        {
+            key: `manage-users`,
             icon: useRenderIcon('hugeicons:user-group', { style: { fontSize: '24px' } }),
             label: t('menu.manageUsers.title'),
-            title: t('menu.manageUsers.title'),
+            name: t('menu.manageUsers.title'),
+            namePath: [t('menu.manageUsers.title')],
             children: [
                 {
-                    key: `${role}-users-lists`,
+                    key: `users`,
                     label: t('menu.users'),
-                    title: t('menu.users'),
+                    name: t('menu.users'),
                     path: `/${role}/manage-users/users`,
+                    namePath: ['/[role]/manage-users/', '/[role]/manage-users/users/'],
                 },
                 {
-                    key: `${role}-users-roles`,
+                    key: `roles`,
                     label: t('menu.roles'),
-                    title: t('menu.roles'),
+                    name: t('menu.roles'),
                     path: `/${role}/manage-users/roles`,
+                    namePath: ['/[role]/manage-users/', '/[role]/manage-users/roles/'],
                 },
             ],
         },
         {
-            key: `${role}-drivers`,
+            key: `drivers`,
             icon: useRenderIcon('mdi:account-group', { style: { fontSize: '24px' } }),
             label: t('menu.manageDrivers.title'),
-            title: t('menu.manageDrivers.title'),
+            name: t('menu.manageDrivers.title'),
             path: `/${role}/drivers`,
+            namePath: [t('menu.manageDrivers.title')],
         },
         {
-            key: `${role}-vehicles`,
+            key: `vehicles`,
             icon: useRenderIcon('hugeicons:bus-01', { style: { fontSize: '24px' } }),
-            label: t('menu.vehicles'),
-            title: t('menu.vehicles'),
+            label: t('menu.vehicles.title'),
+            name: t('menu.vehicles.title'),
+            namePath: [t('menu.vehicles.title')],
             children: [
                 {
-                    key: `${role}-vehicles-busTypes`,
-                    label: t('menu.busTypes'),
-                    title: t('menu.busTypes'),
+                    key: `vehicles-busTypes`,
+                    label: t('menu.vehicles.busTypes'),
+                    name: t('menu.vehicles.busTypes'),
                     path: `/${role}/vehicles/bus-types`,
+                    namePath: [t('menu.vehicles.title'), t('menu.vehicles.busTypes')],
                 },
                 {
-                    key: `${role}-vehicles-busLayouts`,
-                    label: t('menu.busLayouts'),
-                    title: t('menu.busLayouts'),
+                    key: `vehicles-busLayouts`,
+                    label: t('menu.vehicles.busLayouts'),
+                    name: t('menu.vehicles.busLayouts'),
                     path: `/${role}/vehicles/bus-layouts`,
+                    namePath: [t('menu.vehicles.title'), t('menu.vehicles.busLayouts')],
                     children: [
                         {
-                            key: `${role}-vehicles-createBusLayouts`,
-                            label: t('menu.createBusLayouts'),
-                            title: t('menu.createBusLayouts'),
+                            key: `vehicles-createBusLayouts`,
+                            label: t('menu.vehicles.create'),
+                            name: t('menu.vehicles.create'),
                             path: `/${role}/vehicles/bus-layouts/create`,
                         },
                     ],
                 },
                 {
-                    key: `${role}-vehicles-buses`,
-                    label: t('menu.buses'),
-                    title: t('menu.buses'),
+                    key: `vehicles-buses`,
+                    label: t('menu.vehicles.buses'),
+                    name: t('menu.vehicles.buses'),
                     path: `/${role}/vehicles/buses`,
                 },
             ],
         },
         {
-            key: `${role}-settings`,
+            key: `offers`,
+            icon: useRenderIcon('hugeicons:coupon-percent', { style: { fontSize: '24px' } }),
+            label: t('menu.offers'),
+            name: t('menu.offers'),
+            path: `/${role}/manage-offers`,
+            namePath: [t('menu.offers')],
+        },
+        {
+            key: `passes`,
+            icon: useRenderIcon('hugeicons:scratch-card', { style: { fontSize: '24px' } }),
+            label: t('menu.passes'),
+            name: t('menu.passes'),
+            path: `/${role}/manage-passes`,
+            namePath: [t('menu.passes')],
+        },
+        {
+            key: `helpAndSupport`,
+            icon: useRenderIcon('hugeicons:customer-support', { style: { fontSize: '24px' } }),
+            label: t('menu.helpAndSupport'),
+            name: t('menu.helpAndSupport'),
+            path: `/${role}/help-and-supports`,
+            namePath: [t('menu.helpAndSupport')],
+        },
+        {
+            key: `settings`,
             icon: useRenderIcon('hugeicons:dashboard-square-setting', { style: { fontSize: '24px' } }),
             label: t('menu.settings.title'),
-            title: t('menu.settings.title'),
+            name: t('menu.settings.title'),
+            namePath: [t('menu.settings.title')],
             children: [
                 {
-                    key: `${role}-settings-general`,
+                    key: `settings-general`,
                     label: t('menu.settings.general'),
-                    title: t('menu.settings.general'),
+                    name: t('menu.settings.general'),
                     path: `/${role}/settings/general`,
+                    namePath: [t('menu.settings.title'), t('menu.settings.general')],
                 }
             ]
         },
-    ])
+    ];
 
-    return { items }
+    return { defaultMenus }
 }
