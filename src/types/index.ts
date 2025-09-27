@@ -15,3 +15,19 @@ export interface AccessResponse {
   role: string[],
   generalSetting: any
 }
+
+export interface Range {
+  start: string;
+  end: string;
+}
+//?globalSearch&itemsPerPage=10&page=1&sortDesc=name&sortBy=desc
+export interface PaginatingParams {
+  globalSearch: string;
+  itemsPerPage: number;
+  page: number;
+  sortDesc: string;
+  sortBy: string
+  status?: string
+  range?: Range
+
+}

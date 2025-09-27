@@ -73,7 +73,7 @@ const currentRole = computed(() => user?.role.toLocaleLowerCase() || 'admin')
     min-height: 0;
     overflow: auto;
     background: var(--app-content-background);
-    padding: 24px;
+    padding: 12px;
   }
 }
 </style>

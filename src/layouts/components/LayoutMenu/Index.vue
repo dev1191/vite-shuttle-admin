@@ -40,7 +40,6 @@ const flashMenu = (key: string) => {
 watch(
   () => currentRoute.path,
   (path) => {
-    console.log('currentRoute.path', currentRoute.path)
     const findMenuKey = (items: IMenuItem[], path: string): string | undefined => {
       for (const item of items) {
         if (item.path === path) return item.key
@@ -64,7 +63,6 @@ watch(
 )
 
 const handleMenuClick = (key: string) => {
-  console.log('key', key)
   const findPath = (items: IMenuItem[]): string | undefined => {
     for (const item of items) {
       if (item.key.toLowerCase() === key.toLowerCase()) return item.path
@@ -77,7 +75,6 @@ const handleMenuClick = (key: string) => {
   }
 
   const path = findPath(menuItems.value)
-  console.log('path :', path)
   if (path) {
     router.push(path)
   }

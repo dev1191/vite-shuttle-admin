@@ -2,7 +2,7 @@
 export interface IMenuItem {
     key: string;
     icon?: Component;
-    label: string;
+    label?: string;
     name: string;
     path?: string;
     namePath?: string[];
@@ -10,11 +10,3 @@ export interface IMenuItem {
 }
 
 
-export interface NavItem {
-    title: string;
-    href?: string;
-    icon?: Component;
-    isActive?: boolean;
-    items?: NavItem[];
-    permission?: string;
-}
