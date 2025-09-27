@@ -8,3 +8,13 @@ export interface IMenuItem {
     namePath?: string[];
     children?: IMenuItem[];
 }
+
+
+export interface NavItem {
+    title: string;
+    href?: string;
+    icon?: Component;
+    isActive?: boolean;
+    items?: NavItem[];
+    permission?: string;
+}

@@ -20,6 +20,7 @@ declare module 'vue-router/auto-routes' {
   export interface RouteNamedMap {
     '/': RouteRecordInfo<'/', '/', Record<never, never>, Record<never, never>>,
     '/[role]/dashboard/': RouteRecordInfo<'/[role]/dashboard/', '/:role/dashboard', { role: ParamValue<true> }, { role: ParamValue<false> }>,
+    '/[role]/drivers/': RouteRecordInfo<'/[role]/drivers/', '/:role/drivers', { role: ParamValue<true> }, { role: ParamValue<false> }>,
     '/[role]/eagle-eye/': RouteRecordInfo<'/[role]/eagle-eye/', '/:role/eagle-eye', { role: ParamValue<true> }, { role: ParamValue<false> }>,
     '/[role]/help-and-supports/': RouteRecordInfo<'/[role]/help-and-supports/', '/:role/help-and-supports', { role: ParamValue<true> }, { role: ParamValue<false> }>,
     '/[role]/manage-drivers/': RouteRecordInfo<'/[role]/manage-drivers/', '/:role/manage-drivers', { role: ParamValue<true> }, { role: ParamValue<false> }>,
@@ -57,6 +58,10 @@ declare module 'vue-router/auto-routes' {
     }
     'src/pages/[role]/dashboard/index.vue': {
       routes: '/[role]/dashboard/'
+      views: never
+    }
+    'src/pages/[role]/drivers/index.vue': {
+      routes: '/[role]/drivers/'
       views: never
     }
     'src/pages/[role]/eagle-eye/index.vue': {

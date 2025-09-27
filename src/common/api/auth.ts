@@ -1,5 +1,5 @@
 import request from '@/common/http-client'
-import type { LoginResponse } from '@/types'
+import type { LoginResponse, AccessResponse } from '@/types'
 import type { User } from '@/types/users'
 
 export function fetchLogin(params: { email: string; password: string }) {
@@ -12,5 +12,9 @@ export function fetchLogin(params: { email: string; password: string }) {
 }
 
 export function getProfile() {
-  return request.get<User>({ url: `/auth/me` })
+  return request.get<User>({ url: `/admin/me` })
+}
+
+export function getAccess() {
+  return request.get<AccessResponse>({ url: `/admin/access` })
 }

@@ -50,6 +50,7 @@ declare module 'vue' {
     ATooltip: typeof import('ant-design-vue/es')['Tooltip']
     ForgotPassword: typeof import('./../components/Auth/ForgotPassword.vue')['default']
     ForgotPasswordForm: typeof import('./../components/Auth/ForgotPasswordForm.vue')['default']
+    Heading: typeof import('./../components/Shared/Heading.vue')['default']
     LanguageSwitch: typeof import('./../components/Shared/LanguageSwitch.vue')['default']
     LoginForm: typeof import('./../components/Auth/LoginForm.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']

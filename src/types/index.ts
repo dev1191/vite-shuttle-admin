@@ -8,3 +8,10 @@ export interface LoginResponse {
   refreshToken: string
   tokenType: string
 }
+
+
+export interface AccessResponse {
+  permissions: string[],
+  role: string[],
+  generalSetting: any
+}

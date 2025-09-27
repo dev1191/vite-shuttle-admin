@@ -114,20 +114,13 @@ export function useSidebarMenu(role: string) {
             namePath: [t('menu.helpAndSupport')],
         },
         {
-            key: `settings`,
+
             icon: useRenderIcon('hugeicons:dashboard-square-setting', { style: { fontSize: '24px' } }),
-            label: t('menu.settings.title'),
-            name: t('menu.settings.title'),
-            namePath: [t('menu.settings.title')],
-            children: [
-                {
-                    key: `settings-general`,
-                    label: t('menu.settings.general'),
-                    name: t('menu.settings.general'),
-                    path: `/${role}/settings/general`,
-                    namePath: [t('menu.settings.title'), t('menu.settings.general')],
-                }
-            ]
+            key: `settings-general`,
+            label: t('menu.settings.general'),
+            name: t('menu.settings.general'),
+            path: `/${role}/settings/general`,
+            namePath: [t('menu.settings.title'), t('menu.settings.general')],
         },
     ];
 

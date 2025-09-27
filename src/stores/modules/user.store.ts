@@ -6,6 +6,7 @@ export const useUserStore = defineStore(
   () => {
     // state
     const user = ref<User | null>(null)
+    const generalSetting = ref({})
     const roles = ref<[]>([]);
     const permissions = ref<[]>([]);
     // actions
@@ -13,8 +14,22 @@ export const useUserStore = defineStore(
       user.value = userData
     }
 
+    function setAccess(accessData: any) {
+      console.log("accessData", accessData)
+      roles.value = accessData.roles;
+      permissions.value = accessData.permissions;
+      generalSetting.value = accessData.generalSetting;
+    }
+
     function clearUser() {
       user.value = null
+      clearAccess() // clear access when user logout
+    }
+
+    function clearAccess() {
+      roles.value = [];
+      permissions.value = [];
+      generalSetting.value = {}
     }
 
     // getters
@@ -29,8 +44,11 @@ export const useUserStore = defineStore(
       user,
       roles,
       permissions,
+      generalSetting,
       setUser,
+      setAccess,
       clearUser,
+      clearAccess,
       fullName,
       hasPermission,
     }

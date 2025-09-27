@@ -2,7 +2,7 @@
 import { LockOutlined, MailOutlined } from '@ant-design/icons-vue'
 import type { Rule } from 'ant-design-vue/es/form'
 import { message, notification } from 'ant-design-vue'
-import { fetchLogin, getProfile } from '@/common/api/auth'
+import { fetchLogin, getProfile, getAccess } from '@/common/api/auth'
 import { useAuthStore } from '@/stores/modules/auth.store'
 import { useUserStore } from '@/stores/modules/user.store'
 import { useLayoutSettingStore } from '@/stores/modules/layout.store'
@@ -50,8 +50,12 @@ const handleSubmit = async () => {
     const res = await fetchLogin({ email, password })
 
     authStore.setToken(res.token, res.refreshToken, res.expiresIn)
-    const profile = await getProfile() // call getProfile after login
+    const [profile, access] = await Promise.all([
+      getProfile(), // /me
+      getAccess(), // /access
+    ]) // call getProfile after login and getAccess
     userStore.setUser(profile)
+    userStore.setAccess(access)
 
     router.push({ path: `/${profile.role.toLowerCase()}/dashboard` })
 
