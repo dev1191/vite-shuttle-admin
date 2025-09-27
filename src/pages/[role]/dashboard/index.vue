@@ -3,7 +3,12 @@
 <route lang="yaml">
 meta:
   layout: defaultLayout
+  icon: fluent:apps-28-filled
   title: dashboard
+  drawerIndex: 0
+  order: 1
+  hidden: false
+  roles: [admin, agent, staff, manager]
   breadcrumb:
     - dashboard
 </route>

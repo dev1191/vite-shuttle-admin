@@ -4,6 +4,11 @@
 meta:
   layout: defaultLayout
   title: manageUsers.users
+  icon: UsergroupOutlined
+  drawerIndex: 0
+  order: 3
+  roles: [admin, agent, staff, manager]
+  hidden: false
   breadcrumb:
     - manageUsers.title
     - manageUsers.users

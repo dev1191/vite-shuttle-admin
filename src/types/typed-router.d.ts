@@ -20,10 +20,23 @@ declare module 'vue-router/auto-routes' {
   export interface RouteNamedMap {
     '/': RouteRecordInfo<'/', '/', Record<never, never>, Record<never, never>>,
     '/[role]/dashboard/': RouteRecordInfo<'/[role]/dashboard/', '/:role/dashboard', { role: ParamValue<true> }, { role: ParamValue<false> }>,
+    '/[role]/drivers/': RouteRecordInfo<'/[role]/drivers/', '/:role/drivers', { role: ParamValue<true> }, { role: ParamValue<false> }>,
+    '/[role]/eagle-eye/': RouteRecordInfo<'/[role]/eagle-eye/', '/:role/eagle-eye', { role: ParamValue<true> }, { role: ParamValue<false> }>,
+    '/[role]/help-and-supports/': RouteRecordInfo<'/[role]/help-and-supports/', '/:role/help-and-supports', { role: ParamValue<true> }, { role: ParamValue<false> }>,
+    '/[role]/manage-drivers/': RouteRecordInfo<'/[role]/manage-drivers/', '/:role/manage-drivers', { role: ParamValue<true> }, { role: ParamValue<false> }>,
+    '/[role]/manage-drivers/create': RouteRecordInfo<'/[role]/manage-drivers/create', '/:role/manage-drivers/create', { role: ParamValue<true> }, { role: ParamValue<false> }>,
+    '/[role]/manage-offers/': RouteRecordInfo<'/[role]/manage-offers/', '/:role/manage-offers', { role: ParamValue<true> }, { role: ParamValue<false> }>,
+    '/[role]/manage-passes/': RouteRecordInfo<'/[role]/manage-passes/', '/:role/manage-passes', { role: ParamValue<true> }, { role: ParamValue<false> }>,
+    '/[role]/manage-trips/[booking]/': RouteRecordInfo<'/[role]/manage-trips/[booking]/', '/:role/manage-trips/:booking', { role: ParamValue<true>, booking: ParamValue<true> }, { role: ParamValue<false>, booking: ParamValue<false> }>,
     '/[role]/manage-users/roles/': RouteRecordInfo<'/[role]/manage-users/roles/', '/:role/manage-users/roles', { role: ParamValue<true> }, { role: ParamValue<false> }>,
     '/[role]/manage-users/users/': RouteRecordInfo<'/[role]/manage-users/users/', '/:role/manage-users/users', { role: ParamValue<true> }, { role: ParamValue<false> }>,
     '/[role]/profile': RouteRecordInfo<'/[role]/profile', '/:role/profile', { role: ParamValue<true> }, { role: ParamValue<false> }>,
     '/[role]/settings/general': RouteRecordInfo<'/[role]/settings/general', '/:role/settings/general', { role: ParamValue<true> }, { role: ParamValue<false> }>,
+    '/[role]/vehicles/bus-layouts/': RouteRecordInfo<'/[role]/vehicles/bus-layouts/', '/:role/vehicles/bus-layouts', { role: ParamValue<true> }, { role: ParamValue<false> }>,
+    '/[role]/vehicles/bus-layouts/create': RouteRecordInfo<'/[role]/vehicles/bus-layouts/create', '/:role/vehicles/bus-layouts/create', { role: ParamValue<true> }, { role: ParamValue<false> }>,
+    '/[role]/vehicles/bus-types/': RouteRecordInfo<'/[role]/vehicles/bus-types/', '/:role/vehicles/bus-types', { role: ParamValue<true> }, { role: ParamValue<false> }>,
+    '/[role]/vehicles/buses/': RouteRecordInfo<'/[role]/vehicles/buses/', '/:role/vehicles/buses', { role: ParamValue<true> }, { role: ParamValue<false> }>,
+    '/[role]/vehicles/buses/create': RouteRecordInfo<'/[role]/vehicles/buses/create', '/:role/vehicles/buses/create', { role: ParamValue<true> }, { role: ParamValue<false> }>,
     '/auth/forgot-password': RouteRecordInfo<'/auth/forgot-password', '/auth/forgot-password', Record<never, never>, Record<never, never>>,
     '/auth/login': RouteRecordInfo<'/auth/login', '/auth/login', Record<never, never>, Record<never, never>>,
   }
@@ -47,6 +60,38 @@ declare module 'vue-router/auto-routes' {
       routes: '/[role]/dashboard/'
       views: never
     }
+    'src/pages/[role]/drivers/index.vue': {
+      routes: '/[role]/drivers/'
+      views: never
+    }
+    'src/pages/[role]/eagle-eye/index.vue': {
+      routes: '/[role]/eagle-eye/'
+      views: never
+    }
+    'src/pages/[role]/help-and-supports/index.vue': {
+      routes: '/[role]/help-and-supports/'
+      views: never
+    }
+    'src/pages/[role]/manage-drivers/index.vue': {
+      routes: '/[role]/manage-drivers/'
+      views: never
+    }
+    'src/pages/[role]/manage-drivers/create.vue': {
+      routes: '/[role]/manage-drivers/create'
+      views: never
+    }
+    'src/pages/[role]/manage-offers/index.vue': {
+      routes: '/[role]/manage-offers/'
+      views: never
+    }
+    'src/pages/[role]/manage-passes/index.vue': {
+      routes: '/[role]/manage-passes/'
+      views: never
+    }
+    'src/pages/[role]/manage-trips/[booking]/index.vue': {
+      routes: '/[role]/manage-trips/[booking]/'
+      views: never
+    }
     'src/pages/[role]/manage-users/roles/index.vue': {
       routes: '/[role]/manage-users/roles/'
       views: never
@@ -61,6 +106,26 @@ declare module 'vue-router/auto-routes' {
     }
     'src/pages/[role]/settings/general.vue': {
       routes: '/[role]/settings/general'
+      views: never
+    }
+    'src/pages/[role]/vehicles/bus-layouts/index.vue': {
+      routes: '/[role]/vehicles/bus-layouts/'
+      views: never
+    }
+    'src/pages/[role]/vehicles/bus-layouts/create.vue': {
+      routes: '/[role]/vehicles/bus-layouts/create'
+      views: never
+    }
+    'src/pages/[role]/vehicles/bus-types/index.vue': {
+      routes: '/[role]/vehicles/bus-types/'
+      views: never
+    }
+    'src/pages/[role]/vehicles/buses/index.vue': {
+      routes: '/[role]/vehicles/buses/'
+      views: never
+    }
+    'src/pages/[role]/vehicles/buses/create.vue': {
+      routes: '/[role]/vehicles/buses/create'
       views: never
     }
     'src/pages/auth/forgot-password.vue': {

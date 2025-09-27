@@ -10,6 +10,9 @@ const userInfo = computed(() => userStore.user)
 meta:
   layout: defaultLayout
   title: profile
+  icon: UserOutlined
+  hidden: false
+  roles: [admin, user, manager]
   breadcrumb:
     - profile
 </route>
