@@ -15,7 +15,7 @@ interface BaseResponse<T = any> {
 }
 
 const { VITE_API_URL, VITE_WITH_CREDENTIALS } = import.meta.env
-
+let isRefreshing = false
 /**  */
 let isUnauthorizedErrorShown = false
 let unauthorizedTimer: NodeJS.Timeout | null = null
@@ -57,7 +57,7 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use(
   (request: InternalAxiosRequestConfig) => {
     const { accessToken } = useAuthStore()
-    if (accessToken) request.headers.set('Authorization', `Bearer ${accessToken}`)
+    if (accessToken && !isRefreshing) request.headers.set('Authorization', `Bearer ${accessToken}`)
 
     if (request.data && !(request.data instanceof FormData) && !request.headers['Content-Type']) {
       request.headers.set('Content-Type', 'application/json')
@@ -76,13 +76,38 @@ axiosInstance.interceptors.request.use(
 axiosInstance.interceptors.response.use(
   (response: AxiosResponse<BaseResponse>) => {
     const { code, msg } = response.data
+
+
     if (code === ApiStatus.success) return response
     if (code === ApiStatus.unauthorized) handleUnauthorizedError(msg)
     throw createHttpError(msg || $t('httpMsg.requestFailed'), code)
   },
-  (error) => {
-    if (error.response?.status === ApiStatus.unauthorized) handleUnauthorizedError()
-    return Promise.reject(handleError(error))
+  async (error) => {
+
+    const { response, config } = error
+    const { refreshAccessToken, accessToken } = useAuthStore()
+
+    // Only handle 401 (token expired)
+    if (response?.status === 401 && !config._retry) {
+      config._retry = true
+
+      if (!isRefreshing) {
+        isRefreshing = true
+        try {
+          const refreshResponse = await refreshAccessToken(); // call refresh token
+          isRefreshing = refreshResponse ? false : true;
+          // Retry failed request
+          config.headers['Authorization'] = `Bearer ${accessToken}`
+          return axiosInstance(config); // retry the request
+        } catch (err) {
+          isRefreshing = false
+          if (error.response?.status === ApiStatus.unauthorized) handleUnauthorizedError()
+          return Promise.reject(handleError(error))
+        }
+
+      }
+
+    }
   },
 )
 
@@ -94,6 +119,7 @@ function createHttpError(message: string, code: number) {
 /** 401 handle unauthorized */
 function handleUnauthorizedError(message?: string): never {
   const error = createHttpError(message || $t('httpMsg.unauthorized'), ApiStatus.unauthorized)
+
 
   if (!isUnauthorizedErrorShown) {
     isUnauthorizedErrorShown = true

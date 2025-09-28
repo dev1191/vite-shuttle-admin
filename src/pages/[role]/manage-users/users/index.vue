@@ -5,8 +5,9 @@ import type {
   DataTableRecord,
   TableChangeEvent,
 } from '@/components/Shared/DataTable.vue'
+import { useUsers } from '@/composables/users/useUsers'
 
-const { getUserList } = UserService
+const { fetchUsers, users, isLoading } = useUsers()
 
 interface User extends DataTableRecord {
   id: number
@@ -19,9 +20,9 @@ const loading = ref<boolean>(false)
 
 const columns: DataTableColumn[] = [
   {
-    title: 'Name',
-    dataIndex: 'name',
-    key: 'name',
+    title: 'FullName',
+    dataIndex: 'fullname',
+    key: 'fulname',
     sorter: true,
   },
   {
@@ -30,18 +31,17 @@ const columns: DataTableColumn[] = [
     key: 'email',
   },
   {
+    title: 'Role',
+    dataIndex: 'role',
+    key: 'role',
+  },
+  {
     title: 'Status',
-    dataIndex: 'status',
-    key: 'status',
+    dataIndex: 'is_active',
+    key: 'is_active',
     scopedSlots: true,
   },
 ]
-
-const users = ref<User[]>([
-  { id: 1, name: 'John Doe', email: 'john@example.com', status: 'active' },
-  { id: 2, name: 'Deepak Doe', email: 'deeoak@example.com', status: 'active' },
-  { id: 3, name: 'Vindo Doe', email: 'vindo@example.com', status: 'inactive' },
-])
 
 const currentPage = ref(1)
 const pageSize = ref(10)
@@ -90,6 +90,8 @@ const handleSearch = (value: string): void => {
 }
 
 const addUser = (): void => {}
+
+onMounted(async () => await fetchUsers())
 </script>
 
 <template>
@@ -98,7 +100,7 @@ const addUser = (): void => {}
       title="Users Management"
       :data="users"
       :columns="columns"
-      :loading="loading"
+      :loading="isLoading"
       searchable
       search-placeholder="Search users..."
       :row-selection="rowSelection"

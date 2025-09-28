@@ -9,6 +9,12 @@ export interface LoginResponse {
   tokenType: string
 }
 
+export interface RefreshResponse {
+  token: string
+  expiresIn: number
+  refreshToken: string
+  tokenType: string
+}
 
 export interface AccessResponse {
   permissions: string[],
@@ -29,5 +35,6 @@ export interface PaginatingParams {
   sortBy: string
   status?: string
   range?: Range
+  totalRecords?: number
 
 }
