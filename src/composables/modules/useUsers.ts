@@ -14,6 +14,7 @@ const makePaginationRef = () =>
         sortBy: 'createdAt',
         sortDesc: 'desc',
         range: { start: '', end: '' },
+        filters: { type: 'simple', name: '', value: '' }
     })
 
 export const useUsers = (opts?: { pagination?: Ref<PaginatingParams> }) => {
@@ -25,20 +26,33 @@ export const useUsers = (opts?: { pagination?: Ref<PaginatingParams> }) => {
     const fetchUsers = async () => {
         try {
             isLoading.value = true
-            const params = unref(pagination)
+
+            const params = { ...unref(pagination) }
+
+            // ✅ Convert range & filters to strings
+            params.range = JSON.stringify(params.range)
+            params.filters = JSON.stringify(params.filters)
+
             const response = await getUserList(params)
 
             users.value = response.items ?? []
             pagination.value.totalRecords = response.totalRecords
             pagination.value.page = response.page
             pagination.value.itemsPerPage = response.limit
-            isLoading.value = false
         } catch (error) {
             console.error('Failed to fetch users:', error)
         } finally {
             isLoading.value = false
         }
     }
+
+    watch(
+        pagination,
+        () => {
+            fetchUsers()
+        },
+        { deep: true },
+    )
 
     // 🔹 Create new user
     const addUser = async (payload: Partial<User>) => {
@@ -85,6 +99,7 @@ export const useUsers = (opts?: { pagination?: Ref<PaginatingParams> }) => {
         }
     }
 
+    fetchUsers()
 
     return {
         users,

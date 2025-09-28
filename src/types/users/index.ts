@@ -5,12 +5,14 @@ export interface Permission {
 
 export interface User {
   id: string
+  ids?: string
+  fullname?: string;
   firstname: string
   lastname: string
   email: string
   phone: string
   role: string
-  permissions: Permission[]
+  permissions?: Permission[]
   picture?: string
   address_1?: string | null
   address_2?: string | null

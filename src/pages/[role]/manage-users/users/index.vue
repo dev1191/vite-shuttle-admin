@@ -1,55 +1,63 @@
 <script setup lang="ts">
-import { UserService } from '@/common/api/user'
 import type {
   DataTableColumn,
   DataTableRecord,
   TableChangeEvent,
+  PaginationData,
 } from '@/components/Shared/DataTable.vue'
-import { useUsers } from '@/composables/users/useUsers'
+import { useUsers } from '@/composables/modules/useUsers'
+import type { User } from '@/types/users'
+import type { PaginatingParams } from '@/types'
+import {
+  DeleteOutlined,
+  EditOutlined,
+  ExclamationCircleOutlined,
+  PlusOutlined,
+} from '@ant-design/icons-vue'
+import { message, Modal } from 'ant-design-vue'
 
-const { fetchUsers, users, isLoading } = useUsers()
+const { users, pagination, isLoading, fetchUsers, addUser, editUser, removeUser } = useUsers()
 
-interface User extends DataTableRecord {
-  id: number
-  name: string
-  email: string
-  status: 'active' | 'inactive'
-}
-
-const loading = ref<boolean>(false)
-
+const { t } = useI18n()
 const columns: DataTableColumn[] = [
   {
     title: 'FullName',
     dataIndex: 'fullname',
-    key: 'fulname',
+    key: 'fullname', // Fixed: key should match dataIndex
     sorter: true,
   },
   {
     title: 'Email',
     dataIndex: 'email',
     key: 'email',
+    sorter: true,
   },
   {
     title: 'Role',
     dataIndex: 'role',
     key: 'role',
+    sorter: true,
   },
   {
     title: 'Status',
     dataIndex: 'is_active',
     key: 'is_active',
-    scopedSlots: true,
+    scopedSlots: true, // This enables the slot
+  },
+  {
+    title: 'Action',
+    fixed: 'right',
+    key: 'action',
+    width: 100,
   },
 ]
 
-const currentPage = ref(1)
-const pageSize = ref(10)
-const totalUsers = ref(0)
-const statusFilter = ref<string>()
+const statusFilter = ref<string>('')
 const selectedRowKeys = ref<(string | number)[]>([])
 const selectedRows = ref<User[]>([])
-
+const selectedRow = ref<User>({})
+const dialogVisible = ref<boolean>(false)
+const dialogType = ref('add')
 // Row selection configuration
 const rowSelection = computed(() => ({
   selectedRowKeys: selectedRowKeys.value,
@@ -65,33 +73,109 @@ const rowSelection = computed(() => ({
   },
 }))
 
+// Convert PaginatingParams to DataTable PaginationData format
+const tablesPagination = computed<PaginationData>(() => ({
+  page: pagination.value.page,
+  itemsPerPage: pagination.value.itemsPerPage,
+  globalSearch: pagination.value.globalSearch,
+  sortBy: pagination.value.sortBy,
+  sortDesc: pagination.value.sortDesc,
+  range: pagination.value.range,
+  totalRecords: pagination.value.totalRecords || 0,
+}))
+
 const handleStatusFilter = (): void => {
-  // Filter logic here
+  // Reset to first page when filtering
+  pagination.value.page = 1
+  // Add status filter to your pagination or handle separately
   console.log('Status filter:', statusFilter.value)
+  pagination.value.filters = {
+    type: 'simple',
+    name: typeof statusFilter.value == 'undefined' ? '' : 'is_active',
+    value:
+      typeof statusFilter.value == 'undefined' ? '' : statusFilter.value == 'active' ? true : false,
+  }
+  // The composable will automatically fetch due to watch on pagination
 }
 
 const handleTableChange = (event: TableChangeEvent): void => {
-  console.log('Table changed:', event)
-  currentPage.value = event.pagination.current
-  pageSize.value = event.pagination.pageSize
+  // Update pagination based on table changes
+  pagination.value.page = event.pagination.current
+  pagination.value.itemsPerPage = event.pagination.pageSize
 
-  // Simulate API call
-  if (event.action === 'paginate' || event.action === 'sort') {
-    loading.value = true
-    setTimeout(() => {
-      loading.value = false
-    }, 500)
+  // Handle sorting
+  if (event.sorter.field) {
+    pagination.value.sortBy = event.sorter.field
+    pagination.value.sortDesc = event.sorter.order === 'ascend' ? 'asc' : 'desc'
   }
+
+  // The composable watch will automatically trigger fetchUsers
 }
 
 const handleSearch = (value: string): void => {
-  console.log('Search:', value)
-  currentPage.value = 1
+  // Update pagination with search term
+  pagination.value.page = 1 // Reset to first page on search
+  pagination.value.globalSearch = value
+
+  // The composable watch will automatically trigger fetchUsers
 }
 
-const addUser = (): void => {}
+// Handle pagination changes from DataTable
+const handlePaginationChange = (newPagination: PaginationData): void => {
+  // Update composable pagination
+  pagination.value.page = newPagination.page
+  pagination.value.itemsPerPage = newPagination.itemsPerPage
+  pagination.value.globalSearch = newPagination.globalSearch
+  pagination.value.sortBy = newPagination.sortBy
+  pagination.value.sortDesc = newPagination.sortDesc
+  pagination.value.range = newPagination.range
 
-onMounted(async () => await fetchUsers())
+  // The composable watch will automatically trigger fetchUsers
+}
+
+const showDialog = async (): void => {
+  // Add user logic - you might want to open a modal/form
+  console.log('Add user clicked')
+  dialogVisible.value = true
+  // Example:
+  // const newUser = { name: 'New User', email: 'new@example.com' }
+  // await addUser(newUser)
+}
+
+const handleDialogSubmit = () => {}
+
+const handleEditUser = async (user: User): void => {
+  console.log('Edit user:', user)
+  // Add edit logic - open modal/form with user data
+  // Example:
+  // const updates = { name: 'Updated Name' }
+  // await editUser(user.id, updates)
+}
+
+const handleDeleteUser = async (user: User): void => {
+  // Add confirmation dialog
+  Modal.confirm({
+    icon: h(ExclamationCircleOutlined),
+    title: t('common.delete', { name: t('manageUsers.users.user') }),
+    centered: true,
+    content: t('common.confirmMessage', { name: user.fullname }),
+    okText: t('common.delete'),
+    okType: 'danger',
+    async onOk() {
+      try {
+        await removeUser(user.ids)
+        await fetchUsers() // ✅ Refresh table after deletion
+        message.success(t('common.deleteMessage', { name: user.fullname }))
+      } catch (error: any) {
+        //console.error('Failed to delete user:', error)
+        message.error(`${t('common.deleteFailed')} ${error.message || ''}`)
+      }
+    },
+    onCancel() {
+      message.info(t('common.cancelDelete', { name: user.fullname }))
+    },
+  })
+}
 </script>
 
 <template>
@@ -101,40 +185,85 @@ onMounted(async () => await fetchUsers())
       :data="users"
       :columns="columns"
       :loading="isLoading"
+      :pagination="tablesPagination"
       searchable
+      remote
+      dateRange
       search-placeholder="Search users..."
       :row-selection="rowSelection"
       @change="handleTableChange"
       @search="handleSearch"
+      @pagination-change="handlePaginationChange"
     >
       <!-- Custom action buttons in header -->
       <template #headerActions>
-        <a-button type="primary" @click="addUser"> Add User </a-button>
+        <a-button size="large" type="primary" @click="showDialog">
+          <template #icon>
+            <PlusOutlined />
+          </template>
+          {{ t('common.add') }}
+        </a-button>
       </template>
 
       <!-- Custom filters -->
       <template #filters>
-        <a-select v-model:value="statusFilter" placeholder="Filter by status">
-          <a-select-option value="active">Active</a-select-option>
-          <a-select-option value="inactive">Inactive</a-select-option>
+        <a-select
+          size="large"
+          v-model:value="statusFilter"
+          placeholder="Filter by status"
+          style="min-width: 150px"
+          @change="handleStatusFilter"
+          allow-clear
+        >
+          <a-select-option value="active">{{ t('common.active') }}</a-select-option>
+          <a-select-option value="inactive">{{ t('common.inactive') }}</a-select-option>
         </a-select>
       </template>
 
-      <!-- Custom column rendering -->
-      <template #status="{ text }">
-        <a-tag :color="text === 'active' ? 'green' : 'red'">
-          {{ text.toUpperCase() }}
+      <!-- Custom column rendering for status -->
+      <template #is_active="{ text, record }">
+        <a-tag :color="text === 'active' || text === true || text === 1 ? 'green' : 'red'">
+          {{
+            typeof text === 'boolean'
+              ? text
+                ? 'ACTIVE'
+                : 'INACTIVE'
+              : typeof text === 'number'
+                ? text === 1
+                  ? 'ACTIVE'
+                  : 'INACTIVE'
+                : text.toString().toUpperCase()
+          }}
         </a-tag>
       </template>
 
       <!-- Action buttons -->
       <template #action="{ record }">
         <a-space>
-          <a-button size="small">Edit</a-button>
-          <a-button size="small" danger>Delete</a-button>
+          <a-tooltip :title="t('common.edit')">
+            <a-button size="small" type="link" ghost @click="handleEditUser(record)">
+              <template #icon>
+                <Icon name="hugeicons:pencil-edit-02" :size="5" />
+              </template>
+            </a-button>
+          </a-tooltip>
+          <a-tooltip :title="t('common.delete')">
+            <a-button size="small" type="link" ghost danger @click="handleDeleteUser(record)">
+              <template #icon>
+                <Icon name="hugeicons:delete-02" :size="5" />
+              </template>
+            </a-button>
+          </a-tooltip>
         </a-space>
       </template>
     </DataTable>
+
+    <AdminUserDialog
+      v-model:visible="dialogVisible"
+      :type="dialogType"
+      :user-data="selectedRow"
+      @submit="handleDialogSubmit"
+    />
   </div>
 </template>
 
@@ -151,4 +280,7 @@ meta:
     - manageUsers.title
     - manageUsers.users
 </route>
-<style scoped></style>
+
+<style scoped>
+/* Add any custom styles here */
+</style>

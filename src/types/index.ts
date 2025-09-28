@@ -26,6 +26,12 @@ export interface Range {
   start: string;
   end: string;
 }
+
+export interface Filter {
+  type: string;
+  name: string;
+  value: string | boolean | string[]
+}
 //?globalSearch&itemsPerPage=10&page=1&sortDesc=name&sortBy=desc
 export interface PaginatingParams {
   globalSearch: string;
@@ -36,5 +42,6 @@ export interface PaginatingParams {
   status?: string
   range?: Range
   totalRecords?: number
+  filters: Filter
 
 }

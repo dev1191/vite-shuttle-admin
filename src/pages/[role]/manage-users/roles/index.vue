@@ -1,17 +1,21 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { useRoles } from '@/composables/modules/useRoles'
+
+const { fetchRoles, roles, isLoading } = useRoles()
+</script>
 
 <route lang="yaml">
 meta:
   layout: defaultLayout
-  title: manageUsers.roles
-  icon: UsergroupOutlined
+  title: manageRoles.roles
+  icon: RolegroupOutlined
   drawerIndex: 1
   order: 3
   hidden: false
   roles: [admin, agent, staff, manager]
   breadcrumb:
-    - manageUsers.title
-    - manageUsers.roles
+    - manageRoles.title
+    - manageRoles.roles
 </route>
 
 <template>

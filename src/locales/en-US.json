@@ -21,15 +21,21 @@
   },
   "common": {
     "submit": "Submit",
-    "add": "Add",
+    "add": "Add {name}",
     "cancel": "Cancel",
     "back": "Back",
     "edit": "Edit",
-    "delete": "Delete",
+    "delete": "Delete {name}",
     "view": "View",
     "search": "Search",
+    "active": "Active",
+    "inactive": "Inactive",
     "new": "New",
-    "sending": "sending..."
+    "sending": "sending...",
+    "confirmMessage": "Are you sure you want to delete {name}?",
+    "deleteMessage": "{name} has been deleted",
+    "deleteFailed": "Failed to delete user.",
+    "cancelDelete": "Cancelled deleting {name}"
   },
   "menu": {
     "login": "Login",
@@ -172,10 +178,12 @@
     }
   },
   "manageUsers": {
-    "user": {
+    "users": {
+      "user": "User",
       "create": "Create New User"
     },
-    "role": {
+    "roles": {
+      "role": "Role",
       "create": "Create Role"
     }
   },
