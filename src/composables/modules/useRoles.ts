@@ -14,6 +14,7 @@ const makePaginationRef = () =>
         sortBy: 'createdAt',
         sortDesc: 'desc',
         range: { start: '', end: '' },
+        filters: { type: 'simple', name: '', value: '' }
     })
 
 export const useRoles = (opts?: { pagination?: Ref<PaginatingParams> }) => {

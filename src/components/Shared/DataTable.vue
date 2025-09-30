@@ -29,9 +29,6 @@
       </a-input>
 
       <div class="flex gap-2 items-center flex-wrap">
-        <a-button v-if="hasActiveFilters" @click="resetFilters" size="small">
-          Clear Filters
-        </a-button>
         <!-- Date Range Filter (if enabled) -->
         <div v-if="dateRange">
           <a-range-picker
@@ -44,6 +41,19 @@
           />
         </div>
         <slot name="filters"></slot>
+        <a-button
+          v-if="hasActiveFilters"
+          size="small"
+          type="link"
+          ghost
+          danger
+          @click="resetFilters"
+        >
+          <template #icon>
+            <Icon name="hugeicons:cancel-square" :size="6" />
+          </template>
+          Clear Filters
+        </a-button>
       </div>
     </div>
 

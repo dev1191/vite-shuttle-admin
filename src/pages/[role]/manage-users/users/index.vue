@@ -135,17 +135,40 @@ const handlePaginationChange = (newPagination: PaginationData): void => {
 
 const showDialog = async (): void => {
   // Add user logic - you might want to open a modal/form
-  console.log('Add user clicked')
   dialogVisible.value = true
-  // Example:
-  // const newUser = { name: 'New User', email: 'new@example.com' }
-  // await addUser(newUser)
+  selectedRow.value = {}
 }
 
-const handleDialogSubmit = () => {}
+const handleDialogSubmit = async () => {
+  try {
+    if (dialogType.value === 'add') {
+      // ✅ Create new user
+      await addUser(selectedRow.value)
+      message.success(t('common.createMessage', { name: selectedRow.value.fullname }))
+    } else if (dialogType.value === 'edit') {
+      // ✅ Update existing user
+      if (!selectedRow.value?.id) {
+        message.error(t('common.noUserSelected'))
+        return
+      }
+      await editUser(selectedRow.value.id, selectedRow.value)
+      message.success(t('common.updateMessage', { name: selectedRow.value.fullname }))
+    }
+
+    // ✅ Close dialog + refresh table
+    dialogVisible.value = false
+    await fetchUsers()
+    selectedRow.value = {}
+  } catch (error: any) {
+    console.error('Submit failed:', error)
+    message.error(error.message || t('common.submitFailed'))
+  }
+}
 
 const handleEditUser = async (user: User): void => {
-  console.log('Edit user:', user)
+  selectedRow.value = user
+  dialogVisible.value = true
+  dialogType.value = 'edit'
   // Add edit logic - open modal/form with user data
   // Example:
   // const updates = { name: 'Updated Name' }
@@ -201,7 +224,7 @@ const handleDeleteUser = async (user: User): void => {
           <template #icon>
             <PlusOutlined />
           </template>
-          {{ t('common.add') }}
+          {{ t('common.create', { name: t('manageUsers.users.newUser') }) }}
         </a-button>
       </template>
 
@@ -241,14 +264,14 @@ const handleDeleteUser = async (user: User): void => {
       <template #action="{ record }">
         <a-space>
           <a-tooltip :title="t('common.edit')">
-            <a-button size="small" type="link" ghost @click="handleEditUser(record)">
+            <a-button size="small" type="link" @click="handleEditUser(record)">
               <template #icon>
                 <Icon name="hugeicons:pencil-edit-02" :size="5" />
               </template>
             </a-button>
           </a-tooltip>
           <a-tooltip :title="t('common.delete')">
-            <a-button size="small" type="link" ghost danger @click="handleDeleteUser(record)">
+            <a-button size="small" type="link" danger @click="handleDeleteUser(record)">
               <template #icon>
                 <Icon name="hugeicons:delete-02" :size="5" />
               </template>

@@ -21,11 +21,12 @@
   },
   "common": {
     "submit": "Submit",
-    "add": "Add {name}",
+    "create": "Create {name}",
     "cancel": "Cancel",
     "back": "Back",
-    "edit": "Edit",
+    "edit": "Edit {name}",
     "delete": "Delete {name}",
+    "select": "select a {name}",
     "view": "View",
     "search": "Search",
     "active": "Active",
@@ -180,7 +181,15 @@
   "manageUsers": {
     "users": {
       "user": "User",
-      "create": "Create New User"
+      "newUser": "New User",
+      "form": {
+        "fullname": "Fullname",
+        "email": "Email",
+        "phone": "Phone number",
+        "roles": "Roles",
+        "password": "Password",
+        "confirmPassword": "Confirm Password"
+      }
     },
     "roles": {
       "role": "Role",
@@ -189,9 +198,12 @@
   },
   "validation": {
     "required": "This {name} is required",
-    "placeholder": "Please enter a {name}",
+    "placeholder": "Enter a {name}",
     "email": "Please enter a valid email address",
     "minLength": "Minimum length is {min} characters",
-    "maxLength": "Maximum length is {max} characters"
+    "maxLength": "Maximum length is {max} characters",
+    "lengthBetween": "Length must be between {min} and {max} characters",
+    "phoneFormat": "Please enter a valid phone number format",
+    "passwordMismatch": "Passwords do not match"
   }
 }
