@@ -12,6 +12,9 @@ export interface User {
   email: string
   phone: string
   role: string
+  country_code: string;
+  password?: string;
+  confirmPassword?: string;
   permissions?: Permission[]
   picture?: string
   address_1?: string | null

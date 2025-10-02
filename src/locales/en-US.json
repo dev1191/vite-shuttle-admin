@@ -25,6 +25,7 @@
     "cancel": "Cancel",
     "back": "Back",
     "edit": "Edit {name}",
+    "update": "Edit {name}",
     "delete": "Delete {name}",
     "select": "select a {name}",
     "view": "View",
@@ -34,6 +35,7 @@
     "new": "New",
     "sending": "sending...",
     "confirmMessage": "Are you sure you want to delete {name}?",
+    "createMessage": "{name} has been created",
     "deleteMessage": "{name} has been deleted",
     "deleteFailed": "Failed to delete user.",
     "cancelDelete": "Cancelled deleting {name}"
@@ -182,13 +184,17 @@
     "users": {
       "user": "User",
       "newUser": "New User",
+      "edit": "Edit",
       "form": {
+        "avatar": "Avatar",
         "fullname": "Fullname",
         "email": "Email",
         "phone": "Phone number",
         "roles": "Roles",
+        "setPassword": "Set Password",
         "password": "Password",
-        "confirmPassword": "Confirm Password"
+        "confirmPassword": "Confirm Password",
+        "status": "Status"
       }
     },
     "roles": {

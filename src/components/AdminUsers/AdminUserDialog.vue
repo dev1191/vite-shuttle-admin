@@ -8,35 +8,40 @@ import { useI18n } from 'vue-i18n'
 
 interface Props {
   visible: boolean
+  isLoading: boolean
   type: string
   userData?: User
 }
 
 interface Emits {
   (e: 'update:visible', value: boolean): void
-  (e: 'submit'): void
+  (e: 'submit', formData: User): void
 }
 
 const props = defineProps<Props>()
 const emit = defineEmits<Emits>()
 const { roles } = useUserStore()
-const isLoading = ref<boolean>(false)
 const roleOptions = ref<SelectProps['options']>([...roles])
 
 // ✅ Correct way to use i18n
 const { t } = useI18n()
 const formRef = ref()
 
-const formData = reactive({
+const formData = reactive<Partial<User> & { confirmPassword: string }>({
+  ids: '',
+  picture: '',
+  firstname: '',
+  lastname: '',
   fullname: '',
   email: '',
   phone: '',
-  country_code: '',
+  country_code: '91',
   password: '',
   confirmPassword: '',
   role: '',
   is_active: true,
 })
+const setPassword = ref<boolean>(false)
 
 const rules: Record<string, Rule[]> = {
   fullname: [
@@ -58,7 +63,7 @@ const rules: Record<string, Rule[]> = {
       message: t('validation.required', { name: t('manageUsers.users.form.phone') }),
       trigger: 'blur',
     },
-    { pattern: /^1[3-9]\d{9}$/, message: t('validation.phoneFormat'), trigger: 'blur' },
+    { pattern: /^\d{9,11}$/, message: t('validation.phoneFormat'), trigger: 'blur' },
   ],
   email: [
     {
@@ -76,7 +81,7 @@ const rules: Record<string, Rule[]> = {
   ],
   password: [
     {
-      required: true,
+      required: props.type === 'add' || setPassword.value,
       message: t('validation.required', { name: t('manageUsers.users.form.password') }),
       trigger: 'blur',
     },
@@ -89,13 +94,13 @@ const rules: Record<string, Rule[]> = {
   ],
   confirmPassword: [
     {
-      required: true,
+      required: props.type === 'add' || setPassword.value,
       message: t('validation.required', { name: t('manageUsers.users.form.confirmPassword') }),
       trigger: 'blur',
     },
     {
       validator: async (_rule: Rule, value: string) => {
-        if (value !== formData.password) {
+        if ((props.type === 'add' || setPassword.value) && value !== formData.password) {
           return Promise.reject(t('validation.passwordMismatch'))
         }
         return Promise.resolve()
@@ -121,6 +126,8 @@ const initFormData = () => {
   const row = props.userData
 
   Object.assign(formData, {
+    ids: isEdit ? row?.ids || '' : '',
+    picture: isEdit ? row?.picture || '' : '',
     fullname: isEdit ? row.fullname || '' : '',
     email: isEdit ? row.email || '' : '',
     phone: isEdit ? row.phone || '' : '',
@@ -131,12 +138,16 @@ const initFormData = () => {
 
 watch(
   () => [props.visible, props.type, props.userData],
-  ([visible]) => {
+  ([visible, type]) => {
     if (visible) {
       initFormData()
       nextTick(() => {
         formRef.value?.clearValidate()
       })
+    }
+    console.log('type', type)
+    if (type == 'add') {
+      setPassword.value = false
     }
   },
   { immediate: true },
@@ -146,27 +157,17 @@ const handleSubmit = () => {
   formRef.value
     .validate()
     .then(() => {
-      console.log('values', formState, toRaw(formState))
+      emit('submit', toRaw(formData))
     })
     .catch((error) => {
       console.log('error', error)
       message.error('errpr', error)
     })
-  // if (!formRef.value) return
-
-  // await formRef.value.validate((valid: any) => {
-  //   if (valid) {
-  //     message.success(props.type === 'add' ? '添加成功' : '更新成功')
-  //     dialogVisible.value = false
-  //     emit('submit')
-  //   }
-  //   message.success('errpr')
-  // })
 }
 </script>
 
 <template>
-  <a-modal v-model:open="dialogVisible" :title="title" width="40%" centered>
+  <a-modal v-model:open="dialogVisible" :title="title" width="40%" centered :maskClosable="false">
     <!-- your form goes here -->
     <AForm
       ref="formRef"
@@ -176,6 +177,11 @@ const handleSubmit = () => {
       :labelCol="{ span: 12 }"
     >
       <a-row :gutter="16">
+        <a-col :span="12">
+          <a-form-item :label="t('manageUsers.users.form.avatar')" name="avatar">
+            <AvatarUpload v-model="formData.picture" :size="80" :maxSizeMB="3" />
+          </a-form-item>
+        </a-col>
         <!-- Fullname -->
         <a-col :span="12">
           <a-form-item :label="t('manageUsers.users.form.fullname')" name="fullname">
@@ -221,7 +227,7 @@ const handleSubmit = () => {
         </a-col>
 
         <a-col :span="12">
-          <a-form-item :label="t('manageUsers.users.form.roles')" name="email">
+          <a-form-item :label="t('manageUsers.users.form.roles')" name="roles">
             <a-select
               size="large"
               :placeholder="t('common.select', { name: t('manageUsers.users.form.roles') })"
@@ -232,7 +238,12 @@ const handleSubmit = () => {
         </a-col>
       </a-row>
       <a-row :gutter="16">
-        <a-col :span="12">
+        <a-col :span="16" v-if="props.type === 'edit'">
+          <a-form-item :label="t('manageUsers.users.form.setPassword')" name="roles">
+            <a-switch v-model:checked="setPassword" />
+          </a-form-item>
+        </a-col>
+        <a-col :span="12" v-if="props.type === 'add' || setPassword === true">
           <a-form-item :label="t('manageUsers.users.form.password')" name="password">
             <a-input-password
               v-model:value="formData.password"
@@ -243,7 +254,7 @@ const handleSubmit = () => {
             />
           </a-form-item>
         </a-col>
-        <a-col :span="12">
+        <a-col :span="12" v-if="props.type === 'add' || setPassword === true">
           <a-form-item :label="t('manageUsers.users.form.confirmPassword')" name="confirmPassword">
             <a-input-password
               v-model:value="formData.confirmPassword"
@@ -254,13 +265,23 @@ const handleSubmit = () => {
             />
           </a-form-item>
         </a-col>
+        <a-col :span="12">
+          <a-form-item :label="t('manageUsers.users.form.status')" name="status">
+            <a-radio-group v-model:value="formData.is_active">
+              <a-radio-button :value="true">{{ t('common.active') }}</a-radio-button>
+              <a-radio-button :value="false">{{ t('common.inactive') }}</a-radio-button>
+            </a-radio-group>
+          </a-form-item>
+        </a-col>
       </a-row>
     </AForm>
     <template #footer>
       <div class="dialog-footer">
         <AButton size="large" @click="dialogVisible = false">{{ t('common.cancel') }}</AButton>
-        <AButton size="large" type="primary" @click="handleSubmit">{{
-          t('common.create', { name: t('manageUsers.users.user') })
+        <AButton size="large" type="primary" @click="handleSubmit" :loading="isLoading">{{
+          type == 'add'
+            ? t('common.create', { name: t('manageUsers.users.user') })
+            : t('common.update', { name: t('manageUsers.users.user') })
         }}</AButton>
       </div>
     </template>

@@ -1,6 +1,8 @@
 import request from '@/common/http-client'
 import type { PaginatingParams } from '@/types'
 import type { UserListData, User } from '@/types/users'
+import { toFormData } from '@/utils'
+
 
 export class UserService {
     // 🔹 Get paginated user list
@@ -21,9 +23,10 @@ export class UserService {
 
     // 🔹 Update user
     static updateUser(id: string, payload: Partial<User>) {
+        const formData = toFormData(payload)
         return request.put<User>({
             url: `/admin-users/${id}`,
-            data: payload,
+            data: formData,
         })
     }
 

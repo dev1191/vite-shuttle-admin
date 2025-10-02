@@ -74,9 +74,7 @@ export const useUsers = (opts?: { pagination?: Ref<PaginatingParams> }) => {
         try {
             isLoading.value = true
             const response = await updateUser(id, payload)
-            const idx = users.value.findIndex(u => u.id === id)
-            if (idx !== -1) users.value[idx] = response.data
-            return response.data
+            return response
         } catch (error) {
             console.error('Failed to update user:', error)
             throw error

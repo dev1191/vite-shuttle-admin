@@ -81,7 +81,7 @@ const filterOption = (input: string, option: any) => {
         <a-select
           size="large"
           v-model:value="selectedCountry"
-          style="width: 150px"
+          style="width: 130px"
           show-search
           :filter-option="filterOption"
           placeholder="Select country"
@@ -96,7 +96,7 @@ const filterOption = (input: string, option: any) => {
       <a-input
         size="large"
         v-model:value="phoneNumber"
-        style="width: calc(100% - 150px)"
+        style="width: calc(100% - 130px)"
         :placeholder="placeHolderPhone"
       />
     </a-input-group>

@@ -42,7 +42,7 @@ const columns: DataTableColumn[] = [
     title: 'Status',
     dataIndex: 'is_active',
     key: 'is_active',
-    scopedSlots: true, // This enables the slot
+    customRender: ({ text }) => (text ? 'active dev' : 'inactive'),
   },
   {
     title: 'Action',
@@ -139,29 +139,32 @@ const showDialog = async (): void => {
   selectedRow.value = {}
 }
 
-const handleDialogSubmit = async () => {
+const handleDialogSubmit = async (formData: User) => {
   try {
+    isLoading.value = true
     if (dialogType.value === 'add') {
       // ✅ Create new user
-      await addUser(selectedRow.value)
-      message.success(t('common.createMessage', { name: selectedRow.value.fullname }))
+      await addUser(formData)
+      message.success(t('common.createMessage', { name: formData.fullname }))
     } else if (dialogType.value === 'edit') {
       // ✅ Update existing user
-      if (!selectedRow.value?.id) {
+      if (!formData?.ids) {
         message.error(t('common.noUserSelected'))
         return
       }
-      await editUser(selectedRow.value.id, selectedRow.value)
-      message.success(t('common.updateMessage', { name: selectedRow.value.fullname }))
+      await editUser(formData.ids, formData)
+      message.success(t('common.updateMessage', { name: formData.fullname }))
     }
 
     // ✅ Close dialog + refresh table
     dialogVisible.value = false
+    isLoading.value = false
     await fetchUsers()
-    selectedRow.value = {}
+    formData.value = {}
   } catch (error: any) {
     console.error('Submit failed:', error)
     message.error(error.message || t('common.submitFailed'))
+    isLoading.value = false
   }
 }
 
@@ -169,10 +172,6 @@ const handleEditUser = async (user: User): void => {
   selectedRow.value = user
   dialogVisible.value = true
   dialogType.value = 'edit'
-  // Add edit logic - open modal/form with user data
-  // Example:
-  // const updates = { name: 'Updated Name' }
-  // await editUser(user.id, updates)
 }
 
 const handleDeleteUser = async (user: User): void => {
@@ -244,21 +243,11 @@ const handleDeleteUser = async (user: User): void => {
       </template>
 
       <!-- Custom column rendering for status -->
-      <template #is_active="{ text, record }">
-        <a-tag :color="text === 'active' || text === true || text === 1 ? 'green' : 'red'">
-          {{
-            typeof text === 'boolean'
-              ? text
-                ? 'ACTIVE'
-                : 'INACTIVE'
-              : typeof text === 'number'
-                ? text === 1
-                  ? 'ACTIVE'
-                  : 'INACTIVE'
-                : text.toString().toUpperCase()
-          }}
+      <!-- <template #is_active="{ text, record }">
+        <a-tag :color="text ? 'green' : 'red'">
+          {{ typeof text === 'boolean' ? t('common.active') : t('common.inactive') }}
         </a-tag>
-      </template>
+      </template> -->
 
       <!-- Action buttons -->
       <template #action="{ record }">
@@ -283,6 +272,7 @@ const handleDeleteUser = async (user: User): void => {
 
     <AdminUserDialog
       v-model:visible="dialogVisible"
+      :isLoading="isLoading"
       :type="dialogType"
       :user-data="selectedRow"
       @submit="handleDialogSubmit"
