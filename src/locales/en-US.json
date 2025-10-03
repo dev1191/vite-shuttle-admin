@@ -35,7 +35,7 @@
     "delete": "Delete {name}",
     "select": "select a {name}",
     "view": "View",
-    "search": "Search",
+    "search": "Search {name}...",
     "active": "Active",
     "inactive": "Inactive",
     "new": "New",
@@ -44,7 +44,8 @@
     "createMessage": "{name} has been created",
     "deleteMessage": "{name} has been deleted",
     "deleteFailed": "Failed to delete user.",
-    "cancelDelete": "Cancelled deleting {name}"
+    "cancelDelete": "Cancelled deleting {name}",
+    "updateMessage": "{title} : {name} has been updated"
   },
   "menu": {
     "login": "Login",
@@ -204,8 +205,14 @@
       }
     },
     "roles": {
+      "title": "Roles",
       "role": "Role",
-      "create": "Create Role"
+      "newRole": "New Role",
+      "edit": "Edit",
+      "form": {
+        "name": "Name",
+        "permissions": "Permissions"
+      }
     }
   },
   "validation": {

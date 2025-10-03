@@ -3,6 +3,7 @@ import { useUserStore } from '@/stores/modules/user.store'
 import type { User } from '@/types/users'
 import { message, type FormInstance } from 'ant-design-vue'
 import type { Rule } from 'ant-design-vue/es/form'
+import Preview from 'ant-design-vue/es/vc-image/src/Preview'
 import type { SelectProps } from 'ant-design-vue/es/vc-select'
 import { useI18n } from 'vue-i18n'
 

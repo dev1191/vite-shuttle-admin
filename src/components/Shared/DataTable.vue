@@ -237,8 +237,15 @@ const processedColumns = computed<DataTableColumn[]>(() => {
   return props.columns.map((column) => {
     const newColumn: DataTableColumn = {
       ...column,
-      sorter: column.sortable !== false,
-      ...(column.sortable !== false && column.sorter === undefined ? { sorter: true } : {}),
+      sorter: column.sorter !== false,
+      ...(column.sorter !== false && column.sorter === undefined ? { sorter: true } : {}),
+    }
+
+    // Only set sorter if explicitly true
+    if (column.sorter) {
+      newColumn.sorter = true
+    } else {
+      newColumn.sorter = false
     }
 
     // ✅ Ensure customRender is passed through

@@ -41,6 +41,16 @@ export const useRoles = (opts?: { pagination?: Ref<PaginatingParams> }) => {
         }
     }
 
+
+    watch(
+        pagination,
+        () => {
+            fetchRoles()
+        },
+        { deep: true },
+    )
+
+
     // 🔹 Create new role
     const addRole = async (payload: Partial<Role>) => {
         try {
@@ -85,6 +95,10 @@ export const useRoles = (opts?: { pagination?: Ref<PaginatingParams> }) => {
             isLoading.value = false
         }
     }
+
+
+
+    fetchRoles();
 
 
     return {

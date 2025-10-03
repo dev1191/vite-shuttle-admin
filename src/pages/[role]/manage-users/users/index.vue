@@ -7,6 +7,7 @@ import type {
 } from '@/components/Shared/DataTable.vue'
 import { useUsers } from '@/composables/modules/useUsers'
 import type { User } from '@/types/users'
+import { Space } from 'ant-design-vue'
 
 import {
   DeleteOutlined,
@@ -15,6 +16,7 @@ import {
   PlusOutlined,
 } from '@ant-design/icons-vue'
 import { message, Modal } from 'ant-design-vue'
+import { useUserStore } from '@/stores/modules/user.store'
 
 const { users, pagination, isLoading, fetchUsers, addUser, editUser, removeUser } = useUsers()
 
@@ -22,6 +24,8 @@ const { t } = useI18n()
 const { renderUserAvatar, renderTag, renderActionButton, renderDeleteActionButton, useRenderIcon } =
   useRender()
 
+const userStore = useUserStore()
+const userInfo = computed(() => userStore.user)
 const statusFilter = ref<string>('')
 const selectedRowKeys = ref<(string | number)[]>([])
 const selectedRows = ref<User[]>([])
@@ -74,9 +78,25 @@ const columns: DataTableColumn[] = [
     fixed: 'right',
     key: 'action',
     width: 100,
-    customRender: ({ record }) => [
-      renderActionButton(useRenderIcon('hugeicons:pencil-edit-02'), () => handleEditUser(record)),
-    ],
+    customRender: ({ record }) =>
+      h(
+        Space,
+        { direction: 'horizontal', size: 'middle' }, // horizontal spacing
+        {
+          default: () => [
+            renderActionButton('hugeicons:pencil-edit-02', t('common.edit'), () =>
+              handleEditUser(record),
+            ),
+            userInfo.value?.id !== record.ids
+              ? renderDeleteActionButton(
+                  t('common.delete', { name: record.fullname }),
+                  t('common.confirmMessage', { name: record.fullname }),
+                  () => handleDeleteUser(record),
+                )
+              : null,
+          ],
+        },
+      ),
   },
 ]
 
@@ -175,7 +195,9 @@ const handleDialogSubmit = async (formData: User) => {
         return
       }
       await editUser(formData.ids, formData)
-      message.success(t('common.updateMessage', { name: formData.fullname }))
+      message.success(
+        t('common.updateMessage', { title: t('manageUsers.users.user'), name: formData.fullname }),
+      )
     }
 
     // ✅ Close dialog + refresh table
@@ -197,28 +219,14 @@ const handleEditUser = async (user: User): void => {
 }
 
 const handleDeleteUser = async (user: User): void => {
-  // Add confirmation dialog
-  Modal.confirm({
-    icon: h(ExclamationCircleOutlined),
-    title: t('common.delete', { name: t('manageUsers.users.user') }),
-    centered: true,
-    content: t('common.confirmMessage', { name: user.fullname }),
-    okText: t('common.delete'),
-    okType: 'danger',
-    async onOk() {
-      try {
-        await removeUser(user.ids)
-        await fetchUsers() // ✅ Refresh table after deletion
-        message.success(t('common.deleteMessage', { name: user.fullname }))
-      } catch (error: any) {
-        //console.error('Failed to delete user:', error)
-        message.error(`${t('common.deleteFailed')} ${error.message || ''}`)
-      }
-    },
-    onCancel() {
-      message.info(t('common.cancelDelete', { name: user.fullname }))
-    },
-  })
+  try {
+    await removeUser(user.ids)
+    await fetchUsers() // ✅ Refresh table after deletion
+    message.success(t('common.deleteMessage', { name: user.fullname }))
+  } catch (error: any) {
+    //console.error('Failed to delete user:', error)
+    message.error(`${t('common.deleteFailed')} ${error.message || ''}`)
+  }
 }
 </script>
 
@@ -264,15 +272,8 @@ const handleDeleteUser = async (user: User): void => {
         </a-select>
       </template>
 
-      <!-- Custom column rendering for status -->
-      <!-- <template #is_active="{ text, record }">
-        <a-tag :color="text ? 'green' : 'red'">
-          {{ typeof text === 'boolean' ? t('common.active') : t('common.inactive') }}
-        </a-tag>
-      </template> -->
-
       <!-- Action buttons -->
-      <template #action="{ record }">
+      <!-- <template #action="{ record }">
         <a-space>
           <a-tooltip :title="t('common.edit')">
             <a-button size="small" type="link" @click="handleEditUser(record)">
@@ -289,7 +290,7 @@ const handleDeleteUser = async (user: User): void => {
             </a-button>
           </a-tooltip>
         </a-space>
-      </template>
+      </template> -->
     </DataTable>
 
     <AdminUserDialog

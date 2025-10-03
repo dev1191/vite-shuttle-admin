@@ -1,26 +1,29 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { PlusOutlined } from '@ant-design/icons-vue'
 import { message } from 'ant-design-vue'
 
 interface Props {
-  modelValue?: File | null // ✅ now stores File instead of base64
+  modelValue?: File | string | null // ✅ support File or URL
   size?: number // avatar size
   maxSizeMB?: number // file size limit
 }
 
 interface Emits {
-  (e: 'update:modelValue', value: File | null): void
+  (e: 'update:modelValue', value: File | string | null): void
 }
 
 const props = withDefaults(defineProps<Props>(), {
   size: 120,
   maxSizeMB: 2,
 })
+
 const emit = defineEmits<Emits>()
 
 const loading = ref(false)
+const previewUrl = ref<string>('') // only for newly selected File
 
+// Validation before upload
 const beforeUpload = (file: File) => {
   const isImage = file.type.startsWith('image/')
   if (!isImage) {
@@ -35,40 +38,31 @@ const beforeUpload = (file: File) => {
   return true
 }
 
-// Convert file to base64 (⚠️ keeping old logic for preview, commented if not needed)
-/*
-const toBase64 = (file: File): Promise<string> =>
-  new Promise((resolve, reject) => {
-    const reader = new FileReader()
-    reader.readAsDataURL(file)
-    reader.onload = () => resolve(reader.result as string)
-    reader.onerror = (error) => reject(error)
-  })
-*/
-
-const previewUrl = ref<string>('')
-
+// Handle file selection
 const handleChange = async ({ file }: any) => {
   if (!file || !file.originFileObj) return
   loading.value = true
   try {
     const selectedFile = file.originFileObj as File
 
-    // ✅ emit File instead of base64
+    // ✅ emit File to parent
     emit('update:modelValue', selectedFile)
 
-    // generate preview (without base64 upload)
+    // Create preview for UI
     previewUrl.value = URL.createObjectURL(selectedFile)
-
-    // ⚠️ old base64 logic (commented out)
-    // const base64 = await toBase64(selectedFile)
-    // emit('update:modelValue', base64)
   } catch (e) {
     message.error('Failed to load image!')
   } finally {
     loading.value = false
   }
 }
+
+// Compute preview source: new file preview > URL from modelValue
+const previewSrc = computed(() => {
+  if (previewUrl.value) return previewUrl.value
+  if (typeof props.modelValue === 'string') return props.modelValue
+  return ''
+})
 </script>
 
 <template>
@@ -79,8 +73,8 @@ const handleChange = async ({ file }: any) => {
     @change="handleChange"
     class="avatar-uploader"
   >
-    <div v-if="props.modelValue || previewUrl">
-      <a-avatar :src="previewUrl" :size="props.size" />
+    <div v-if="previewSrc">
+      <a-avatar :src="previewSrc" :size="props.size" />
     </div>
     <div v-else>
       <PlusOutlined />
@@ -98,7 +92,6 @@ const handleChange = async ({ file }: any) => {
   font-size: 32px;
   color: #999;
 }
-
 .ant-upload-select-picture-card .ant-upload-text {
   margin-top: 8px;
   color: #666;
