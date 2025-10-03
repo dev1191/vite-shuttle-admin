@@ -4,6 +4,12 @@
     "english": "English",
     "arabic": "Arabic"
   },
+  "enums": {
+    "status": {
+      "active": "Active",
+      "inactive": "Inactive"
+    }
+  },
   "httpMsg": {
     "unauthorized": "Unauthorized access, please login again",
     "forbidden": "Access to this resource is forbidden",

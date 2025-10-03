@@ -1,5 +1,6 @@
 <!-- components/shared/Icon.vue -->
 <script setup lang="ts">
+const { useRenderIcon } = useRender()
 const props = defineProps<{
   name: string
   size?: number | string

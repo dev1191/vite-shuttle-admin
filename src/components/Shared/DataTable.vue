@@ -95,28 +95,6 @@
       </template>
 
       <!-- Custom body cell (alternative method for column slots) -->
-      <template #bodyCell="{ column, text, record, index }">
-        <!-- Check if there's a custom slot for this column -->
-        <slot
-          v-if="$slots[column.key]"
-          :name="column.key"
-          :text="text"
-          :record="record"
-          :index="index"
-        >
-          {{ text }}
-        </slot>
-
-        <!-- Action column -->
-        <template v-else-if="column.key === 'action'">
-          <slot name="action" :record="record" :index="index"></slot>
-        </template>
-
-        <!-- Default rendering -->
-        <template v-else>
-          {{ text }}
-        </template>
-      </template>
     </a-table>
 
     <!-- Custom footer -->
@@ -131,7 +109,6 @@ import { ref, computed, watch, onMounted } from 'vue'
 import { SearchOutlined } from '@ant-design/icons-vue'
 import type { TableColumnType, TableProps } from 'ant-design-vue'
 import type { Dayjs } from 'dayjs'
-import { placements } from 'ant-design-vue/es/vc-tour/placements'
 
 // Types
 export interface DataTableColumn extends TableColumnType {
@@ -257,11 +234,20 @@ onMounted(() => {
 
 // Computed properties
 const processedColumns = computed<DataTableColumn[]>(() => {
-  return props.columns.map((column) => ({
-    ...column,
-    sorter: column.sortable !== false,
-    ...(column.sortable !== false && column.sorter === undefined ? { sorter: true } : {}),
-  }))
+  return props.columns.map((column) => {
+    const newColumn: DataTableColumn = {
+      ...column,
+      sorter: column.sortable !== false,
+      ...(column.sortable !== false && column.sorter === undefined ? { sorter: true } : {}),
+    }
+
+    // ✅ Ensure customRender is passed through
+    if (column.customRender) {
+      newColumn.customRender = column.customRender
+    }
+
+    return newColumn
+  })
 })
 
 const columnsWithSlots = computed<DataTableColumn[]>(() => {

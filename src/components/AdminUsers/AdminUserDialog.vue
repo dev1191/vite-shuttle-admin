@@ -236,6 +236,14 @@ const handleSubmit = () => {
             ></a-select>
           </a-form-item>
         </a-col>
+        <a-col :span="12">
+          <a-form-item :label="t('manageUsers.users.form.status')" name="status">
+            <a-radio-group v-model:value="formData.is_active">
+              <a-radio-button :value="true">{{ t('common.active') }}</a-radio-button>
+              <a-radio-button :value="false">{{ t('common.inactive') }}</a-radio-button>
+            </a-radio-group>
+          </a-form-item>
+        </a-col>
       </a-row>
       <a-row :gutter="16">
         <a-col :span="16" v-if="props.type === 'edit'">
@@ -263,14 +271,6 @@ const handleSubmit = () => {
                 t('validation.placeholder', { name: t('manageUsers.users.form.confirmPassword') })
               "
             />
-          </a-form-item>
-        </a-col>
-        <a-col :span="12">
-          <a-form-item :label="t('manageUsers.users.form.status')" name="status">
-            <a-radio-group v-model:value="formData.is_active">
-              <a-radio-button :value="true">{{ t('common.active') }}</a-radio-button>
-              <a-radio-button :value="false">{{ t('common.inactive') }}</a-radio-button>
-            </a-radio-group>
           </a-form-item>
         </a-col>
       </a-row>

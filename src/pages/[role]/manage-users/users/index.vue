@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import type {
-  DataTableColumn,
   DataTableRecord,
+  DataTableColumn,
   TableChangeEvent,
   PaginationData,
 } from '@/components/Shared/DataTable.vue'
 import { useUsers } from '@/composables/modules/useUsers'
 import type { User } from '@/types/users'
-import type { PaginatingParams } from '@/types'
+
 import {
   DeleteOutlined,
   EditOutlined,
@@ -19,12 +19,29 @@ import { message, Modal } from 'ant-design-vue'
 const { users, pagination, isLoading, fetchUsers, addUser, editUser, removeUser } = useUsers()
 
 const { t } = useI18n()
+const { renderUserAvatar, renderTag, renderActionButton, renderDeleteActionButton, useRenderIcon } =
+  useRender()
+
+const statusFilter = ref<string>('')
+const selectedRowKeys = ref<(string | number)[]>([])
+const selectedRows = ref<User[]>([])
+const selectedRow = ref<User>({})
+const dialogVisible = ref<boolean>(false)
+const dialogType = ref('add')
+
 const columns: DataTableColumn[] = [
   {
     title: 'FullName',
     dataIndex: 'fullname',
     key: 'fullname', // Fixed: key should match dataIndex
     sorter: true,
+    customRender: ({ record }) => {
+      return renderUserAvatar(
+        record.picture,
+        record.fullname,
+        `${record.country_code} ${record.phone}`,
+      )
+    },
   },
   {
     title: 'Email',
@@ -42,22 +59,27 @@ const columns: DataTableColumn[] = [
     title: 'Status',
     dataIndex: 'is_active',
     key: 'is_active',
-    customRender: ({ text }) => (text ? 'active dev' : 'inactive'),
+    customRender: ({ record }) => {
+      const ActiveEnum = {
+        true: 'active',
+        false: 'inactive',
+      }
+      return record.is_active
+        ? renderTag(record.is_active, 'success', ActiveEnum, 'status')
+        : renderTag(record.is_active, 'error', ActiveEnum, 'status')
+    },
   },
   {
     title: 'Action',
     fixed: 'right',
     key: 'action',
     width: 100,
+    customRender: ({ record }) => [
+      renderActionButton(useRenderIcon('hugeicons:pencil-edit-02'), () => handleEditUser(record)),
+    ],
   },
 ]
 
-const statusFilter = ref<string>('')
-const selectedRowKeys = ref<(string | number)[]>([])
-const selectedRows = ref<User[]>([])
-const selectedRow = ref<User>({})
-const dialogVisible = ref<boolean>(false)
-const dialogType = ref('add')
 // Row selection configuration
 const rowSelection = computed(() => ({
   selectedRowKeys: selectedRowKeys.value,
