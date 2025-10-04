@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import RoleDialog from '@/components/AdminUsers/RoleDialog.vue'
 import type {
   DataTableRecord,
   DataTableColumn,
@@ -77,7 +78,7 @@ const columns: DataTableColumn[] = [
               h(
                 Modal,
                 {
-                  visible: modalVisible.value,
+                  open: modalVisible.value,
                   title: 'All Permissions',
                   onCancel: handleCancel,
                   footer: null,
@@ -164,6 +165,8 @@ const handlePaginationChange = (newPagination: PaginationData): void => {
   pagination.value.sortDesc = newPagination.sortDesc
   pagination.value.range = newPagination.range
 }
+
+const handleDialogSubmit = () => {}
 </script>
 
 <template>
@@ -181,21 +184,29 @@ const handlePaginationChange = (newPagination: PaginationData): void => {
       @search="handleSearch"
       @pagination-change="handlePaginationChange"
     />
+
+    <RoleDialog
+      v-model:visible="dialogVisible"
+      :isLoading="isLoading"
+      :type="dialogType"
+      :role-data="selectedRow"
+      @submit="handleDialogSubmit"
+    />
   </div>
 </template>
 
 <route lang="yaml">
 meta:
   layout: defaultLayout
-  title: manageRoles.roles
+  title: manageUsers.roles
   icon: RolegroupOutlined
   drawerIndex: 1
   order: 3
   hidden: false
   roles: [admin, agent, staff, manager]
   breadcrumb:
-    - manageRoles.title
-    - manageRoles.roles
+    - manageUsers.users
+    - manageUsers.roles
 </route>
 
 <style scoped></style>

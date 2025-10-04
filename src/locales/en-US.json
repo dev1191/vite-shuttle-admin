@@ -37,6 +37,8 @@
     "view": "View",
     "search": "Search {name}...",
     "active": "Active",
+    "selectAll": "Select All",
+    "unselectAll": "UnSelect All",
     "inactive": "Inactive",
     "new": "New",
     "sending": "sending...",
@@ -209,8 +211,10 @@
       "role": "Role",
       "newRole": "New Role",
       "edit": "Edit",
+      "permission": "Permission",
       "form": {
         "name": "Name",
+        "slug": "Slug",
         "permissions": "Permissions"
       }
     }

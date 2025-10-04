@@ -84,6 +84,17 @@
         </slot>
       </template>
 
+      <!-- ---------- SKELETON CELLS (rendered only when loading) ---------- -->
+      <template
+        v-for="column in processedColumns"
+        :key="`skeleton-${column.key}`"
+        #[column.key]="{ text, record, index }"
+      >
+        <div v-if="loading" class="py-2">
+          <a-skeleton :active="true" :paragraph="{ rows: 1 }" />
+        </div>
+      </template>
+
       <!-- Action column slot -->
       <template #action="{ record, index }" v-if="$slots.action">
         <slot name="action" :record="record" :index="index"></slot>

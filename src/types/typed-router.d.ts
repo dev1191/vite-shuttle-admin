@@ -29,6 +29,7 @@ declare module 'vue-router/auto-routes' {
     '/[role]/manage-passes/': RouteRecordInfo<'/[role]/manage-passes/', '/:role/manage-passes', { role: ParamValue<true> }, { role: ParamValue<false> }>,
     '/[role]/manage-trips/[booking]/': RouteRecordInfo<'/[role]/manage-trips/[booking]/', '/:role/manage-trips/:booking', { role: ParamValue<true>, booking: ParamValue<true> }, { role: ParamValue<false>, booking: ParamValue<false> }>,
     '/[role]/manage-users/roles/': RouteRecordInfo<'/[role]/manage-users/roles/', '/:role/manage-users/roles', { role: ParamValue<true> }, { role: ParamValue<false> }>,
+    '/[role]/manage-users/roles/[id]': RouteRecordInfo<'/[role]/manage-users/roles/[id]', '/:role/manage-users/roles/:id', { role: ParamValue<true>, id: ParamValue<true> }, { role: ParamValue<false>, id: ParamValue<false> }>,
     '/[role]/manage-users/users/': RouteRecordInfo<'/[role]/manage-users/users/', '/:role/manage-users/users', { role: ParamValue<true> }, { role: ParamValue<false> }>,
     '/[role]/profile': RouteRecordInfo<'/[role]/profile', '/:role/profile', { role: ParamValue<true> }, { role: ParamValue<false> }>,
     '/[role]/settings/countries': RouteRecordInfo<'/[role]/settings/countries', '/:role/settings/countries', { role: ParamValue<true> }, { role: ParamValue<false> }>,
@@ -97,6 +98,10 @@ declare module 'vue-router/auto-routes' {
     }
     'src/pages/[role]/manage-users/roles/index.vue': {
       routes: '/[role]/manage-users/roles/'
+      views: never
+    }
+    'src/pages/[role]/manage-users/roles/[id].vue': {
+      routes: '/[role]/manage-users/roles/[id]'
       views: never
     }
     'src/pages/[role]/manage-users/users/index.vue': {

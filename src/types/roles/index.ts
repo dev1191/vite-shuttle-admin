@@ -1,13 +1,13 @@
 
 
 export interface Permission {
-    id: string;
+    _id: string;
     name: string;
     slug: string;
 }
 
 export interface Role {
-    id: string | number;
+    _id?: string | number;
     ids: string;
     name: string;
     slug: string;

@@ -151,7 +151,6 @@ const handleTableChange = (event: TableChangeEvent): void => {
     pagination.value.sortDesc = event.sorter.order === 'ascend' ? 'asc' : 'desc'
   }
 
-  // The composable watch will automatically trigger fetchUsers
 }
 
 const handleSearch = (value: string): void => {
