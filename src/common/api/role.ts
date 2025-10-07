@@ -16,7 +16,7 @@ export class RoleService {
     // 🔹 Create role
     static createRole(payload: Partial<Role>) {
         return request.post<Role>({
-            url: '/admin-roles',
+            url: '/roles',
             data: payload,
         })
     }
@@ -24,7 +24,7 @@ export class RoleService {
     // 🔹 Update role
     static updateRole(id: string, payload: Partial<Role>) {
         return request.put<Role>({
-            url: `/admin-roles/${id}`,
+            url: `/roles/${id}`,
             data: payload,
         })
     }
@@ -32,7 +32,7 @@ export class RoleService {
     // 🔹 Delete role
     static deleteRole(id: string) {
         return request.del<void>({
-            url: `/admin-roles/${id}`,
+            url: `/roles/${id}`,
         })
     }
 

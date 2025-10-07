@@ -220,6 +220,7 @@
     }
   },
   "validation": {
+    "permissionMessage": "Permission denied : You cannot {name} {menu}",
     "required": "This {name} is required",
     "placeholder": "Enter a {name}",
     "email": "Please enter a valid email address",

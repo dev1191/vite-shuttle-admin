@@ -71,9 +71,7 @@ export const useRoles = (opts?: { pagination?: Ref<PaginatingParams> }) => {
         try {
             isLoading.value = true
             const response = await updateRole(id, payload)
-            const idx = roles.value.findIndex(u => u.id === id)
-            if (idx !== -1) roles.value[idx] = response.data
-            return response.data
+            return response
         } catch (error) {
             console.error('Failed to update role:', error)
             throw error

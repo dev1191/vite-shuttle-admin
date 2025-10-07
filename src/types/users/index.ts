@@ -1,7 +1,4 @@
-export interface Permission {
-  key: string
-  value: string
-}
+
 
 export interface User {
   id: string

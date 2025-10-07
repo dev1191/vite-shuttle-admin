@@ -9,12 +9,7 @@ import { useUsers } from '@/composables/modules/useUsers'
 import type { User } from '@/types/users'
 import { Space } from 'ant-design-vue'
 
-import {
-  DeleteOutlined,
-  EditOutlined,
-  ExclamationCircleOutlined,
-  PlusOutlined,
-} from '@ant-design/icons-vue'
+import { PlusOutlined } from '@ant-design/icons-vue'
 import { message, Modal } from 'ant-design-vue'
 import { useUserStore } from '@/stores/modules/user.store'
 
@@ -150,7 +145,6 @@ const handleTableChange = (event: TableChangeEvent): void => {
     pagination.value.sortBy = event.sorter.field
     pagination.value.sortDesc = event.sorter.order === 'ascend' ? 'asc' : 'desc'
   }
-
 }
 
 const handleSearch = (value: string): void => {

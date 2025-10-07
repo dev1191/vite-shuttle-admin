@@ -1,9 +1,18 @@
 
 
 export interface Permission {
-    _id: string;
-    name: string;
-    slug: string;
+    _id?: string;
+    name?: string;
+    slug?: string;
+    description?: string;
+    module?: string;
+    label?: string;
+    value?: string;
+}
+
+export interface AllPermissions {
+    permissions: Permission[];
+    module: string;
 }
 
 export interface Role {

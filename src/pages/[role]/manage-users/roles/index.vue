@@ -7,9 +7,11 @@ import type {
   PaginationData,
 } from '@/components/Shared/DataTable.vue'
 import { useRoles } from '@/composables/modules/useRoles'
+import type { Role } from '@/types/roles'
 import { Tag, Modal, Space, Tooltip } from 'ant-design-vue'
+import { message } from 'ant-design-vue'
 
-const { fetchRoles, roles, isLoading, pagination } = useRoles()
+const { fetchRoles, roles, isLoading, pagination, editRole } = useRoles()
 const { t } = useI18n()
 const { renderActionButton } = useRender()
 
@@ -166,7 +168,36 @@ const handlePaginationChange = (newPagination: PaginationData): void => {
   pagination.value.range = newPagination.range
 }
 
-const handleDialogSubmit = () => {}
+const handleDialogSubmit = async (formData: Role) => {
+  try {
+    isLoading.value = true
+    if (dialogType.value === 'edit') {
+      // ✅ Update existing user
+      if (!formData?.ids) {
+        message.error(t('common.noUserSelected'))
+        return
+      }
+      await editRole(formData.ids, {
+        name: formData.name,
+        slug: formData.slug,
+        permissions: formData.permissions.map((v) => ({ slug: v.slug })),
+      })
+      message.success(
+        t('common.updateMessage', { title: t('manageUsers.roles.role'), name: formData.name }),
+      )
+    }
+
+    // ✅ Close dialog + refresh table
+    dialogVisible.value = false
+    isLoading.value = false
+    await fetchRoles()
+    formData.value = {}
+  } catch (error: any) {
+    console.error('Submit failed:', error)
+    message.error(error.message || t('common.submitFailed'))
+    isLoading.value = false
+  }
+}
 </script>
 
 <template>
