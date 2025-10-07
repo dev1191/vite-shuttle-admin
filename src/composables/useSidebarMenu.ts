@@ -1,6 +1,8 @@
 import type { IMenuItem } from '@/types/menu';
 import { reactive } from 'vue'
 import { useI18n } from 'vue-i18n'
+
+const { useRenderIcon } = useRender()
 export function useSidebarMenu(role: string) {
     const { t } = useI18n()
 

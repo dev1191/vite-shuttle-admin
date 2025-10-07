@@ -1,4 +1,7 @@
+const { useRenderIcon } = useRender();
+
 /** Theme Style -- Style Algorithm */
+
 export const themeAlgorithmOptions = [
   {
     label: 'settings.light',

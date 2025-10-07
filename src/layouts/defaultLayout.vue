@@ -70,10 +70,10 @@ const currentRole = computed(() => user?.role.toLocaleLowerCase() || 'admin')
   }
   .app-content {
     flex: 1;
-    min-height: 0;
     overflow: auto;
+    height: 100vh;
     background: var(--app-content-background);
-    padding: 24px;
+    padding: 10px;
   }
 }
 </style>

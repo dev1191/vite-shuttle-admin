@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import type { User } from '@/types/users'
 import router from '@/router'
+import { fetchRefreshToken } from '@/common/api/auth'
 
 // import { jwtDecode } from 'jwt-decode'
 // import { axiosWrapper } from '@/utils/axios' // adjust import path
@@ -19,6 +20,7 @@ export const useAuthStore = defineStore(
     const expiresIn = ref<number>(0)
     const refreshToken = ref<string>('')
     const isLoggedIn = ref<boolean>(false)
+    const email = ref<string>('')
 
     // --- actions ---
     function setToken(newAccessToken: string, newRefreshToken: string, newExpiresIn: number) {
@@ -28,6 +30,10 @@ export const useAuthStore = defineStore(
       isLoggedIn.value = true
     }
 
+    function setEmail(newEmail: string) {
+      email.value = newEmail
+    }
+
     function removeToken() {
       // const { removeUser } = useUserStore()
       //  const { removePermissions } = usePermissionStore()
@@ -35,6 +41,7 @@ export const useAuthStore = defineStore(
       expiresIn.value = 0
       refreshToken.value = ''
       isLoggedIn.value = false
+      email.value = ''
 
       router.push({ path: '/auth/login' })
       // removeUser() // remove login user data
@@ -53,7 +60,15 @@ export const useAuthStore = defineStore(
     //         alert(error.message)
     //     }
     // }
-
+    async function refreshAccessToken() {
+      try {
+        const getResponse = await fetchRefreshToken({ email: email.value, refreshToken: refreshToken.value })
+        setToken(getResponse.token, getResponse.refreshToken, getResponse.expiresIn)
+        return true;
+      } catch (error: any) {
+        return false;
+      }
+    }
     // async function checkRefreshToken() {
     //     try {
     //         console.log('------------- refresh token ----------')
@@ -95,9 +110,12 @@ export const useAuthStore = defineStore(
       expiresIn,
       refreshToken,
       isLoggedIn,
+      email,
       // actions
       setToken,
+      setEmail,
       removeToken,
+      refreshAccessToken
       // getUser,
       // checkRefreshToken,
       // UacPermissions,

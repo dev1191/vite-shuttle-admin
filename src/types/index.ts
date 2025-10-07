@@ -9,9 +9,39 @@ export interface LoginResponse {
   tokenType: string
 }
 
+export interface RefreshResponse {
+  token: string
+  expiresIn: number
+  refreshToken: string
+  tokenType: string
+}
 
 export interface AccessResponse {
   permissions: string[],
   role: string[],
   generalSetting: any
+}
+
+export interface Range {
+  start: string;
+  end: string;
+}
+
+export interface Filter {
+  type: string;
+  name: string;
+  value: string | boolean | string[]
+}
+//?globalSearch&itemsPerPage=10&page=1&sortDesc=name&sortBy=desc
+export interface PaginatingParams {
+  globalSearch: string;
+  itemsPerPage: number;
+  page: number;
+  sortDesc: string;
+  sortBy: string
+  status?: string
+  range?: Range
+  totalRecords?: number
+  filters: Filter
+
 }

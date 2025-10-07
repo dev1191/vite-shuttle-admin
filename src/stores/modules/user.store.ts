@@ -1,3 +1,4 @@
+import type { Permission, Role } from '@/types/roles'
 import type { User } from '@/types/users'
 import { defineStore } from 'pinia'
 
@@ -7,8 +8,8 @@ export const useUserStore = defineStore(
     // state
     const user = ref<User | null>(null)
     const generalSetting = ref({})
-    const roles = ref<[]>([]);
-    const permissions = ref<[]>([]);
+    const roles = ref<Role[]>([]);
+    const permissions = ref<Permission[]>([]);
     // actions
     function setUser(userData: User) {
       user.value = userData
@@ -38,7 +39,7 @@ export const useUserStore = defineStore(
     )
 
     const hasPermission = (perm: string) =>
-      user.value?.permissions?.some((p) => p.value === perm) ?? false
+      permissions.value?.some((p) => p.slug === perm) ?? false
 
     return {
       user,

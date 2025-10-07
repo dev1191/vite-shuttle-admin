@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import SettingLayout from '@/layouts/settingLayout.vue'
+
 const { t } = useI18n()
 </script>
 
 <route lang="yaml">
 meta:
   layout: defaultLayout
-  title: settings.general
+  title: settings.currencies
   icon: SettingOutlined
   order: 10
   drawerIndex: 10
@@ -14,11 +15,11 @@ meta:
   roles: [admin, agent, staff, manager]
   breadcrumb:
     - settings.title
-    - settings.general
+    - settings.currencies
 </route>
 
 <template>
-  <SettingLayout :title="t('settings.general')"> </SettingLayout>
+  <SettingLayout :title="t('settings.currencies')"> </SettingLayout>
 </template>
 
 <style scoped></style>

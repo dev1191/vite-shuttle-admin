@@ -4,6 +4,12 @@
     "english": "English",
     "arabic": "Arabic"
   },
+  "enums": {
+    "status": {
+      "active": "Active",
+      "inactive": "Inactive"
+    }
+  },
   "httpMsg": {
     "unauthorized": "Unauthorized access, please login again",
     "forbidden": "Access to this resource is forbidden",
@@ -21,15 +27,27 @@
   },
   "common": {
     "submit": "Submit",
-    "add": "Add",
+    "create": "Create {name}",
     "cancel": "Cancel",
     "back": "Back",
-    "edit": "Edit",
-    "delete": "Delete",
+    "edit": "Edit {name}",
+    "update": "Edit {name}",
+    "delete": "Delete {name}",
+    "select": "select a {name}",
     "view": "View",
-    "search": "Search",
+    "search": "Search {name}...",
+    "active": "Active",
+    "selectAll": "Select All",
+    "unselectAll": "UnSelect All",
+    "inactive": "Inactive",
     "new": "New",
-    "sending": "sending..."
+    "sending": "sending...",
+    "confirmMessage": "Are you sure you want to delete {name}?",
+    "createMessage": "{name} has been created",
+    "deleteMessage": "{name} has been deleted",
+    "deleteFailed": "Failed to delete user.",
+    "cancelDelete": "Cancelled deleting {name}",
+    "updateMessage": "{title} : {name} has been updated"
   },
   "menu": {
     "login": "Login",
@@ -172,18 +190,44 @@
     }
   },
   "manageUsers": {
-    "user": {
-      "create": "Create New User"
+    "users": {
+      "user": "User",
+      "newUser": "New User",
+      "edit": "Edit",
+      "form": {
+        "avatar": "Avatar",
+        "fullname": "Fullname",
+        "email": "Email",
+        "phone": "Phone number",
+        "roles": "Roles",
+        "setPassword": "Set Password",
+        "password": "Password",
+        "confirmPassword": "Confirm Password",
+        "status": "Status"
+      }
     },
-    "role": {
-      "create": "Create Role"
+    "roles": {
+      "title": "Roles",
+      "role": "Role",
+      "newRole": "New Role",
+      "edit": "Edit",
+      "permission": "Permission",
+      "form": {
+        "name": "Name",
+        "slug": "Slug",
+        "permissions": "Permissions"
+      }
     }
   },
   "validation": {
+    "permissionMessage": "Permission denied : You cannot {name} {menu}",
     "required": "This {name} is required",
-    "placeholder": "Please enter a {name}",
+    "placeholder": "Enter a {name}",
     "email": "Please enter a valid email address",
     "minLength": "Minimum length is {min} characters",
-    "maxLength": "Maximum length is {max} characters"
+    "maxLength": "Maximum length is {max} characters",
+    "lengthBetween": "Length must be between {min} and {max} characters",
+    "phoneFormat": "Please enter a valid phone number format",
+    "passwordMismatch": "Passwords do not match"
   }
 }

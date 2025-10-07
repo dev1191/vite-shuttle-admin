@@ -56,6 +56,7 @@ const handleSubmit = async () => {
     ]) // call getProfile after login and getAccess
     userStore.setUser(profile)
     userStore.setAccess(access)
+    authStore.setEmail(profile.email) // set email
 
     router.push({ path: `/${profile.role.toLowerCase()}/dashboard` })
 
