@@ -19,6 +19,7 @@ declare module 'vue-router/auto-routes' {
    */
   export interface RouteNamedMap {
     '/': RouteRecordInfo<'/', '/', Record<never, never>, Record<never, never>>,
+    '/[role]/customers/': RouteRecordInfo<'/[role]/customers/', '/:role/customers', { role: ParamValue<true> }, { role: ParamValue<false> }>,
     '/[role]/dashboard/': RouteRecordInfo<'/[role]/dashboard/', '/:role/dashboard', { role: ParamValue<true> }, { role: ParamValue<false> }>,
     '/[role]/drivers/': RouteRecordInfo<'/[role]/drivers/', '/:role/drivers', { role: ParamValue<true> }, { role: ParamValue<false> }>,
     '/[role]/eagle-eye/': RouteRecordInfo<'/[role]/eagle-eye/', '/:role/eagle-eye', { role: ParamValue<true> }, { role: ParamValue<false> }>,
@@ -58,6 +59,10 @@ declare module 'vue-router/auto-routes' {
   export interface _RouteFileInfoMap {
     'src/pages/index.vue': {
       routes: '/'
+      views: never
+    }
+    'src/pages/[role]/customers/index.vue': {
+      routes: '/[role]/customers/'
       views: never
     }
     'src/pages/[role]/dashboard/index.vue': {

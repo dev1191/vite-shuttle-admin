@@ -76,14 +76,16 @@
     "vendors": "Manage Vendors",
     "roles": "Role and Permissions",
     "projects": "Projects",
-    "manageCustomers": "Manage Customers",
-    "customers": "Customers",
     "walletRecharge": "Wallet Recharge",
     "walletHistory": "Wallet Histories",
     "bookingHistory": "Booking Histories",
     "manageDrivers": {
       "title": "Manage Drivers",
       "create": "Create New Driver"
+    },
+    "manageCustomers": {
+      "title": "Manage Customers",
+      "create": "Create New Customer"
     },
     "eagleEye": "Eagle Eye",
     "administrationTools": "Administration Tools",

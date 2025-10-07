@@ -47,6 +47,14 @@ export function useSidebarMenu(role: string) {
             ],
         },
         {
+            key: `customers`,
+            icon: useRenderIcon('mdi:account-group', { style: { fontSize: '24px' } }),
+            label: t('menu.manageCustomers.title'),
+            name: t('menu.manageCustomers.title'),
+            path: `/${role}/customers`,
+            namePath: [t('menu.manageCustomers.title')],
+        },
+        {
             key: `drivers`,
             icon: useRenderIcon('mdi:account-group', { style: { fontSize: '24px' } }),
             label: t('menu.manageDrivers.title'),
