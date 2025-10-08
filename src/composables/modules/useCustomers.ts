@@ -3,7 +3,7 @@ import type { PaginatingParams } from '@/types'
 import { CustomerService } from '@/common/api/customer'
 import type { Customer } from '@/types/customers'
 
-const { getCustomerList, createCustomer, updateCustomer, deleteCustomer } = CustomerService // api customers call
+const { getCustomerList, createCustomer, updateCustomer, deleteCustomer, updateCustomerStatus } = CustomerService // api customers call
 
 // Default pagination
 const makePaginationRef = () =>
@@ -97,6 +97,19 @@ export const useCustomers = (opts?: { pagination?: Ref<PaginatingParams> }) => {
         }
     }
 
+    const statusCustomer = async (id: string, payload: Partial<Customer>) => {
+        try {
+            isLoading.value = true
+            const response = await updateCustomerStatus(id, payload)
+            return response
+        } catch (error) {
+            console.error('Failed to update customer status:', error)
+            throw error
+        } finally {
+            isLoading.value = false
+        }
+    }
+
     fetchCustomers()
 
     return {
@@ -106,6 +119,7 @@ export const useCustomers = (opts?: { pagination?: Ref<PaginatingParams> }) => {
         fetchCustomers,
         addCustomer,
         editCustomer,
+        statusCustomer,
         removeCustomer,
     }
 }

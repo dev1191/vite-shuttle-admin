@@ -1,7 +1,7 @@
 import { h } from 'vue'
 import { Icon } from '@iconify/vue'
 import * as AntIcons from '@ant-design/icons-vue'
-import { Space, Image, Button, Modal, Tag, Typography, Tooltip, Popconfirm } from "ant-design-vue"
+import { Space, Image, Button, Modal, Tag, Typography, Tooltip, Switch } from "ant-design-vue"
 import i18n from '@/plugins/i18n'
 const { Text, Paragraph, Title } = Typography
 
@@ -142,6 +142,28 @@ export function useRender() {
     )
   }
 
+  /**
+  * Render a Switch button with tooltip
+  * @param label Tooltip text
+  * @param checked Boolean value for switch
+  * @param onChange Callback for switch toggle
+  */
+  function renderSwitchButton(tooltip: string, checked: boolean, onChangeAction: any) {
+    return h(
+      Tooltip,
+      { title: tooltip, placement: 'top' },
+      {
+        default: () =>
+          h(Switch, {
+            checked, // must be boolean
+            checkedChildren: 'Active',
+            unCheckedChildren: 'Inactive',
+            onChange: onChangeAction, // correct AntDV event
+          }),
+      },
+    )
+  }
+
 
   return {
     useRenderIcon,
@@ -149,7 +171,8 @@ export function useRender() {
     renderActionButton,
     renderDeleteActionButton,
     renderActionLabel,
-    renderTag
+    renderTag,
+    renderSwitchButton
   }
 
 

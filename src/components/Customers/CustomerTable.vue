@@ -16,11 +16,13 @@ const {
   fetchCustomers,
   addCustomer,
   editCustomer,
+  statusCustomer,
   removeCustomer,
 } = useCustomers()
 
 const { t } = useI18n()
-const { renderUserAvatar, renderTag, renderActionButton, renderDeleteActionButton } = useRender()
+const { renderUserAvatar, renderSwitchButton, renderActionButton, renderDeleteActionButton } =
+  useRender()
 
 import { PlusOutlined } from '@ant-design/icons-vue'
 import { message, Modal } from 'ant-design-vue'
@@ -29,8 +31,8 @@ const statusFilter = ref<string>('')
 const selectedRowKeys = ref<(string | number)[]>([])
 const selectedRows = ref<Customer[]>([])
 const selectedRow = ref<Customer>({})
-const dialogVisible = ref<boolean>(false)
-const dialogType = ref('add')
+
+const customerFormRef = ref()
 
 const columns: DataTableColumn[] = [
   {
@@ -51,20 +53,23 @@ const columns: DataTableColumn[] = [
     dataIndex: 'email',
     key: 'email',
     sorter: true,
+  }, //
+  {
+    title: 'Referral',
+    dataIndex: 'refercode',
+    key: 'refercode',
+    sorter: true,
   },
   {
     title: 'Status',
-    dataIndex: 'is_active',
-    key: 'is_active',
-    customRender: ({ record }) => {
-      const ActiveEnum = {
-        true: 'active',
-        false: 'inactive',
-      }
-      return record.is_active
-        ? renderTag(record.is_active, 'success', ActiveEnum, 'status')
-        : renderTag(record.is_active, 'error', ActiveEnum, 'status')
-    },
+    dataIndex: 'status',
+    key: 'status',
+    customRender: ({ record }) =>
+      renderSwitchButton(
+        record.status ? t('common.active') : t('common.inactive'),
+        record.status,
+        () => handleStatusCustomer(record),
+      ),
   },
   {
     title: 'Action',
@@ -166,18 +171,17 @@ const handlePaginationChange = (newPagination: PaginationData): void => {
 
 const showDialog = async (): void => {
   // Add customer logic - you might want to open a modal/form
-  dialogVisible.value = true
-  selectedRow.value = {}
+  customerFormRef.value.openDrawer(false)
 }
 
 const handleDialogSubmit = async (formData: Customer) => {
   try {
     isLoading.value = true
-    if (dialogType.value === 'add') {
+    if (isEdit.value) {
       // ✅ Create new customer
       await addCustomer(formData)
       message.success(t('common.createMessage', { name: formData.fullname }))
-    } else if (dialogType.value === 'edit') {
+    } else {
       // ✅ Update existing customer
       if (!formData?.ids) {
         message.error(t('common.noCustomerSelected'))
@@ -193,10 +197,8 @@ const handleDialogSubmit = async (formData: Customer) => {
     }
 
     // ✅ Close dialog + refresh table
-    dialogVisible.value = false
     isLoading.value = false
     await fetchCustomers()
-    formData.value = {}
   } catch (error: any) {
     console.error('Submit failed:', error)
     message.error(error.message || t('common.submitFailed'))
@@ -204,13 +206,11 @@ const handleDialogSubmit = async (formData: Customer) => {
   }
 }
 
-const handleEditCustomer = async (customer: Customer): void => {
-  selectedRow.value = customer
-  dialogVisible.value = true
-  dialogType.value = 'edit'
+const handleEditCustomer = async (customer: Customer) => {
+  customerFormRef.value.openDrawer(true, customer)
 }
 
-const handleDeleteCustomer = async (customer: Customer): void => {
+const handleDeleteCustomer = async (customer: Customer) => {
   try {
     await removeCustomer(customer.ids)
     await fetchCustomers() // ✅ Refresh table after deletion
@@ -218,6 +218,18 @@ const handleDeleteCustomer = async (customer: Customer): void => {
   } catch (error: any) {
     //console.error('Failed to delete customer:', error)
     message.error(`${t('common.deleteFailed')} ${error.message || ''}`)
+  }
+}
+
+const handleStatusCustomer = async (customer: Customer): void => {
+  try {
+    const newStatus = !customer.status
+    await statusCustomer(customer.ids, { status: newStatus })
+    customer.status = newStatus
+    message.success(t('common.statusMessage', { name: t('common.status') }))
+  } catch (error: any) {
+    //console.error('Failed to delete customer:', error)
+    message.error(`${t('common.deleteFailed')} ${error || ''}`)
   }
 }
 </script>
@@ -245,7 +257,7 @@ const handleDeleteCustomer = async (customer: Customer): void => {
           <template #icon>
             <PlusOutlined />
           </template>
-          {{ t('common.create', { name: t('manageCustomers.customers.newCustomer') }) }}
+          {{ t('common.create', { name: t('menu.manageCustomers.newCustomer') }) }}
         </a-button>
       </template>
 
@@ -264,6 +276,8 @@ const handleDeleteCustomer = async (customer: Customer): void => {
         </a-select>
       </template>
     </DataTable>
+
+    <CustomerForm ref="customerFormRef" />
   </div>
 </template>
 
