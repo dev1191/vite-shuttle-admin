@@ -7,9 +7,9 @@ export interface Customer {
     firstname: string
     lastname: string
     email: string
-    phone: string
+    phone: string;
+    country_code: string;
     status: boolean
-
 }
 
 export interface CustomerStatus {

@@ -41,6 +41,8 @@
     "unselectAll": "UnSelect All",
     "inactive": "Inactive",
     "new": "New",
+    "male": "Male",
+    "female": "Female",
     "status": "Status",
     "sending": "sending...",
     "confirmMessage": "Are you sure you want to delete {name}?",
@@ -95,6 +97,7 @@
         "firstname": "Firstname",
         "lastname": "Lastname",
         "email": "Email",
+        "gender": "Gender",
         "phone": "Phone number",
         "status": "Status"
       }

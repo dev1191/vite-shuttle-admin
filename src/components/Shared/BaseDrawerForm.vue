@@ -1,10 +1,8 @@
 <script setup lang="ts">
-import { placements } from 'ant-design-vue/es/vc-tour/placements'
-
 const { t } = useI18n()
 
 const placement = ref('right')
-
+const formRef = ref()
 const props = defineProps({
   title: { type: String, default: 'Drawer Form' },
   visible: { type: Boolean, default: false },
@@ -12,6 +10,7 @@ const props = defineProps({
   loading: { type: Boolean, default: false },
   formData: { type: Object, required: true },
   width: { type: [String, Number], default: 480 },
+  rules: { type: Object, required: true },
 })
 
 const emit = defineEmits(['close', 'submit'])
@@ -20,13 +19,25 @@ function handleClose() {
   emit('close')
 }
 
-function handleSubmit() {
-  emit('submit', props.formData)
+const handleSubmit = async () => {
+  // Validation passed
+  formRef.value
+    .validate()
+    .then(() => {
+      emit('submit', props.formData)
+    })
+    .catch((error: any) => {
+      console.log('error', error)
+    })
+}
+const handleFailed = (errorInfo: any) => {
+  console.log('Failed:', errorInfo)
 }
 </script>
 
 <template>
   <a-drawer
+    maskClosable
     :open="visible"
     :title="title"
     :width="width"
@@ -34,17 +45,18 @@ function handleSubmit() {
     @close="handleClose"
     :placement="placement"
   >
-    <a-form layout="vertical" :model="formData" @submit.prevent="handleSubmit">
+    <a-form layout="vertical" ref="formRef" :rules="rules" :model="formData">
       <!-- slot for form fields -->
       <slot name="fields" :form="formData"></slot>
-
-      <div class="flex justify-between mt-4 gap-2">
-        <a-button size="large" block @click="handleClose">Cancel</a-button>
-        <a-button size="large" block type="primary" html-type="submit" :loading="loading">
+    </a-form>
+    <template #extra>
+      <a-space>
+        <a-button size="large" @click="handleClose">Cancel</a-button>
+        <a-button size="large" type="primary" @click="handleSubmit" :loading="loading">
           {{ isEdit ? t('common.update') : t('common.create') }}
         </a-button>
-      </div>
-    </a-form>
+      </a-space>
+    </template>
   </a-drawer>
 </template>
 

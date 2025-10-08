@@ -59,8 +59,7 @@ export const useCustomers = (opts?: { pagination?: Ref<PaginatingParams> }) => {
         try {
             isLoading.value = true
             const response = await createCustomer(payload)
-            customers.value.unshift(response.data) // insert at top
-            return response.data
+            return response
         } catch (error) {
             console.error('Failed to create customer:', error)
             throw error
