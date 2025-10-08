@@ -8,7 +8,12 @@ export interface Customer {
     lastname: string
     email: string
     phone: string
+    status: boolean
 
+}
+
+export interface CustomerStatus {
+    status: boolean;
 }
 
 export interface CustomerListData {

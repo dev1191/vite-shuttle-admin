@@ -41,13 +41,15 @@
     "unselectAll": "UnSelect All",
     "inactive": "Inactive",
     "new": "New",
+    "status": "Status",
     "sending": "sending...",
     "confirmMessage": "Are you sure you want to delete {name}?",
     "createMessage": "{name} has been created",
     "deleteMessage": "{name} has been deleted",
     "deleteFailed": "Failed to delete user.",
     "cancelDelete": "Cancelled deleting {name}",
-    "updateMessage": "{title} : {name} has been updated"
+    "updateMessage": "{title} : {name} has been updated",
+    "statusMessage": "{name} has been updated"
   },
   "menu": {
     "login": "Login",
@@ -85,7 +87,17 @@
     },
     "manageCustomers": {
       "title": "Manage Customers",
-      "create": "Create New Customer"
+      "create": "Create New Customer",
+      "newCustomer": "New Customer",
+      "edit": "Edit",
+      "form": {
+        "avatar": "Avatar",
+        "firstname": "Firstname",
+        "lastname": "Lastname",
+        "email": "Email",
+        "phone": "Phone number",
+        "status": "Status"
+      }
     },
     "eagleEye": "Eagle Eye",
     "administrationTools": "Administration Tools",

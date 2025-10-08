@@ -1,3 +1,4 @@
+import type { Permission } from "../roles";
 
 
 export interface User {

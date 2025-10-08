@@ -1,6 +1,6 @@
 import request from '@/common/http-client'
 import type { PaginatingParams } from '@/types'
-import type { CustomerListData, Customer } from '@/types/customers'
+import type { CustomerListData, Customer, CustomerStatus } from '@/types/customers'
 import { toFormData } from '@/utils'
 
 
@@ -27,6 +27,15 @@ export class CustomerService {
         const formData = toFormData(payload)
         return request.put<Customer>({
             url: `/users/${id}`,
+            data: formData,
+        })
+    }
+
+    // 🔹 Update customer
+    static updateCustomerStatus(id: string, payload: Partial<CustomerStatus>) {
+        const formData = toFormData(payload)
+        return request.patch<Customer>({
+            url: `/users/${id}/status`,
             data: formData,
         })
     }

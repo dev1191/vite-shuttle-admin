@@ -183,7 +183,7 @@ function resetUnauthorizedError() {
 async function request<T = any>(config: ExtendedAxiosRequestConfig): Promise<T> {
   // Automatically move POST | PUT params into the request body
   if (
-    ['POST', 'PUT'].includes(config.method?.toUpperCase() || '') &&
+    ['POST', 'PUT', 'PATCH'].includes(config.method?.toUpperCase() || '') &&
     config.params &&
     !config.data
   ) {
@@ -219,6 +219,9 @@ const api = {
   },
   put<T>(config: ExtendedAxiosRequestConfig) {
     return retryRequest<T>({ ...config, method: 'PUT' })
+  },
+  patch<T>(config: ExtendedAxiosRequestConfig) {
+    return retryRequest<T>({ ...config, method: 'PATCH' })
   },
   del<T>(config: ExtendedAxiosRequestConfig) {
     return retryRequest<T>({ ...config, method: 'DELETE' })
