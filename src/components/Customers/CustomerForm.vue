@@ -3,6 +3,7 @@ import type { Customer } from '@/types/customers'
 import { message } from 'ant-design-vue'
 import type { Rule } from 'ant-design-vue/es/form'
 import { useCustomers } from '@/composables/modules/useCustomers'
+import { generateReferralCode } from '@/utils'
 
 const { t } = useI18n()
 const drawerRef = ref()
@@ -16,6 +17,7 @@ const formData = reactive({
   firstname: '',
   lastname: '',
   email: '',
+  refercode: '',
   gender: 'Male',
   country_code: '91',
   phone: '',
@@ -71,6 +73,7 @@ function handleClose() {
     firstname: '',
     lastname: '',
     gender: 'Male',
+    refercode: '',
     email: '',
     country_code: '91',
     phone: '',
@@ -97,6 +100,7 @@ async function handleSubmit(formData: Customer) {
       })
     } else {
       // Add new customer
+      formData.refercode = generateReferralCode(6) // generate referral code
       await addCustomer(formData)
     }
 

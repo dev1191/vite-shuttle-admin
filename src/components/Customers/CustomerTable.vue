@@ -221,7 +221,7 @@ const handleDeleteCustomer = async (customer: Customer) => {
   }
 }
 
-const handleStatusCustomer = async (customer: Customer): void => {
+const handleStatusCustomer = async (customer: Customer) => {
   try {
     const newStatus = !customer.status
     await statusCustomer(customer.ids, { status: newStatus })

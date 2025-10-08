@@ -12,3 +12,18 @@ export const toFormData = (data: Record<string, any>) => {
     })
     return formData
 }
+
+export const generateReferralCode = (length: number) => {
+    const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+    const digits = '0123456789'
+    const all = letters + digits
+
+    // start with 2 numbers
+    let code = Array.from({ length: 2 }, () => digits[Math.floor(Math.random() * digits.length)]).join('')
+
+    // fill the rest
+    code += Array.from({ length: length - 2 }, () => all[Math.floor(Math.random() * all.length)]).join('')
+
+    // shuffle
+    return code.split('').sort(() => Math.random() - 0.5).join('')
+}

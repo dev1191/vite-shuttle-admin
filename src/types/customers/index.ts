@@ -8,6 +8,7 @@ export interface Customer {
     lastname: string
     email: string
     phone: string;
+    refercode?: string;
     country_code: string;
     status: boolean
 }
