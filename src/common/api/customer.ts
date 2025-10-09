@@ -25,7 +25,7 @@ export class CustomerService {
     // 🔹 Update customer
     static updateCustomer(id: string, payload: Partial<Customer>) {
         const formData = toFormData(payload)
-        return request.put<Customer>({
+        return request.patch<Customer>({
             url: `/users/${id}`,
             data: formData,
         })
@@ -44,6 +44,7 @@ export class CustomerService {
     static deleteCustomer(id: string) {
         return request.del<void>({
             url: `/users/${id}`,
+            showSuccessMessage: true
         })
     }
 }

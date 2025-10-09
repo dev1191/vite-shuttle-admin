@@ -18,7 +18,9 @@ meta:
 </route>
 
 <template>
-  <SettingLayout :title="t('settings.countries')"> </SettingLayout>
+  <SettingLayout :title="t('settings.countries')">
+    <CountryTable />
+  </SettingLayout>
 </template>
 
 <style scoped></style>

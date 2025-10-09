@@ -2,17 +2,24 @@
 import type { Customer } from '@/types/customers'
 import { message } from 'ant-design-vue'
 import type { Rule } from 'ant-design-vue/es/form'
+import { useCustomers } from '@/composables/modules/useCustomers'
+import { generateReferralCode } from '@/utils'
 
 const { t } = useI18n()
+const drawerRef = ref()
 const drawerVisible = ref(false)
 const isEdit = ref(false)
 const loading = ref(false)
+
+const { addCustomer, editCustomer, fetchCustomers } = useCustomers()
 
 const formData = reactive({
   firstname: '',
   lastname: '',
   email: '',
-  country_code: '',
+  refercode: '',
+  gender: 'Male',
+  country_code: '91',
   phone: '',
   status: true,
 })
@@ -62,8 +69,11 @@ function openDrawer(edit = false, record?: Customer) {
 function handleClose() {
   drawerVisible.value = false
   Object.assign(formData, {
+    ids: '',
     firstname: '',
     lastname: '',
+    gender: 'Male',
+    refercode: '',
     email: '',
     country_code: '91',
     phone: '',
@@ -71,13 +81,36 @@ function handleClose() {
   })
 }
 
-async function handleSubmit(data: any) {
-  loading.value = true
+async function handleSubmit(formData: Customer) {
   try {
-    await new Promise((r) => setTimeout(r, 800)) // simulate API
-    message.success(isEdit.value ? 'Updated successfully' : 'Created successfully')
+    loading.value = true
+
+    // Simulate API delay
+    await new Promise((resolve) => setTimeout(resolve, 600))
+
+    if (isEdit.value) {
+      // Edit existing customer
+      await editCustomer(formData.ids, {
+        firstname: formData.firstname,
+        lastname: formData.lastname,
+        email: formData.email,
+        country_code: formData.country_code,
+        phone: formData.phone,
+        status: formData.status,
+      })
+    } else {
+      // Add new customer
+      formData.refercode = generateReferralCode(6) // generate referral code
+      await addCustomer(formData)
+    }
+
+    message.success(
+      isEdit.value
+        ? t('common.updateMessage', { name: formData.firstname })
+        : t('common.createMessage', { name: formData.firstname }),
+    )
+    fetchCustomers()
     handleClose()
-  } catch (error) {
   } finally {
     loading.value = false
   }
@@ -90,6 +123,7 @@ defineExpose({
 
 <template>
   <BaseDrawerForm
+    ref="drawerRef"
     :visible="drawerVisible"
     :title="isEdit ? 'Edit Customer' : 'Create Customer'"
     :formData="formData"
@@ -101,14 +135,30 @@ defineExpose({
   >
     <template #fields="{ form }">
       <a-form-item :label="t('menu.manageCustomers.form.firstname')" name="firstname">
-        <a-input size="large" v-model:value="form.firstname" placeholder="Enter name" />
+        <a-input
+          size="large"
+          v-model:value="form.firstname"
+          :placeholder="
+            t('validation.placeholder', { name: t('menu.manageCustomers.form.firstname') })
+          "
+        />
       </a-form-item>
       <a-form-item :label="t('menu.manageCustomers.form.lastname')" name="lastname">
-        <a-input size="large" v-model:value="form.lastname" placeholder="Enter name" />
+        <a-input
+          size="large"
+          v-model:value="form.lastname"
+          :placeholder="
+            t('validation.placeholder', { name: t('menu.manageCustomers.form.lastname') })
+          "
+        />
       </a-form-item>
 
       <a-form-item :label="t('menu.manageCustomers.form.email')" name="email">
-        <a-input size="large" v-model:value="form.email" placeholder="Enter email" />
+        <a-input
+          size="large"
+          v-model:value="form.email"
+          :placeholder="t('validation.placeholder', { name: t('menu.manageCustomers.form.email') })"
+        />
       </a-form-item>
 
       <PhoneNumberInput
@@ -121,14 +171,24 @@ defineExpose({
           t('validation.placeholder', { name: t('menu.manageCustomers.form.phone') })
         "
       />
-
-      <a-form-item label="Status">
-        <a-switch
-          v-model:checked="form.status"
-          checked-children="Active"
-          un-checked-children="Inactive"
-        />
-      </a-form-item>
+      <a-row :gutter="16">
+        <a-col :span="12">
+          <a-form-item :label="t('menu.manageCustomers.form.gender')" name="gender">
+            <a-radio-group v-model:value="formData.gender">
+              <a-radio-button value="Male">{{ t('common.male') }}</a-radio-button>
+              <a-radio-button value="Female">{{ t('common.female') }}</a-radio-button>
+            </a-radio-group>
+          </a-form-item>
+        </a-col>
+        <a-col :span="12">
+          <a-form-item :label="t('common.status')" name="status">
+            <a-radio-group v-model:value="formData.status">
+              <a-radio-button :value="true">{{ t('common.active') }}</a-radio-button>
+              <a-radio-button :value="false">{{ t('common.inactive') }}</a-radio-button>
+            </a-radio-group>
+          </a-form-item>
+        </a-col>
+      </a-row>
     </template>
   </BaseDrawerForm>
 </template>

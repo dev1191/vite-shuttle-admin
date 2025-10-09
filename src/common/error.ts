@@ -126,7 +126,7 @@ export function showError(error: HttpError, showMessage: boolean = true): void {
     message.error(error.message)
   }
   // Log the error
-  console.error('[HTTP Error]', error.toLogData())
+  // console.error('[HTTP Error]', error.toLogData())
 }
 
 /**

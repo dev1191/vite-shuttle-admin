@@ -41,12 +41,14 @@
     "unselectAll": "UnSelect All",
     "inactive": "Inactive",
     "new": "New",
+    "male": "Male",
+    "female": "Female",
     "status": "Status",
     "sending": "sending...",
     "confirmMessage": "Are you sure you want to delete {name}?",
     "createMessage": "{name} has been created",
     "deleteMessage": "{name} has been deleted",
-    "deleteFailed": "Failed to delete user.",
+    "deleteFailed": "Failed to delete {name} : ",
     "cancelDelete": "Cancelled deleting {name}",
     "updateMessage": "{title} : {name} has been updated",
     "statusMessage": "{name} has been updated"
@@ -64,7 +66,16 @@
       "title": "Settings",
       "account": "Account Settings",
       "general": "General Settings",
-      "security": "Security Settings"
+      "security": "Security Settings",
+      "countries": {
+        "title": "Countries",
+        "newCountry": "New Country",
+        "form": {
+          "name": "Name",
+          "short_name": "Short Name",
+          "phone_code": "Phone Code"
+        }
+      }
     },
     "pricing-plans": "Pricing plans",
     "payment-methods": "Payment methods",
@@ -95,6 +106,7 @@
         "firstname": "Firstname",
         "lastname": "Lastname",
         "email": "Email",
+        "gender": "Gender",
         "phone": "Phone number",
         "status": "Status"
       }

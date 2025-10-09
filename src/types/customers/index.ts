@@ -7,9 +7,10 @@ export interface Customer {
     firstname: string
     lastname: string
     email: string
-    phone: string
+    phone: string;
+    refercode?: string;
+    country_code: string;
     status: boolean
-
 }
 
 export interface CustomerStatus {

@@ -59,6 +59,8 @@ declare module 'vue' {
     AUpload: typeof import('ant-design-vue/es')['Upload']
     AvatarUpload: typeof import('./../components/Shared/AvatarUpload.vue')['default']
     BaseDrawerForm: typeof import('./../components/Shared/BaseDrawerForm.vue')['default']
+    CountryForm: typeof import('./../components/Settings/Countries/CountryForm.vue')['default']
+    CountryTable: typeof import('./../components/Settings/Countries/CountryTable.vue')['default']
     CustomerForm: typeof import('./../components/Customers/CustomerForm.vue')['default']
     CustomerTable: typeof import('./../components/Customers/CustomerTable.vue')['default']
     DataTable: typeof import('./../components/Shared/DataTable.vue')['default']

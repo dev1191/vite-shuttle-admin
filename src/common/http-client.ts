@@ -19,6 +19,8 @@ let isRefreshing = false
 /**  */
 let isUnauthorizedErrorShown = false
 let unauthorizedTimer: NodeJS.Timeout | null = null
+let isForbiddenErrorShown = false
+let forbiddenTimer: ReturnType<typeof setTimeout>
 
 /** Request configuration constants */
 const REQUEST_TIMEOUT = 15000
@@ -75,42 +77,57 @@ axiosInstance.interceptors.request.use(
 /** Response Interceptor */
 axiosInstance.interceptors.response.use(
   (response: AxiosResponse<BaseResponse>) => {
-    const { code, msg } = response.data
+    const { code, msg } = response.data;
 
+    switch (code) {
+      case ApiStatus.success:
+        return response; // ✅ success
 
-    if (code === ApiStatus.success) return response
-    if (code === ApiStatus.unauthorized) handleUnauthorizedError(msg)
-    throw createHttpError(msg || $t('httpMsg.requestFailed'), code)
-  },
-  async (error) => {
+      case ApiStatus.unauthorized:
+        handleUnauthorizedError(msg);
 
-    const { response, config } = error
-    const { refreshAccessToken, accessToken } = useAuthStore()
+      case ApiStatus.forbidden:
+        handleForbiddenError(msg);
 
-    // Only handle 401 (token expired)
-    if (response?.status === 401 && !config._retry) {
-      config._retry = true
-
-      if (!isRefreshing) {
-        isRefreshing = true
-        try {
-          const refreshResponse = await refreshAccessToken(); // call refresh token
-          isRefreshing = refreshResponse ? false : true;
-          // Retry failed request
-          config.headers['Authorization'] = `Bearer ${accessToken}`
-          return axiosInstance(config); // retry the request
-        } catch (err) {
-          isRefreshing = false
-          if (error.response?.status === ApiStatus.unauthorized) handleUnauthorizedError()
-          return Promise.reject(handleError(error))
-        }
-
-      }
-
+      default:
+        // other API-level errors (404, 500, etc.)
+        throw createHttpError(msg || $t('httpMsg.requestFailed'), code);
     }
   },
-)
 
+  async (error) => {
+    const { response, config } = error;
+    const { refreshAccessToken, accessToken } = useAuthStore();
+
+    // 🚨 Handle token expiry (HTTP 401)
+    if (response?.status === 401 && !config._retry) {
+      config._retry = true;
+
+      if (!isRefreshing) {
+        isRefreshing = true;
+        try {
+          const refreshResponse = await refreshAccessToken();
+          isRefreshing = false;
+
+          if (refreshResponse) {
+            config.headers['Authorization'] = `Bearer ${accessToken}`;
+            return axiosInstance(config); // 🔁 retry original request
+          }
+        } catch (err) {
+          isRefreshing = false;
+          handleUnauthorizedError();
+        }
+      }
+    }
+
+    // 🚫 Handle forbidden (HTTP 403) not caught in API layer
+    if (response?.status === 403) {
+      handleForbiddenError(response.data?.msg || 'Forbidden: insufficient permissions');
+    }
+
+    return Promise.reject(handleError(error));
+  },
+);
 /**HttpError */
 function createHttpError(message: string, code: number) {
   return new HttpError(message, code)
@@ -128,6 +145,25 @@ function handleUnauthorizedError(message?: string): never {
     unauthorizedTimer = setTimeout(resetUnauthorizedError, UNAUTHORIZED_DEBOUNCE_TIME)
 
     showError(error, true)
+    throw error
+  }
+
+  throw error
+}
+
+/** 403 handle forbidden (insufficient permissions) */
+function handleForbiddenError(message?: string): never {
+  const error = createHttpError(
+    message || $t('httpMsg.forbidden'),
+    ApiStatus.forbidden
+  )
+
+  // Prevent repeated alerts (optional debounce like 401)
+  if (!isForbiddenErrorShown) {
+    isForbiddenErrorShown = true
+
+    // Optional: redirect to "No Access" or "403" page
+    //router.push({ name: 'NoPermission' }).catch(() => { })
     throw error
   }
 
@@ -193,16 +229,26 @@ async function request<T = any>(config: ExtendedAxiosRequestConfig): Promise<T> 
 
   try {
     const res = await axiosInstance.request<BaseResponse<T>>(config)
-    // Show success message
-    if (config.showSuccessMessage && res.data.msg) {
-      showSuccess(res.data.msg)
+    const responseData = res.data
+
+    // 🔍 Handle API-level errors (even if HTTP status is 200)
+    if (responseData.code && responseData.code !== 200) {
+      if (config.showErrorMessage !== false) {
+        showError(responseData.code, responseData.msg || 'Request failed')
+      }
+      return Promise.reject(new Error(responseData.msg || 'Error'))
     }
 
-    return res.data.data as T
+    // ✅ Success response
+    if (config.showSuccessMessage && responseData.msg) {
+      showSuccess(responseData.msg)
+    }
+
+    return responseData.data as T
   } catch (error) {
+    // 🔥 Handle network or Axios errors
     if (error instanceof HttpError && error.code !== ApiStatus.unauthorized) {
       const showMsg = config.showErrorMessage !== false
-      console.log('showMsg', showMsg)
       showError(error, showMsg)
     }
     return Promise.reject(error)

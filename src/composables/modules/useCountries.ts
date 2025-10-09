@@ -1,9 +1,9 @@
 import type { Ref } from 'vue'
 import type { PaginatingParams } from '@/types'
-import { CustomerService } from '@/common/api/customer'
-import type { Customer } from '@/types/customers'
+import { Countrieservice } from '@/common/api/settings/countries'
+import type { Country } from '@/types'
 
-const { getCustomerList, createCustomer, updateCustomer, deleteCustomer, updateCustomerStatus } = CustomerService // api customers call
+const { getCountryList, createCountry, updateCountry, deleteCountry, updateCountriestatus } = Countrieservice // api countries call
 
 // Default pagination
 const makePaginationRef = () =>
@@ -17,13 +17,13 @@ const makePaginationRef = () =>
         filters: { type: 'simple', name: '', value: '' }
     })
 
-export const useCustomers = (opts?: { pagination?: Ref<PaginatingParams> }) => {
-    const customers = ref<Customer[]>([])
+export const useCountries = (opts?: { pagination?: Ref<PaginatingParams> }) => {
+    const countries = ref<Country[]>([])
     const isLoading = ref(false)
     const pagination = opts?.pagination ?? makePaginationRef()
 
-    // 🔹 Fetch customer list
-    const fetchCustomers = async () => {
+    // 🔹 Fetch country list
+    const fetchCountries = async () => {
         try {
             isLoading.value = true
 
@@ -33,14 +33,14 @@ export const useCustomers = (opts?: { pagination?: Ref<PaginatingParams> }) => {
             params.range = JSON.stringify(params.range)
             params.filters = JSON.stringify(params.filters)
 
-            const response = await getCustomerList(params)
+            const response = await getCountryList(params)
 
-            customers.value = response.items ?? []
+            countries.value = response.items ?? []
             pagination.value.totalRecords = response.totalRecords
             pagination.value.page = response.page
             pagination.value.itemsPerPage = response.limit
         } catch (error) {
-            console.error('Failed to fetch customers:', error)
+            console.error('Failed to fetch countries:', error)
         } finally {
             isLoading.value = false
         }
@@ -49,76 +49,77 @@ export const useCustomers = (opts?: { pagination?: Ref<PaginatingParams> }) => {
     watch(
         pagination,
         () => {
-            fetchCustomers()
+            fetchCountries()
         },
         { deep: true },
     )
 
-    // 🔹 Create new customer
-    const addCustomer = async (payload: Partial<Customer>) => {
+    // 🔹 Create new country
+    const addCountry = async (payload: Partial<Country>) => {
         try {
             isLoading.value = true
-            const response = await createCustomer(payload)
+            const response = await createCountry(payload)
             return response
         } catch (error) {
-            console.error('Failed to create customer:', error)
+            console.error('Failed to create country:', error)
             throw error
         } finally {
             isLoading.value = false
         }
     }
 
-    // 🔹 Update existing customer
-    const editCustomer = async (id: string, payload: Partial<Customer>) => {
+    // 🔹 Update existing country
+    const editCountry = async (id: string, payload: Partial<Country>) => {
         try {
             isLoading.value = true
-            const response = await updateCustomer(id, payload)
+            const response = await updateCountry(id, payload)
             return response
         } catch (error) {
-            console.error('Failed to update customer:', error)
+            console.error('Failed to update country:', error)
             throw error
         } finally {
             isLoading.value = false
         }
     }
 
-    // 🔹 Delete customer
-    const removeCustomer = async (id: string) => {
+    // 🔹 Delete country
+    const removeCountry = async (id: string) => {
         try {
             isLoading.value = true
-            await deleteCustomer(id)
-            customers.value = customers.value.filter(u => u.id !== id)
+            const result = await deleteCountry(id)
+            console.log("result", result)
+            countries.value = countries.value.filter(u => u.id !== id)
+            return result;
         } catch (error) {
-            console.error('Failed to delete customer:', error)
+            console.error('Failed to delete country:', error)
             throw error
         } finally {
             isLoading.value = false
         }
     }
 
-    const statusCustomer = async (id: string, payload: Partial<Customer>) => {
+    const statusCountry = async (id: string, payload: Partial<Country>) => {
         try {
             isLoading.value = true
-            const response = await updateCustomerStatus(id, payload)
+            const response = await updateCountriestatus(id, payload)
             return response
         } catch (error) {
-            console.error('Failed to update customer status:', error)
             throw error
         } finally {
             isLoading.value = false
         }
     }
 
-    fetchCustomers()
+    fetchCountries()
 
     return {
-        customers,
+        countries,
         pagination,
         isLoading,
-        fetchCustomers,
-        addCustomer,
-        editCustomer,
-        statusCustomer,
-        removeCustomer,
+        fetchCountries,
+        addCountry,
+        editCountry,
+        statusCountry,
+        removeCountry,
     }
 }
