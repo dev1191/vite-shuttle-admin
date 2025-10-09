@@ -1,3 +1,4 @@
+vb
 <script setup lang="ts">
 import type {
   DataTableRecord,
@@ -5,20 +6,20 @@ import type {
   TableChangeEvent,
   PaginationData,
 } from '@/components/Shared/DataTable.vue'
-import { useCustomers } from '@/composables/modules/useCustomers'
-import type { Customer } from '@/types/customers'
+import { useCountries } from '@/composables/modules/useCountries'
+import type { Country } from '@/types'
 import { Space } from 'ant-design-vue'
 
 const {
-  customers,
+  countries,
   pagination,
   isLoading,
-  fetchCustomers,
-  addCustomer,
-  editCustomer,
-  statusCustomer,
-  removeCustomer,
-} = useCustomers()
+  fetchCountries,
+  addCountry,
+  editCountry,
+  statusCountry,
+  removeCountry,
+} = useCountries()
 
 const { t } = useI18n()
 const { renderUserAvatar, renderSwitchButton, renderActionButton, renderDeleteActionButton } =
@@ -30,41 +31,28 @@ import { formatDate } from '@/utils'
 
 const statusFilter = ref<string>('')
 const selectedRowKeys = ref<(string | number)[]>([])
-const selectedRows = ref<Customer[]>([])
-const selectedRow = ref<Customer>({})
+const selectedRows = ref<Country[]>([])
+const selectedRow = ref<Country>({})
 
-const customerFormRef = ref()
+const countryFormRef = ref()
 
 const columns: DataTableColumn[] = [
   {
-    title: 'FullName',
-    dataIndex: 'fullname',
-    key: 'fullname', // Fixed: key should match dataIndex
+    title: 'Name',
+    dataIndex: 'name',
+    key: 'name', // Fixed: key should match dataIndex
     sorter: true,
-    customRender: ({ record }) => {
-      return renderUserAvatar(
-        record.picture,
-        `${record.firstname} ${record.lastname}`,
-        `${record.country_code} ${record.phone}`,
-      )
-    },
   },
   {
-    title: 'Email',
-    dataIndex: 'email',
-    key: 'email',
+    title: 'Short Name',
+    dataIndex: 'short_name',
+    key: 'short_name',
     sorter: true,
   }, //
-  // {
-  //   title: 'Referral',
-  //   dataIndex: 'refercode',
-  //   key: 'refercode',
-  //   sorter: true,
-  // },
   {
-    title: 'Wallet Balance',
-    dataIndex: 'wallet_balance',
-    key: 'wallet_balance',
+    title: 'Phone Code',
+    dataIndex: 'phone_code',
+    key: 'phone_code',
   },
   {
     title: 'Status',
@@ -74,14 +62,8 @@ const columns: DataTableColumn[] = [
       renderSwitchButton(
         record.status ? t('common.active') : t('common.inactive'),
         record.status,
-        () => handleStatusCustomer(record),
+        () => handleStatusCountry(record),
       ),
-  },
-  {
-    title: 'Created At',
-    dataIndex: 'createdAt',
-    key: 'createdAt',
-    customRender: ({ record }) => formatDate(record.createdAt),
   },
   {
     title: 'Action',
@@ -95,12 +77,12 @@ const columns: DataTableColumn[] = [
         {
           default: () => [
             renderActionButton('hugeicons:pencil-edit-02', t('common.edit'), () =>
-              handleEditCustomer(record),
+              handleEditCountry(record),
             ),
             renderDeleteActionButton(
               t('common.delete', { name: record.fullname }),
               t('common.confirmMessage', { name: record.fullname }),
-              () => handleDeleteCustomer(record),
+              () => handleDeleteCountry(record),
             ),
           ],
         },
@@ -111,14 +93,14 @@ const columns: DataTableColumn[] = [
 // Row selection configuration
 const rowSelection = computed(() => ({
   selectedRowKeys: selectedRowKeys.value,
-  onChange: (keys: (string | number)[], rows: Customer[]) => {
+  onChange: (keys: (string | number)[], rows: Country[]) => {
     selectedRowKeys.value = keys
     selectedRows.value = rows
   },
-  onSelect: (record: Customer, selected: boolean) => {
+  onSelect: (record: Country, selected: boolean) => {
     console.log('Selected:', record, selected)
   },
-  onSelectAll: (selected: boolean, rows: Customer[], changeRows: Customer[]) => {
+  onSelectAll: (selected: boolean, rows: Country[], changeRows: Country[]) => {
     console.log('Select all:', selected, rows, changeRows)
   },
 }))
@@ -164,7 +146,7 @@ const handleSearch = (value: string): void => {
   pagination.value.page = 1 // Reset to first page on search
   pagination.value.globalSearch = value
 
-  // The composable watch will automatically trigger fetchCustomers
+  // The composable watch will automatically trigger fetchCountries
 }
 
 // Handle pagination changes from DataTable
@@ -177,39 +159,39 @@ const handlePaginationChange = (newPagination: PaginationData): void => {
   pagination.value.sortDesc = newPagination.sortDesc
   pagination.value.range = newPagination.range
 
-  // The composable watch will automatically trigger fetchCustomers
+  // The composable watch will automatically trigger fetchCountries
 }
 
 const showDialog = async (): void => {
-  // Add customer logic - you might want to open a modal/form
-  customerFormRef.value.openDrawer(false)
+  // Add country logic - you might want to open a modal/form
+  countryFormRef.value.openDrawer(false)
 }
 
-const handleDialogSubmit = async (formData: Customer) => {
+const handleDialogSubmit = async (formData: Country) => {
   try {
     isLoading.value = true
     if (isEdit.value) {
-      // ✅ Create new customer
-      await addCustomer(formData)
-      message.success(t('common.createMessage', { name: formData.fullname }))
+      // ✅ Create new country
+      await addCountry(formData)
+      message.success(t('common.createMessage', { name: formData.name }))
     } else {
-      // ✅ Update existing customer
+      // ✅ Update existing country
       if (!formData?.ids) {
-        message.error(t('common.noCustomerSelected'))
+        message.error(t('common.noCountrySelected'))
         return
       }
-      await editCustomer(formData.ids, formData)
+      await editCountry(formData.ids, formData)
       message.success(
         t('common.updateMessage', {
-          title: t('manageCustomers.customers.customer'),
-          name: formData.fullname,
+          title: t('menu.settings.countries.title'),
+          name: formData.name,
         }),
       )
     }
 
     // ✅ Close dialog + refresh table
     isLoading.value = false
-    await fetchCustomers()
+    await fetchCountries()
   } catch (error: any) {
     console.error('Submit failed:', error)
     message.error(error.message || t('common.submitFailed'))
@@ -217,28 +199,27 @@ const handleDialogSubmit = async (formData: Customer) => {
   }
 }
 
-const handleEditCustomer = async (customer: Customer) => {
-  customerFormRef.value.openDrawer(true, customer)
+const handleEditCountry = async (country: Country) => {
+  countryFormRef.value.openDrawer(true, country)
 }
 
-const handleDeleteCustomer = async (customer: Customer) => {
+const handleDeleteCountry = async (country: Country) => {
   try {
-    await removeCustomer(customer.ids)
-    await fetchCustomers() // ✅ Refresh table after deletion
+    const response = await removeCountry(country.ids)
+    await fetchCountries() // ✅ Refresh table after deletion
   } catch (error: any) {
-    //console.error('Failed to delete customer:', error)
+    //console.error('Failed to delete country:', error)
     message.error(`${t('common.deleteFailed')} ${error.message || ''}`)
   }
 }
 
-const handleStatusCustomer = async (customer: Customer) => {
+const handleStatusCountry = async (country: Country) => {
   try {
-    const newStatus = !customer.status
-    await statusCustomer(customer.ids, { status: newStatus })
-    customer.status = newStatus
-    message.success(t('common.statusMessage', { name: t('common.status') }))
+    const newStatus = !country.status
+    await statusCountry(country.ids, { status: newStatus })
+    country.status = newStatus
   } catch (error: any) {
-    //console.error('Failed to delete customer:', error)
+    //console.error('Failed to delete country:', error)
     message.error(`${t('common.deleteFailed')} ${error || ''}`)
   }
 }
@@ -247,15 +228,14 @@ const handleStatusCustomer = async (customer: Customer) => {
 <template>
   <div>
     <DataTable
-      title="Customers Management"
-      :data="customers"
+      title="Countries Management"
+      :data="countries"
       :columns="columns"
       :loading="isLoading"
       :pagination="tablesPagination"
       searchable
       remote
-      dateRange
-      search-placeholder="Search customers..."
+      search-placeholder="Search countries..."
       :row-selection="rowSelection"
       @change="handleTableChange"
       @search="handleSearch"
@@ -267,7 +247,7 @@ const handleStatusCustomer = async (customer: Customer) => {
           <template #icon>
             <PlusOutlined />
           </template>
-          {{ t('common.create', { name: t('menu.manageCustomers.newCustomer') }) }}
+          {{ t('common.create', { name: t('menu.settings.countries.newCountry') }) }}
         </a-button>
       </template>
 
@@ -287,7 +267,7 @@ const handleStatusCustomer = async (customer: Customer) => {
       </template>
     </DataTable>
 
-    <CustomerForm ref="customerFormRef" />
+    <CountryForm ref="countryFormRef" />
   </div>
 </template>
 

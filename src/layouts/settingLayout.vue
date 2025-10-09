@@ -14,6 +14,8 @@ const currentRole = computed(() => user?.role.toLocaleLowerCase() || 'admin')
 const selectedKeys = ref<string[]>(['dashboard'])
 const openKeys = ref<string[]>(['dashboard'])
 
+const { useRenderIcon } = useRender()
+
 const sidebarNavItems: IMenuItem[] = [
   {
     name: 'General Settings',
@@ -115,13 +117,12 @@ const handleMenuClick = (key: string) => {
 
       <a-divider class="my-6 md:hidden" />
 
-      <div class="flex-1 md:max-w-2xl">
-        <section class="max-w-xl space-y-12 space-x-4">
+      <div class="w-full">
+        <section class="w-full space-y-12 space-x-4">
           <a-card>
             <div class="flex flex-col space-y-1">
               <HeadingSmall :title="title" :description="description" />
             </div>
-
             <slot />
           </a-card>
         </section>

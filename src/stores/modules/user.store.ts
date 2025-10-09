@@ -1,3 +1,4 @@
+import type { GeneralSetting } from '@/types'
 import type { Permission, Role } from '@/types/roles'
 import type { User } from '@/types/users'
 import { defineStore } from 'pinia'
@@ -7,7 +8,7 @@ export const useUserStore = defineStore(
   () => {
     // state
     const user = ref<User | null>(null)
-    const generalSetting = ref({})
+    const generalSetting = ref<GeneralSetting>({})
     const roles = ref<Role[]>([]);
     const permissions = ref<Permission[]>([]);
     // actions

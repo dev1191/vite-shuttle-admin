@@ -44,6 +44,7 @@ export class CustomerService {
     static deleteCustomer(id: string) {
         return request.del<void>({
             url: `/users/${id}`,
+            showSuccessMessage: true
         })
     }
 }
