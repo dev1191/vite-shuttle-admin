@@ -59,7 +59,6 @@ export const useCustomers = (opts?: { pagination?: Ref<PaginatingParams> }) => {
         try {
             isLoading.value = true
             const response = await createCustomer(payload)
-            fetchCustomers();
             return response
         } catch (error) {
             console.error('Failed to create customer:', error)

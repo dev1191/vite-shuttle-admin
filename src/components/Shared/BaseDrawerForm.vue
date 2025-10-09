@@ -1,7 +1,10 @@
 <script setup lang="ts">
+import { useLayoutSettingStore } from '@/stores/modules/layout.store'
+
 const { t } = useI18n()
 
-const placement = ref('right')
+const { layoutSetting } = useLayoutSettingStore()
+const direction = computed(() => (layoutSetting.direction == 'ltr' ? 'right' : 'left'))
 const formRef = ref()
 const props = defineProps({
   title: { type: String, default: 'Drawer Form' },
@@ -43,7 +46,7 @@ const handleFailed = (errorInfo: any) => {
     :width="width"
     :destroyOnClose="true"
     @close="handleClose"
-    :placement="placement"
+    :placement="direction"
   >
     <a-form layout="vertical" ref="formRef" :rules="rules" :model="formData">
       <!-- slot for form fields -->

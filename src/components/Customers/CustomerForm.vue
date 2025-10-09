@@ -11,7 +11,7 @@ const drawerVisible = ref(false)
 const isEdit = ref(false)
 const loading = ref(false)
 
-const { addCustomer, editCustomer } = useCustomers()
+const { addCustomer, editCustomer, fetchCustomers } = useCustomers()
 
 const formData = reactive({
   firstname: '',
@@ -109,7 +109,7 @@ async function handleSubmit(formData: Customer) {
         ? t('common.updateMessage', { name: formData.firstname })
         : t('common.createMessage', { name: formData.firstname }),
     )
-
+    fetchCustomers()
     handleClose()
   } finally {
     loading.value = false

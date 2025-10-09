@@ -54,11 +54,16 @@ const columns: DataTableColumn[] = [
     key: 'email',
     sorter: true,
   }, //
+  // {
+  //   title: 'Referral',
+  //   dataIndex: 'refercode',
+  //   key: 'refercode',
+  //   sorter: true,
+  // },
   {
-    title: 'Referral',
-    dataIndex: 'refercode',
-    key: 'refercode',
-    sorter: true,
+    title: 'Wallet Balance',
+    dataIndex: 'wallet_balance',
+    key: 'wallet_balance',
   },
   {
     title: 'Status',
@@ -70,6 +75,11 @@ const columns: DataTableColumn[] = [
         record.status,
         () => handleStatusCustomer(record),
       ),
+  },
+  {
+    title: 'Created At',
+    dataIndex: 'createdAt',
+    key: 'createdAt',
   },
   {
     title: 'Action',
@@ -126,10 +136,9 @@ const handleStatusFilter = (): void => {
   // Reset to first page when filtering
   pagination.value.page = 1
   // Add status filter to your pagination or handle separately
-  console.log('Status filter:', statusFilter.value)
   pagination.value.filters = {
     type: 'simple',
-    name: typeof statusFilter.value == 'undefined' ? '' : 'is_active',
+    name: typeof statusFilter.value == 'undefined' ? '' : 'status',
     value:
       typeof statusFilter.value == 'undefined' ? '' : statusFilter.value == 'active' ? true : false,
   }
