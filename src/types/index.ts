@@ -1,6 +1,7 @@
 import * as Users from './users'
 import * as Menu from "./menu";
-import * as Country from "./settings/countries"
+import * as Country from "./settings/countries";
+import * as Currency from "./settings/currencies";
 
 export interface LoginResponse {
   token: string
@@ -20,6 +21,19 @@ export interface AccessResponse {
   permissions: string[],
   role: string[],
   generalSetting: any
+}
+
+
+export interface OptionLists {
+  id?: string
+  value: string;
+  label: string;
+  phone_code?: string;
+  short_name?: string;
+}
+
+export interface SearchParams {
+  search: string;
 }
 
 export interface Range {

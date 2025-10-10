@@ -1,6 +1,6 @@
 import request from '@/common/http-client'
-import type { PaginatingParams } from '@/types'
-import type { CountryListData, Country, Countriestatus } from '@/types/countries'
+import type { OptionLists, PaginatingParams, SearchParams } from '@/types'
+import type { CountryListData, Country, CountryStatus } from '@/types/settings/countries'
 import { toFormData } from '@/utils'
 
 
@@ -9,6 +9,13 @@ export class Countrieservice {
     static getCountryList(params: PaginatingParams) {
         return request.get<CountryListData>({
             url: '/countries/search',
+            params,
+        })
+    }
+
+    static fetchCountryOptions(params: SearchParams) {
+        return request.get<OptionLists>({
+            url: '/countries',
             params,
         })
     }
@@ -31,7 +38,7 @@ export class Countrieservice {
     }
 
     // 🔹 Update country
-    static updateCountriestatus(id: string, payload: Partial<Countriestatus>) {
+    static updateCountryStatus(id: string, payload: Partial<CountryStatus>) {
         return request.patch<Country>({
             url: `/countries/${id}/status`,
             data: payload
