@@ -28,7 +28,7 @@ export const useOptions = () => {
     )
 
     return {
-        countryOptions: countryOptions.value.map((v) => ({ label: v.label, value: v.id })),
+        countryOptions,
         searchCountry,
         fetchCountries,
     }

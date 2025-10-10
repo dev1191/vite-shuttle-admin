@@ -25,12 +25,8 @@ const { fetchCountries, countryOptions, searchCountry } = useOptions()
 const formData = reactive({
   label: '',
   code: '',
-  countryId: '',
+  country_name: '',
   status: true,
-})
-
-watch(formData, (newValue) => {
-  formData.code = newValue.code.toUpperCase()
 })
 
 const rules: Record<string, Rule[]> = {
@@ -73,7 +69,7 @@ function handleClose() {
     ids: '',
     label: '',
     code: '',
-    countryId: '',
+    country_name: '',
     status: true,
   })
 }
@@ -120,10 +116,10 @@ onMounted(async () => await fetchCountries())
   >
     <template #fields="{ form }">
       <BaseAutoComplete
-        v-model="form.countryId"
+        v-model="form.country_name"
         :label="t('menu.settings.languages.form.country')"
         name="country"
-        :options="countryOptions"
+        :options="countryOptions.map((v) => ({ label: v.label, value: v.label }))"
         placeholder="Search or select a country"
         @search="handleSearch"
         @select="handleSelect"
