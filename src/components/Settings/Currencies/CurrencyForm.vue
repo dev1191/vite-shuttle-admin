@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { Country } from '@/types'
+import type { Currency } from '@/types'
 import { message } from 'ant-design-vue'
 import type { Rule } from 'ant-design-vue/es/form'
-import { useCountries } from '@/composables/modules/useCountries'
+import { useCurrencies } from '@/composables/modules/useCurrencies'
 
 interface Props {
   isEdit: boolean
@@ -10,7 +10,7 @@ interface Props {
 const props = defineProps<Props>()
 
 interface Emits {
-  (e: 'submit', formData: Country): void
+  (e: 'submit', formData: Currency): void
 }
 const emit = defineEmits<Emits>()
 const { t } = useI18n()
@@ -19,17 +19,17 @@ const drawerVisible = ref(false)
 const isEdit = ref(props.isEdit)
 const loading = ref(false)
 
-const { addCountry, editCountry, fetchCountries } = useCountries()
+const { addCurrency, editCurrency, fetchCurrencies } = useCurrencies()
 
 const formData = reactive({
   name: '',
-  short_name: '',
-  phone_code: '',
+  code: '',
+  symbol: '',
   status: true,
 })
 
 watch(formData, (newValue) => {
-  formData.short_name = newValue.short_name.toUpperCase()
+  formData.code = newValue.code.toUpperCase()
 })
 
 const rules: Record<string, Rule[]> = {
@@ -37,30 +37,30 @@ const rules: Record<string, Rule[]> = {
     {
       required: true,
       message: t('validation.required', {
-        name: t('menu.settings.countries.form.name'),
+        name: t('menu.settings.currencies.form.name'),
       }),
       trigger: 'blur',
     },
   ],
-  phone_code: [
+  code: [
     {
       required: true,
       message: t('validation.required', {
-        name: t('menu.settings.countries.form.phone_code'),
+        name: t('menu.settings.currencies.form.code'),
       }),
       trigger: 'blur',
     },
   ],
-  short_name: [
+  symbol: [
     {
       required: true,
-      message: t('validation.required', { name: t('menu.settings.countries.form.short_name') }),
+      message: t('validation.required', { name: t('menu.settings.currencies.form.symbol') }),
       trigger: 'blur',
     },
   ],
 }
 
-function openDrawer(edit = false, record?: Country) {
+function openDrawer(edit = false, record?: Currency) {
   isEdit.value = edit
   drawerVisible.value = true
   if (edit && record) Object.assign(formData, record)
@@ -71,13 +71,13 @@ function handleClose() {
   Object.assign(formData, {
     ids: '',
     name: '',
-    short_name: '',
-    phone_code: '',
+    code: '',
+    symbol: '',
     status: true,
   })
 }
 
-async function handleSubmit(formData: Country) {
+async function handleSubmit(formData: Currency) {
   try {
     loading.value = true
     emit('submit', formData)
@@ -98,7 +98,7 @@ defineExpose({
   <BaseDrawerForm
     ref="drawerRef"
     :visible="drawerVisible"
-    :title="isEdit ? 'Edit Country' : 'Create Country'"
+    :title="isEdit ? 'Edit Currency' : 'Create Currency'"
     :formData="formData"
     :loading="loading"
     :isEdit="isEdit"
@@ -107,31 +107,31 @@ defineExpose({
     @submit="handleSubmit"
   >
     <template #fields="{ form }">
-      <a-form-item :label="t('menu.settings.countries.form.name')" name="name">
+      <a-form-item :label="t('menu.settings.currencies.form.name')" name="name">
         <a-input
           size="large"
           v-model:value="form.name"
           :placeholder="
-            t('validation.placeholder', { name: t('menu.settings.countries.form.name') })
+            t('validation.placeholder', { name: t('menu.settings.currencies.form.name') })
           "
         />
       </a-form-item>
-      <a-form-item :label="t('menu.settings.countries.form.short_name')" name="short_name">
+      <a-form-item :label="t('menu.settings.currencies.form.code')" name="code">
         <a-input
           size="large"
-          v-model:value="form.short_name"
+          v-model:value="form.code"
           :placeholder="
-            t('validation.placeholder', { name: t('menu.settings.countries.form.short_name') })
+            t('validation.placeholder', { name: t('menu.settings.currencies.form.code') })
           "
         />
       </a-form-item>
 
-      <a-form-item :label="t('menu.settings.countries.form.phone_code')" name="phone_code">
+      <a-form-item :label="t('menu.settings.currencies.form.symbol')" name="symbol">
         <a-input
           size="large"
-          v-model:value="form.phone_code"
+          v-model:value="form.symbol"
           :placeholder="
-            t('validation.placeholder', { name: t('menu.settings.countries.form.phone_code') })
+            t('validation.placeholder', { name: t('menu.settings.currencies.form.symbol') })
           "
         />
       </a-form-item>

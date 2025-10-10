@@ -30,6 +30,7 @@
     "create": "Create {name}",
     "cancel": "Cancel",
     "back": "Back",
+    "refresh": "Refresh",
     "edit": "Edit {name}",
     "update": "Edit {name}",
     "delete": "Delete {name}",
@@ -74,6 +75,24 @@
           "name": "Name",
           "short_name": "Short Name",
           "phone_code": "Phone Code"
+        }
+      },
+      "currencies": {
+        "title": "Currencies",
+        "newCurrency": "New Currency",
+        "form": {
+          "name": "Name",
+          "code": "Code",
+          "symbol": "Symbol"
+        }
+      },
+      "languages": {
+        "title": "Languages",
+        "newLanguage": "New Language",
+        "form": {
+          "label": "Label",
+          "code": "Code",
+          "country": "Country"
         }
       }
     },

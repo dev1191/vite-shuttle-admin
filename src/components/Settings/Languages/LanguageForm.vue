@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import type { Country } from '@/types'
+import type { Language } from '@/types/settings/languages'
 import { message } from 'ant-design-vue'
 import type { Rule } from 'ant-design-vue/es/form'
-import { useCountries } from '@/composables/modules/useCountries'
+import { useLanguages } from '@/composables/modules/useLanguages'
+import { useOptions } from '@/composables/modules/useOptions'
 
 interface Props {
   isEdit: boolean
@@ -10,7 +11,7 @@ interface Props {
 const props = defineProps<Props>()
 
 interface Emits {
-  (e: 'submit', formData: Country): void
+  (e: 'submit', formData: Language): void
 }
 const emit = defineEmits<Emits>()
 const { t } = useI18n()
@@ -19,48 +20,44 @@ const drawerVisible = ref(false)
 const isEdit = ref(props.isEdit)
 const loading = ref(false)
 
-const { addCountry, editCountry, fetchCountries } = useCountries()
-
+const { addLanguage, editLanguage, fetchLanguages } = useLanguages()
+const { fetchCountries, countryOptions, searchCountry } = useOptions()
 const formData = reactive({
-  name: '',
-  short_name: '',
-  phone_code: '',
+  label: '',
+  code: '',
+  country_name: '',
   status: true,
 })
 
-watch(formData, (newValue) => {
-  formData.short_name = newValue.short_name.toUpperCase()
-})
-
 const rules: Record<string, Rule[]> = {
-  name: [
+  label: [
     {
       required: true,
       message: t('validation.required', {
-        name: t('menu.settings.countries.form.name'),
+        name: t('menu.settings.languages.form.label'),
       }),
       trigger: 'blur',
     },
   ],
-  phone_code: [
+  code: [
     {
       required: true,
       message: t('validation.required', {
-        name: t('menu.settings.countries.form.phone_code'),
+        name: t('menu.settings.languages.form.code'),
       }),
       trigger: 'blur',
     },
   ],
-  short_name: [
+  symbol: [
     {
       required: true,
-      message: t('validation.required', { name: t('menu.settings.countries.form.short_name') }),
+      message: t('validation.required', { name: t('menu.settings.languages.form.symbol') }),
       trigger: 'blur',
     },
   ],
 }
 
-function openDrawer(edit = false, record?: Country) {
+function openDrawer(edit = false, record?: Language) {
   isEdit.value = edit
   drawerVisible.value = true
   if (edit && record) Object.assign(formData, record)
@@ -70,14 +67,14 @@ function handleClose() {
   drawerVisible.value = false
   Object.assign(formData, {
     ids: '',
-    name: '',
-    short_name: '',
-    phone_code: '',
+    label: '',
+    code: '',
+    country_name: '',
     status: true,
   })
 }
 
-async function handleSubmit(formData: Country) {
+async function handleSubmit(formData: Language) {
   try {
     loading.value = true
     emit('submit', formData)
@@ -87,18 +84,29 @@ async function handleSubmit(formData: Country) {
   }
 }
 
+const handleSearch = (query: string) => {
+  console.log('Searching for:', query)
+  searchCountry.value = query
+}
+
+const handleSelect = (value: string) => {
+  console.log('Selected:', value)
+}
+
 defineExpose({
   openDrawer,
   drawerVisible,
   isEdit,
 })
+
+onMounted(async () => await fetchCountries())
 </script>
 
 <template>
   <BaseDrawerForm
     ref="drawerRef"
     :visible="drawerVisible"
-    :title="isEdit ? 'Edit Country' : 'Create Country'"
+    :title="isEdit ? 'Edit Language' : 'Create Language'"
     :formData="formData"
     :loading="loading"
     :isEdit="isEdit"
@@ -107,31 +115,31 @@ defineExpose({
     @submit="handleSubmit"
   >
     <template #fields="{ form }">
-      <a-form-item :label="t('menu.settings.countries.form.name')" name="name">
-        <a-input
-          size="large"
-          v-model:value="form.name"
-          :placeholder="
-            t('validation.placeholder', { name: t('menu.settings.countries.form.name') })
-          "
-        />
-      </a-form-item>
-      <a-form-item :label="t('menu.settings.countries.form.short_name')" name="short_name">
-        <a-input
-          size="large"
-          v-model:value="form.short_name"
-          :placeholder="
-            t('validation.placeholder', { name: t('menu.settings.countries.form.short_name') })
-          "
-        />
-      </a-form-item>
+      <BaseAutoComplete
+        v-model="form.country_name"
+        :label="t('menu.settings.languages.form.country')"
+        name="country"
+        :options="countryOptions.map((v) => ({ label: v.label, value: v.label }))"
+        placeholder="Search or select a country"
+        @search="handleSearch"
+        @select="handleSelect"
+      />
 
-      <a-form-item :label="t('menu.settings.countries.form.phone_code')" name="phone_code">
+      <a-form-item :label="t('menu.settings.languages.form.label')" name="label">
         <a-input
           size="large"
-          v-model:value="form.phone_code"
+          v-model:value="form.label"
           :placeholder="
-            t('validation.placeholder', { name: t('menu.settings.countries.form.phone_code') })
+            t('validation.placeholder', { name: t('menu.settings.languages.form.label') })
+          "
+        />
+      </a-form-item>
+      <a-form-item :label="t('menu.settings.languages.form.code')" name="code">
+        <a-input
+          size="large"
+          v-model:value="form.code"
+          :placeholder="
+            t('validation.placeholder', { name: t('menu.settings.languages.form.code') })
           "
         />
       </a-form-item>

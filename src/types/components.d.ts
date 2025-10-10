@@ -8,6 +8,7 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    AAutoComplete: typeof import('ant-design-vue/es')['AutoComplete']
     AAvatar: typeof import('ant-design-vue/es')['Avatar']
     ABreadcrumb: typeof import('ant-design-vue/es')['Breadcrumb']
     ABreadcrumbItem: typeof import('ant-design-vue/es')['BreadcrumbItem']
@@ -58,9 +59,14 @@ declare module 'vue' {
     ATooltip: typeof import('ant-design-vue/es')['Tooltip']
     AUpload: typeof import('ant-design-vue/es')['Upload']
     AvatarUpload: typeof import('./../components/Shared/AvatarUpload.vue')['default']
+    BaseAutoComplete: typeof import('./../components/Shared/BaseAutoComplete.vue')['default']
     BaseDrawerForm: typeof import('./../components/Shared/BaseDrawerForm.vue')['default']
+    BasedSelect: typeof import('./../components/Shared/BasedSelect.vue')['default']
+    BaseSelect: typeof import('./../components/Shared/BaseSelect.vue')['default']
     CountryForm: typeof import('./../components/Settings/Countries/CountryForm.vue')['default']
     CountryTable: typeof import('./../components/Settings/Countries/CountryTable.vue')['default']
+    CurrencyForm: typeof import('./../components/Settings/Currencies/CurrencyForm.vue')['default']
+    CurrencyTable: typeof import('./../components/Settings/Currencies/CurrencyTable.vue')['default']
     CustomerForm: typeof import('./../components/Customers/CustomerForm.vue')['default']
     CustomerTable: typeof import('./../components/Customers/CustomerTable.vue')['default']
     DataTable: typeof import('./../components/Shared/DataTable.vue')['default']
@@ -68,7 +74,9 @@ declare module 'vue' {
     Heading: typeof import('./../components/Shared/Heading.vue')['default']
     HeadingSmall: typeof import('./../components/Shared/HeadingSmall.vue')['default']
     Icon: typeof import('./../components/Shared/Icon.vue')['default']
+    LanguageForm: typeof import('./../components/Settings/Languages/LanguageForm.vue')['default']
     LanguageSwitch: typeof import('./../components/Shared/LanguageSwitch.vue')['default']
+    LanguageTable: typeof import('./../components/Settings/Languages/LanguageTable.vue')['default']
     LoginForm: typeof import('./../components/Auth/LoginForm.vue')['default']
     PhoneNumberInput: typeof import('./../components/Shared/PhoneNumberInput.vue')['default']
     RoleDialog: typeof import('./../components/AdminUsers/RoleDialog.vue')['default']

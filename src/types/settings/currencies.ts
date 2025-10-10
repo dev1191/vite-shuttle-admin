@@ -1,14 +1,18 @@
 
 
-export interface Country {
+export interface Currency {
     ids: string;
     name: string;
-    short_name: string;
-    phone_code: string;
+    code: string;
+    symbol: string;
+    status: boolean;
+    rate: string;
+    is_deleted: boolean;
 }
 
-export interface CountryListData {
-    items: Country[];
+
+export interface CurrencyListData {
+    items: Currency[];
     totalRecords: number;
     limit: number;
     page: number;
@@ -20,8 +24,3 @@ export interface CountryListData {
     nextPage?: number
 
 }
-
-export interface CountryStatus {
-    status: boolean
-}
-

@@ -19,7 +19,9 @@ meta:
 </route>
 
 <template>
-  <SettingLayout :title="t('settings.currencies')"> </SettingLayout>
+  <SettingLayout :title="t('settings.currencies')">
+    <CurrencyTable />
+  </SettingLayout>
 </template>
 
 <style scoped></style>

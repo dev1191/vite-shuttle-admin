@@ -5,20 +5,20 @@ import type {
   TableChangeEvent,
   PaginationData,
 } from '@/components/Shared/DataTable.vue'
-import { useCountries } from '@/composables/modules/useCountries'
-import type { Country } from '@/types'
+import { useCurrencies } from '@/composables/modules/useCurrencies'
+import type { Currency } from '@/types/settings/currencies'
 import { Space } from 'ant-design-vue'
 
 const {
-  countries,
+  currencies,
   pagination,
   isLoading,
-  fetchCountries,
-  addCountry,
-  editCountry,
-  statusCountry,
-  removeCountry,
-} = useCountries()
+  fetchCurrencies,
+  addCurrency,
+  editCurrency,
+  statusCurrency,
+  removeCurrency,
+} = useCurrencies()
 
 const { t } = useI18n()
 const { renderUserAvatar, renderSwitchButton, renderActionButton, renderDeleteActionButton } =
@@ -29,8 +29,8 @@ import { message, Modal } from 'ant-design-vue'
 const dataTableRef = ref()
 const statusFilter = ref<string>('')
 const selectedRowKeys = ref<(string | number)[]>([])
-const selectedRows = ref<Country[]>([])
-const selectedRow = ref<Country>({})
+const selectedRows = ref<Currency[]>([])
+const selectedRow = ref<Currency>({})
 const isEdit = ref<boolean>(false)
 const countryFormRef = ref()
 
@@ -42,15 +42,15 @@ const columns: DataTableColumn[] = [
     sorter: true,
   },
   {
-    title: 'Short Name',
-    dataIndex: 'short_name',
-    key: 'short_name',
+    title: 'Code',
+    dataIndex: 'code',
+    key: 'code',
     sorter: true,
   }, //
   {
-    title: 'Phone Code',
-    dataIndex: 'phone_code',
-    key: 'phone_code',
+    title: 'Symbol',
+    dataIndex: 'symbol',
+    key: 'symbol',
   },
   {
     title: 'Status',
@@ -60,7 +60,7 @@ const columns: DataTableColumn[] = [
       renderSwitchButton(
         record.status ? t('common.active') : t('common.inactive'),
         record.status,
-        () => handleStatusCountry(record),
+        () => handleStatusCurrency(record),
       ),
   },
   {
@@ -75,12 +75,12 @@ const columns: DataTableColumn[] = [
         {
           default: () => [
             renderActionButton('hugeicons:pencil-edit-02', t('common.edit'), () =>
-              handleEditCountry(record),
+              handleEditCurrency(record),
             ),
             renderDeleteActionButton(
               t('common.delete', { name: record.fullname }),
               t('common.confirmMessage', { name: record.fullname }),
-              () => handleDeleteCountry(record),
+              () => handleDeleteCurrency(record),
             ),
           ],
         },
@@ -91,14 +91,14 @@ const columns: DataTableColumn[] = [
 // Row selection configuration
 const rowSelection = computed(() => ({
   selectedRowKeys: selectedRowKeys.value,
-  onChange: (keys: (string | number)[], rows: Country[]) => {
+  onChange: (keys: (string | number)[], rows: Currency[]) => {
     selectedRowKeys.value = keys
     selectedRows.value = rows
   },
-  onSelect: (record: Country, selected: boolean) => {
+  onSelect: (record: Currency, selected: boolean) => {
     console.log('Selected:', record, selected)
   },
-  onSelectAll: (selected: boolean, rows: Country[], changeRows: Country[]) => {
+  onSelectAll: (selected: boolean, rows: Currency[], changeRows: Currency[]) => {
     console.log('Select all:', selected, rows, changeRows)
   },
 }))
@@ -144,7 +144,7 @@ const handleSearch = (value: string): void => {
   pagination.value.page = 1 // Reset to first page on search
   pagination.value.globalSearch = value
 
-  // The composable watch will automatically trigger fetchCountries
+  // The composable watch will automatically trigger fetchCurrencies
 }
 
 // Handle pagination changes from DataTable
@@ -157,7 +157,7 @@ const handlePaginationChange = (newPagination: PaginationData): void => {
   pagination.value.sortDesc = newPagination.sortDesc
   pagination.value.range = newPagination.range
 
-  // The composable watch will automatically trigger fetchCountries
+  // The composable watch will automatically trigger fetchCurrencies
 }
 
 const showDialog = async (): void => {
@@ -166,16 +166,16 @@ const showDialog = async (): void => {
   isEdit.value = false
 }
 
-const handleDialogSubmit = async (formData: Country) => {
+const handleDialogSubmit = async (formData: Currency) => {
   try {
     isLoading.value = true
     if (isEdit.value) {
       // ✅ Update existing country
       if (!formData?.ids) {
-        message.error(t('common.noCountrySelected'))
+        message.error(t('common.noCurrencySelected'))
         return
       }
-      await editCountry(formData.ids, {
+      await editCurrency(formData.ids, {
         name: formData.name,
         short_name: formData.short_name,
         phone_code: formData.phone_code,
@@ -183,20 +183,20 @@ const handleDialogSubmit = async (formData: Country) => {
       })
       message.success(
         t('common.updateMessage', {
-          title: t('menu.settings.countries.title'),
+          title: t('menu.settings.currencies.title'),
           name: formData.name,
         }),
       )
     } else {
       // ✅ Create new country
-      await addCountry(formData)
+      await addCurrency(formData)
       message.success(t('common.createMessage', { name: formData.name }))
     }
 
     // ✅ Close dialog + refresh table
     isLoading.value = false
     isEdit.value = false
-    await fetchCountries()
+    await fetchCurrencies()
   } catch (error: any) {
     console.error('Submit failed:', error)
     message.error(error.message || t('common.submitFailed'))
@@ -204,25 +204,25 @@ const handleDialogSubmit = async (formData: Country) => {
   }
 }
 
-const handleEditCountry = async (country: Country) => {
+const handleEditCurrency = async (country: Currency) => {
   countryFormRef.value.openDrawer(true, country)
   isEdit.value = true
 }
 
-const handleDeleteCountry = async (country: Country) => {
+const handleDeleteCurrency = async (country: Currency) => {
   try {
-    const response = await removeCountry(country.ids)
-    await fetchCountries() // ✅ Refresh table after deletion
+    const response = await removeCurrency(country.ids)
+    await fetchCurrencies() // ✅ Refresh table after deletion
   } catch (error: any) {
     //console.error('Failed to delete country:', error)
     message.error(`${t('common.deleteFailed')} ${error.message || ''}`)
   }
 }
 
-const handleStatusCountry = async (country: Country) => {
+const handleStatusCurrency = async (country: Currency) => {
   try {
     const newStatus = !country.status
-    await statusCountry(country.ids, { status: newStatus })
+    await statusCurrency(country.ids, { status: newStatus })
     country.status = newStatus
   } catch (error: any) {
     //console.error('Failed to delete country:', error)
@@ -235,14 +235,14 @@ const handleStatusCountry = async (country: Country) => {
   <div>
     <DataTable
       ref="dataTableRef"
-      title="Countries Management"
-      :data="countries"
+      title="Currencies Management"
+      :data="currencies"
       :columns="columns"
       :loading="isLoading"
       :pagination="tablesPagination"
       searchable
       remote
-      search-placeholder="Search countries..."
+      search-placeholder="Search currencies..."
       :row-selection="rowSelection"
       @change="handleTableChange"
       @search="handleSearch"
@@ -253,7 +253,7 @@ const handleStatusCountry = async (country: Country) => {
         <!-- Refresh Button -->
         <a-tooltip>
           <template #title>{{ t('common.refresh') }}</template>
-          <a-button size="large" type="default" :loading="isLoading" @click="fetchCountries">
+          <a-button size="large" type="default" :loading="isLoading" @click="fetchCurrencies">
             <template #icon>
               <ReloadOutlined spin />
             </template>
@@ -263,7 +263,7 @@ const handleStatusCountry = async (country: Country) => {
           <template #icon>
             <PlusOutlined />
           </template>
-          {{ t('common.create', { name: t('menu.settings.countries.newCountry') }) }}
+          {{ t('common.create', { name: t('menu.settings.currencies.newCurrency') }) }}
         </a-button>
       </template>
 
@@ -283,7 +283,7 @@ const handleStatusCountry = async (country: Country) => {
       </template>
     </DataTable>
 
-    <CountryForm ref="countryFormRef" :isEdit="isEdit" @submit="handleDialogSubmit" />
+    <CurrencyForm ref="countryFormRef" :isEdit="isEdit" @submit="handleDialogSubmit" />
   </div>
 </template>
 
