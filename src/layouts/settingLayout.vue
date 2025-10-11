@@ -24,6 +24,24 @@ const sidebarNavItems: IMenuItem[] = [
     path: `/${currentRole.value}/settings/general`,
   },
   {
+    name: 'Notifications',
+    key: 'notification',
+    icon: useRenderIcon('hugeicons:notification-01', { style: { fontSize: '24px' } }),
+    path: `/${currentRole.value}/settings/notifications`,
+  },
+  {
+    name: 'Email Settings',
+    key: 'email',
+    icon: useRenderIcon('hugeicons:mail-setting-01', { style: { fontSize: '24px' } }),
+    path: `/${currentRole.value}/settings/emails`,
+  },
+  {
+    name: 'Storage Settings',
+    key: 'storage',
+    icon: useRenderIcon('hugeicons:ai-cloud-02', { style: { fontSize: '24px' } }),
+    path: `/${currentRole.value}/settings/storage`,
+  },
+  {
     name: 'Countries',
     key: 'countries',
     icon: useRenderIcon('hugeicons:global', { style: { fontSize: '24px' } }),
@@ -50,6 +68,12 @@ const sidebarNavItems: IMenuItem[] = [
     icon: useRenderIcon('hugeicons:payment-01', { style: { fontSize: '24px' } }),
     path: `/${currentRole.value}/settings/payment-gateways`,
     namePath: [t('menu.settings.title'), t('menu.settings.paymentGateway')],
+  },
+  {
+    name: 'Term and Conditions',
+    key: 'terms',
+    icon: useRenderIcon('hugeicons:book-open-01', { style: { fontSize: '24px' } }),
+    path: `/${currentRole.value}/settings/term-and-conditions`,
   },
 ]
 

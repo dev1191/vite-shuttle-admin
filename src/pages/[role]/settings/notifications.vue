@@ -6,7 +6,7 @@ const { t } = useI18n()
 <route lang="yaml">
 meta:
   layout: defaultLayout
-  title: settings.general
+  title: settings.notification
   icon: SettingOutlined
   order: 10
   drawerIndex: 10
@@ -14,13 +14,11 @@ meta:
   roles: [admin, agent, staff, manager]
   breadcrumb:
     - settings.title
-    - settings.general
+    - settings.notification
 </route>
 
 <template>
-  <SettingLayout :title="t('settings.general')">
-    <GeneralForm />
-  </SettingLayout>
+  <SettingLayout :title="t('settings.notification')"> </SettingLayout>
 </template>
 
 <style scoped></style>
