@@ -10,8 +10,8 @@ const props = defineProps<{
 
 // build render function with composable
 const renderFn = useRenderIcon(props.name, {
-  width: props.size ?? 12,
-  height: props.size ?? 12,
+  width: props.size ?? 18,
+  height: props.size ?? 18,
   style: props.color ? { color: props.color } : undefined,
   ...props,
 })

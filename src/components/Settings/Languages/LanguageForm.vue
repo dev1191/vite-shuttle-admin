@@ -22,13 +22,20 @@ const loading = ref(false)
 
 const { addLanguage, editLanguage, fetchLanguages } = useLanguages()
 const { fetchCountries, countryOptions, searchCountry } = useOptions()
-const formData = reactive({
+const formData = reactive<Language>({
   label: '',
   code: '',
   country_name: '',
+  countryId: '',
   status: true,
 })
 
+watch(
+  () => formData.country_name,
+  (newValue) => {
+    formData.countryId = countryOptions.value.find((v) => v.label === newValue)?.id
+  },
+)
 const rules: Record<string, Rule[]> = {
   label: [
     {
@@ -70,6 +77,7 @@ function handleClose() {
     label: '',
     code: '',
     country_name: '',
+    countryId: '',
     status: true,
   })
 }
@@ -85,12 +93,7 @@ async function handleSubmit(formData: Language) {
 }
 
 const handleSearch = (query: string) => {
-  console.log('Searching for:', query)
   searchCountry.value = query
-}
-
-const handleSelect = (value: string) => {
-  console.log('Selected:', value)
 }
 
 defineExpose({
@@ -122,7 +125,6 @@ onMounted(async () => await fetchCountries())
         :options="countryOptions.map((v) => ({ label: v.label, value: v.label }))"
         placeholder="Search or select a country"
         @search="handleSearch"
-        @select="handleSelect"
       />
 
       <a-form-item :label="t('menu.settings.languages.form.label')" name="label">

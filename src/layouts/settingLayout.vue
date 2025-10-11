@@ -44,6 +44,13 @@ const sidebarNavItems: IMenuItem[] = [
     path: `/${currentRole.value}/settings/languages`,
     namePath: [t('menu.settings.title'), t('menu.settings.languages')],
   },
+  {
+    name: t('settings.paymentGateway'),
+    key: 'paymentGateway',
+    icon: useRenderIcon('hugeicons:payment-01', { style: { fontSize: '24px' } }),
+    path: `/${currentRole.value}/settings/payment-gateways`,
+    namePath: [t('menu.settings.title'), t('menu.settings.paymentGateway')],
+  },
 ]
 
 const currentRoute = useRoute()
@@ -94,16 +101,16 @@ const handleMenuClick = (key: string) => {
 </script>
 
 <template>
-  <div class="px-1 py-1">
+  <div class="px-1">
     <Heading title="Settings" description="Manage your profile and account settings" />
 
-    <div class="flex flex-col gap-4 space-y-8 md:space-y-0 lg:flex-row lg:space-y-0 lg:space-x-12">
-      <a-layout-sider width="270" height="600">
+    <div class="flex flex-col gap-3 space-y-4 md:space-y-0 lg:flex-row lg:space-y-0 lg:space-x-12">
+      <a-layout-sider width="255">
         <a-menu
           mode="inline"
           :selectedKeys="selectedKeys"
           :openKeys="openKeys"
-          style="height: 100%; border-right: 0"
+          style="height: 100%"
           @select="({ key }) => handleMenuClick(key as string)"
         >
           <a-menu-item v-for="item in sidebarNavItems" :key="item.key">
@@ -118,11 +125,8 @@ const handleMenuClick = (key: string) => {
       <a-divider class="my-6 md:hidden" />
 
       <div class="w-full">
-        <section class="w-full space-y-12 space-x-4">
+        <section class="w-full space-y-2 space-x-2">
           <a-card>
-            <div class="flex flex-col space-y-1">
-              <HeadingSmall :title="title" :description="description" />
-            </div>
             <slot />
           </a-card>
         </section>

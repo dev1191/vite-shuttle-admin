@@ -32,6 +32,11 @@ export interface OptionLists {
   short_name?: string;
 }
 
+export interface Gateway {
+  site: string;
+  data: any;
+}
+
 export interface SearchParams {
   search: string;
 }

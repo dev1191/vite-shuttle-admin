@@ -42,6 +42,8 @@
     "unselectAll": "UnSelect All",
     "inactive": "Inactive",
     "new": "New",
+    "yes": "Yes",
+    "no": "No",
     "male": "Male",
     "female": "Female",
     "status": "Status",
@@ -92,6 +94,15 @@
         "form": {
           "label": "Label",
           "code": "Code",
+          "country": "Country"
+        }
+      },
+      "paymentGateway": {
+        "title": "Payment Gateway",
+        "newPaymentGateway": "New Payment Gateway",
+        "form": {
+          "label": "Label",
+          "mode": "Mode",
           "country": "Country"
         }
       }
@@ -180,6 +191,7 @@
     "countries": "Countries",
     "currencies": "Currencies",
     "languages": "Languages",
+    "paymentGateway": "Payment Gateway",
     "themeColor": "Theme Color",
     "customColor": "Custom Color",
     "menuLayout": "Menu Layout",

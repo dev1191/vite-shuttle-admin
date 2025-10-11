@@ -145,7 +145,6 @@ watch(
         formRef.value?.clearValidate()
       })
     }
-    console.log('type', type)
     if (type == 'add') {
       setPassword.value = false
     }

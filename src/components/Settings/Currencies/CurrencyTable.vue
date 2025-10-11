@@ -53,6 +53,11 @@ const columns: DataTableColumn[] = [
     key: 'symbol',
   },
   {
+    title: 'Rate',
+    dataIndex: 'rate',
+    key: 'rate',
+  },
+  {
     title: 'Status',
     dataIndex: 'status',
     key: 'status',

@@ -37,6 +37,7 @@ declare module 'vue-router/auto-routes' {
     '/[role]/settings/currencies': RouteRecordInfo<'/[role]/settings/currencies', '/:role/settings/currencies', { role: ParamValue<true> }, { role: ParamValue<false> }>,
     '/[role]/settings/general': RouteRecordInfo<'/[role]/settings/general', '/:role/settings/general', { role: ParamValue<true> }, { role: ParamValue<false> }>,
     '/[role]/settings/languages': RouteRecordInfo<'/[role]/settings/languages', '/:role/settings/languages', { role: ParamValue<true> }, { role: ParamValue<false> }>,
+    '/[role]/settings/payment-gateways': RouteRecordInfo<'/[role]/settings/payment-gateways', '/:role/settings/payment-gateways', { role: ParamValue<true> }, { role: ParamValue<false> }>,
     '/[role]/vehicles/bus-layouts/': RouteRecordInfo<'/[role]/vehicles/bus-layouts/', '/:role/vehicles/bus-layouts', { role: ParamValue<true> }, { role: ParamValue<false> }>,
     '/[role]/vehicles/bus-layouts/create': RouteRecordInfo<'/[role]/vehicles/bus-layouts/create', '/:role/vehicles/bus-layouts/create', { role: ParamValue<true> }, { role: ParamValue<false> }>,
     '/[role]/vehicles/bus-types/': RouteRecordInfo<'/[role]/vehicles/bus-types/', '/:role/vehicles/bus-types', { role: ParamValue<true> }, { role: ParamValue<false> }>,
@@ -131,6 +132,10 @@ declare module 'vue-router/auto-routes' {
     }
     'src/pages/[role]/settings/languages.vue': {
       routes: '/[role]/settings/languages'
+      views: never
+    }
+    'src/pages/[role]/settings/payment-gateways.vue': {
+      routes: '/[role]/settings/payment-gateways'
       views: never
     }
     'src/pages/[role]/vehicles/bus-layouts/index.vue': {

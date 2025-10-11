@@ -175,21 +175,26 @@ const handleDialogSubmit = async (formData: Language) => {
         return
       }
       await editLanguage(formData.ids, {
-        name: formData.name,
-        short_name: formData.short_name,
-        phone_code: formData.phone_code,
+        label: formData.label,
+        code: formData.code,
+        countryId: formData.countryId,
         status: formData.status,
       })
       message.success(
         t('common.updateMessage', {
           title: t('menu.settings.languages.title'),
-          name: formData.name,
+          name: formData.label,
         }),
       )
     } else {
       // ✅ Create new country
-      await addLanguage(formData)
-      message.success(t('common.createMessage', { name: formData.name }))
+      await addLanguage({
+        label: formData.label,
+        code: formData.code,
+        countryId: formData.countryId,
+        status: formData.status,
+      })
+      message.success(t('common.createMessage', { name: formData.label }))
     }
 
     // ✅ Close dialog + refresh table
