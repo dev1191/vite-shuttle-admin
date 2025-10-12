@@ -43,7 +43,7 @@ const filteredPayments = computed(() => {
         <div
           v-for="i in 9"
           :key="i"
-          class="min-h-[114px] p-4 rounded-lg border-2 border-dashed border-primary flex flex-col sm:flex-row items-start sm:items-center gap-6"
+          class="min-h-[150px] p-4 rounded-lg border-2 border-dashed border-primary flex flex-col sm:flex-row items-start sm:items-center gap-6"
         >
           <div class="flex flex-col gap-2 flex-grow w-full">
             <div class="flex justify-between items-center">
@@ -64,7 +64,13 @@ const filteredPayments = computed(() => {
           :text="category.data.is_enabled === '1' ? t('common.active') : t('common.inactive')"
           :color="category.data.is_enabled === '1' ? 'success' : 'red'"
         >
-          <a-card hoverable :title="category.site" class="mb-4" :body-style="{ padding: '16px' }">
+          <a-card
+            hoverable
+            :bordered="false"
+            :title="category.site"
+            class="mb-4 min-h-[150px]"
+            :body-style="{ padding: '16px' }"
+          >
             <div class="flex flex-col sm:flex-row items-start sm:items-center gap-6">
               <!-- Left content -->
               <div class="flex flex-col gap-2 flex-grow">

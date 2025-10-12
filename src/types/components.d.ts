@@ -91,6 +91,7 @@ declare module 'vue' {
     RoleDialog: typeof import('./../components/AdminUsers/RoleDialog.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    StorageForm: typeof import('./../components/Settings/Storage/StorageForm.vue')['default']
     ThemeSwitch: typeof import('./../components/Shared/ThemeSwitch.vue')['default']
     UserProfile: typeof import('./../components/User/UserProfile.vue')['default']
   }

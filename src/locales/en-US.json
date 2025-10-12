@@ -97,6 +97,14 @@
           "country": "Country"
         }
       },
+      "emails": {
+        "title": "Email Settings",
+        "form": {
+          "label": "Label",
+          "code": "Code",
+          "country": "Country"
+        }
+      },
       "paymentGateway": {
         "title": "Payment Gateway",
         "newPaymentGateway": "New Payment Gateway",
