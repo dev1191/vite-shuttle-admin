@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useSiteSettings } from '@/composables/modules/useSiteSettings'
 import SettingLayout from '@/layouts/settingLayout.vue'

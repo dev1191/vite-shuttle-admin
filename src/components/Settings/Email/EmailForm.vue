@@ -65,7 +65,7 @@ const onSave = async () => {
       </a-col>
 
       <a-col :xs="24" :sm="12">
-        <a-form-item label="Type" name="type">
+        <a-form-item label="Default Type" name="type">
           <a-radio-group v-model:value="newEmail.type">
             <a-radio-button value="SMTP">SMTP</a-radio-button>
             <a-radio-button value="RESEND">RESEND</a-radio-button>

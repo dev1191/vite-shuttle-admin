@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { onMounted } from 'vue'
-import { useI18n } from 'vue-i18n'
 import { useSiteSettings } from '@/composables/modules/useSiteSettings'
 import SettingLayout from '@/layouts/settingLayout.vue'
 import { message } from 'ant-design-vue'
@@ -9,16 +7,16 @@ const { t } = useI18n()
 const { fetchSetting, item, isLoading, editSetting } = useSiteSettings()
 
 onMounted(() => {
-  fetchSetting('notifications')
+  fetchSetting('app')
 })
 
 const handleEditSetting = async (formData: Record<string, any>) => {
   try {
-    await editSetting('notifications', formData)
+    await editSetting('app', formData)
     message.success(
       t('common.updateMessage', {
-        title: t('menu.settings.storage.title'),
-        name: 'storage SMTP',
+        title: t('menu.settings.email.title'),
+        name: 'email SMTP',
       }),
     )
   } catch (error) {
@@ -27,16 +25,10 @@ const handleEditSetting = async (formData: Record<string, any>) => {
 }
 </script>
 
-<template>
-  <SettingLayout :title="t('settings.storage')">
-    <NotificationForm :item="item" :isLoading="isLoading" @submit="handleEditSetting" />
-  </SettingLayout>
-</template>
-
 <route lang="yaml">
 meta:
   layout: defaultLayout
-  title: settings.notification
+  title: settings.app.title
   icon: SettingOutlined
   order: 10
   drawerIndex: 10
@@ -44,7 +36,13 @@ meta:
   roles: [admin, agent, staff, manager]
   breadcrumb:
     - settings.title
-    - settings.notification
+    - settings.app.title
 </route>
+
+<template>
+  <SettingLayout :title="t('settings.app.title')">
+    <AppForm :item="item" :isLoading="isLoading" @submit="handleEditSetting" />
+  </SettingLayout>
+</template>
 
 <style scoped></style>

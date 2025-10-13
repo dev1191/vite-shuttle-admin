@@ -70,6 +70,17 @@
       "account": "Account Settings",
       "general": "General Settings",
       "security": "Security Settings",
+      "app": {
+        "title": "App Settings",
+        "form": {
+          "defaultCountry": "Default Country",
+          "defaultCurrency": "Default Currency",
+          "defaultLanguage": "Default Language",
+          "defaultTimezone": "Default timezone",
+          "taxName": "Tax Name",
+          "taxAmount": "Tax Amount"
+        }
+      },
       "countries": {
         "title": "Countries",
         "newCountry": "New Country",

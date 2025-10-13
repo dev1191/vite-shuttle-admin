@@ -47,6 +47,9 @@ importers:
       pinia-plugin-persistedstate:
         specifier: ^4.5.0
         version: 4.5.0(pinia@3.0.3(typescript@5.8.3)(vue@3.5.21(typescript@5.8.3)))
+      timezones-list:
+        specifier: ^3.1.0
+        version: 3.1.0
       vue:
         specifier: ^3.5.18
         version: 3.5.21(typescript@5.8.3)
@@ -2671,6 +2674,9 @@ packages:
   throttle-debounce@5.0.2:
     resolution: {integrity: sha512-B71/4oyj61iNH0KeCamLuE2rmKuTO5byTOSVwECM5FA7TiAiAW+UqTKZ9ERueC4qvgSttUhdmq1mXC3kJqGX7A==}
     engines: {node: '>=12.22'}
+
+  timezones-list@3.1.0:
+    resolution: {integrity: sha512-PcDBt9tae330KTOIufK/wArTlJp+unuuRcG0EEu+4oLHZACHefKQyP2D51gMZID+urye92mHND60KRVuDDAmbA==}
 
   tiny-warning@1.0.3:
     resolution: {integrity: sha512-lBN9zLN/oAf68o3zNXYrdCt1kP8WsiGW8Oo2ka41b2IM5JL/S1CTyX1rW0mb/zSuJun0ZUrDxx4sqvYS2FWzPA==}
@@ -5723,6 +5729,8 @@ snapshots:
       '@pkgr/core': 0.2.9
 
   throttle-debounce@5.0.2: {}
+
+  timezones-list@3.1.0: {}
 
   tiny-warning@1.0.3: {}
 

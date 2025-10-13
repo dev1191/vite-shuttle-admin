@@ -24,7 +24,13 @@ const sidebarNavItems: IMenuItem[] = [
     path: `/${currentRole.value}/settings/general`,
   },
   {
-    name: 'Notifications',
+    name: 'App Settings',
+    key: 'app',
+    icon: useRenderIcon('hugeicons:apple-reminder', { style: { fontSize: '24px' } }),
+    path: `/${currentRole.value}/settings/app`,
+  },
+  {
+    name: 'Push Notification Settings',
     key: 'notification',
     icon: useRenderIcon('hugeicons:notification-01', { style: { fontSize: '24px' } }),
     path: `/${currentRole.value}/settings/notifications`,

@@ -1,5 +1,5 @@
 import request from '@/common/http-client'
-import type { PaginatingParams } from '@/types'
+import type { OptionLists, PaginatingParams, SearchParams } from '@/types'
 import type { LanguageListData, Language, Languagestatus } from '@/types/settings/languages'
 
 
@@ -12,7 +12,12 @@ export class LanguageService {
         })
     }
 
-
+    static fetchLanguageOptions(params: SearchParams) {
+        return request.get<OptionLists>({
+            url: '/languages',
+            params,
+        })
+    }
     // 🔹 Create country
     static createLanguage(payload: Partial<Language>) {
         return request.post<Language>({

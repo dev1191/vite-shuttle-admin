@@ -33,6 +33,7 @@ declare module 'vue-router/auto-routes' {
     '/[role]/manage-users/roles/[id]': RouteRecordInfo<'/[role]/manage-users/roles/[id]', '/:role/manage-users/roles/:id', { role: ParamValue<true>, id: ParamValue<true> }, { role: ParamValue<false>, id: ParamValue<false> }>,
     '/[role]/manage-users/users/': RouteRecordInfo<'/[role]/manage-users/users/', '/:role/manage-users/users', { role: ParamValue<true> }, { role: ParamValue<false> }>,
     '/[role]/profile': RouteRecordInfo<'/[role]/profile', '/:role/profile', { role: ParamValue<true> }, { role: ParamValue<false> }>,
+    '/[role]/settings/app': RouteRecordInfo<'/[role]/settings/app', '/:role/settings/app', { role: ParamValue<true> }, { role: ParamValue<false> }>,
     '/[role]/settings/countries': RouteRecordInfo<'/[role]/settings/countries', '/:role/settings/countries', { role: ParamValue<true> }, { role: ParamValue<false> }>,
     '/[role]/settings/currencies': RouteRecordInfo<'/[role]/settings/currencies', '/:role/settings/currencies', { role: ParamValue<true> }, { role: ParamValue<false> }>,
     '/[role]/settings/emails': RouteRecordInfo<'/[role]/settings/emails', '/:role/settings/emails', { role: ParamValue<true> }, { role: ParamValue<false> }>,
@@ -120,6 +121,10 @@ declare module 'vue-router/auto-routes' {
     }
     'src/pages/[role]/profile.vue': {
       routes: '/[role]/profile'
+      views: never
+    }
+    'src/pages/[role]/settings/app.vue': {
+      routes: '/[role]/settings/app'
       views: never
     }
     'src/pages/[role]/settings/countries.vue': {

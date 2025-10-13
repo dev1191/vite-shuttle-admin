@@ -9,12 +9,12 @@ const { t } = useI18n()
 const { fetchSetting, item, isLoading, editSetting } = useSiteSettings()
 
 onMounted(() => {
-  fetchSetting('smtp')
+  fetchSetting('storage')
 })
 
 const handleEditSetting = async (formData: Record<string, any>) => {
   try {
-    await editSetting('smtp', formData)
+    await editSetting('storage', formData)
     message.success(
       t('common.updateMessage', {
         title: t('menu.settings.storage.title'),
