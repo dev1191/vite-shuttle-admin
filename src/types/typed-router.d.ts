@@ -33,10 +33,16 @@ declare module 'vue-router/auto-routes' {
     '/[role]/manage-users/roles/[id]': RouteRecordInfo<'/[role]/manage-users/roles/[id]', '/:role/manage-users/roles/:id', { role: ParamValue<true>, id: ParamValue<true> }, { role: ParamValue<false>, id: ParamValue<false> }>,
     '/[role]/manage-users/users/': RouteRecordInfo<'/[role]/manage-users/users/', '/:role/manage-users/users', { role: ParamValue<true> }, { role: ParamValue<false> }>,
     '/[role]/profile': RouteRecordInfo<'/[role]/profile', '/:role/profile', { role: ParamValue<true> }, { role: ParamValue<false> }>,
+    '/[role]/settings/app': RouteRecordInfo<'/[role]/settings/app', '/:role/settings/app', { role: ParamValue<true> }, { role: ParamValue<false> }>,
     '/[role]/settings/countries': RouteRecordInfo<'/[role]/settings/countries', '/:role/settings/countries', { role: ParamValue<true> }, { role: ParamValue<false> }>,
     '/[role]/settings/currencies': RouteRecordInfo<'/[role]/settings/currencies', '/:role/settings/currencies', { role: ParamValue<true> }, { role: ParamValue<false> }>,
+    '/[role]/settings/emails': RouteRecordInfo<'/[role]/settings/emails', '/:role/settings/emails', { role: ParamValue<true> }, { role: ParamValue<false> }>,
     '/[role]/settings/general': RouteRecordInfo<'/[role]/settings/general', '/:role/settings/general', { role: ParamValue<true> }, { role: ParamValue<false> }>,
     '/[role]/settings/languages': RouteRecordInfo<'/[role]/settings/languages', '/:role/settings/languages', { role: ParamValue<true> }, { role: ParamValue<false> }>,
+    '/[role]/settings/notifications': RouteRecordInfo<'/[role]/settings/notifications', '/:role/settings/notifications', { role: ParamValue<true> }, { role: ParamValue<false> }>,
+    '/[role]/settings/payment-gateways': RouteRecordInfo<'/[role]/settings/payment-gateways', '/:role/settings/payment-gateways', { role: ParamValue<true> }, { role: ParamValue<false> }>,
+    '/[role]/settings/storage': RouteRecordInfo<'/[role]/settings/storage', '/:role/settings/storage', { role: ParamValue<true> }, { role: ParamValue<false> }>,
+    '/[role]/settings/term-and-conditions': RouteRecordInfo<'/[role]/settings/term-and-conditions', '/:role/settings/term-and-conditions', { role: ParamValue<true> }, { role: ParamValue<false> }>,
     '/[role]/vehicles/bus-layouts/': RouteRecordInfo<'/[role]/vehicles/bus-layouts/', '/:role/vehicles/bus-layouts', { role: ParamValue<true> }, { role: ParamValue<false> }>,
     '/[role]/vehicles/bus-layouts/create': RouteRecordInfo<'/[role]/vehicles/bus-layouts/create', '/:role/vehicles/bus-layouts/create', { role: ParamValue<true> }, { role: ParamValue<false> }>,
     '/[role]/vehicles/bus-types/': RouteRecordInfo<'/[role]/vehicles/bus-types/', '/:role/vehicles/bus-types', { role: ParamValue<true> }, { role: ParamValue<false> }>,
@@ -117,6 +123,10 @@ declare module 'vue-router/auto-routes' {
       routes: '/[role]/profile'
       views: never
     }
+    'src/pages/[role]/settings/app.vue': {
+      routes: '/[role]/settings/app'
+      views: never
+    }
     'src/pages/[role]/settings/countries.vue': {
       routes: '/[role]/settings/countries'
       views: never
@@ -125,12 +135,32 @@ declare module 'vue-router/auto-routes' {
       routes: '/[role]/settings/currencies'
       views: never
     }
+    'src/pages/[role]/settings/emails.vue': {
+      routes: '/[role]/settings/emails'
+      views: never
+    }
     'src/pages/[role]/settings/general.vue': {
       routes: '/[role]/settings/general'
       views: never
     }
     'src/pages/[role]/settings/languages.vue': {
       routes: '/[role]/settings/languages'
+      views: never
+    }
+    'src/pages/[role]/settings/notifications.vue': {
+      routes: '/[role]/settings/notifications'
+      views: never
+    }
+    'src/pages/[role]/settings/payment-gateways.vue': {
+      routes: '/[role]/settings/payment-gateways'
+      views: never
+    }
+    'src/pages/[role]/settings/storage.vue': {
+      routes: '/[role]/settings/storage'
+      views: never
+    }
+    'src/pages/[role]/settings/term-and-conditions.vue': {
+      routes: '/[role]/settings/term-and-conditions'
       views: never
     }
     'src/pages/[role]/vehicles/bus-layouts/index.vue': {

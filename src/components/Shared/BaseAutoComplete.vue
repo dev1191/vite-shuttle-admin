@@ -76,6 +76,7 @@ const onSearch = (value: string) => {
       :placeholder="placeholder"
       :allow-clear="allowClear"
       :disabled="disabled"
+      backfill
       :style="{ width }"
       @select="onSelect"
       @search="onSearch"
@@ -84,6 +85,13 @@ const onSearch = (value: string) => {
     >
       <template #clearIcon>
         <CloseOutlined />
+      </template>
+
+      <template #option="{ value, label, ...option }">
+        <slot name="option" :value="value" :label="label" :option="option">
+          <!-- Default fallback rendering -->
+          {{ label || value }}
+        </slot>
       </template>
     </a-auto-complete>
   </a-form-item>

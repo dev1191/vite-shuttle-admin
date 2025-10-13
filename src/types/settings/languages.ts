@@ -1,12 +1,13 @@
 
 
 export interface Language {
-    ids: string;
+    ids?: string;
     label: string;
     code: string;
     countryId: string;
+    country_name: string;
     status: boolean;
-    is_deleted: boolean;
+    is_deleted?: boolean;
 }
 
 

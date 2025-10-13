@@ -1,5 +1,5 @@
 import request from '@/common/http-client'
-import type { PaginatingParams } from '@/types'
+import type { OptionLists, PaginatingParams, SearchParams } from '@/types'
 import type { CurrencyListData, Currency, Countriestatus } from '@/types/currencies'
 
 
@@ -8,6 +8,13 @@ export class CountrieService {
     static getCurrencyList(params: PaginatingParams) {
         return request.get<CurrencyListData>({
             url: '/currencies/search',
+            params,
+        })
+    }
+
+    static fetchCurrencyOptions(params: SearchParams) {
+        return request.get<OptionLists>({
+            url: '/currencies',
             params,
         })
     }
