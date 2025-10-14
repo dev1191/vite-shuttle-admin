@@ -15,8 +15,8 @@ const handleEditSetting = async (formData: Record<string, any>) => {
     await editSetting('app', formData)
     message.success(
       t('common.updateMessage', {
-        title: t('menu.settings.email.title'),
-        name: 'email SMTP',
+        title: t('menu.settings.app.title'),
+        name: 'app',
       }),
     )
   } catch (error) {

@@ -48,6 +48,8 @@
     "female": "Female",
     "status": "Status",
     "sending": "sending...",
+    "meters": "Meters",
+    "kilometers": "kilometers",
     "confirmMessage": "Are you sure you want to delete {name}?",
     "createMessage": "{name} has been created",
     "deleteMessage": "{name} has been deleted",
@@ -77,8 +79,15 @@
           "defaultCurrency": "Default Currency",
           "defaultLanguage": "Default Language",
           "defaultTimezone": "Default timezone",
+          "dateFormat": "Date Format",
+          "timeFormat": "Time Format",
+          "setTax": "Set Tax",
           "taxName": "Tax Name",
-          "taxAmount": "Tax Amount"
+          "taxAmount": "Tax Amount (%)",
+          "setCommission": "Set Commission",
+          "commissionName": "Commission Name",
+          "commissionAmount": "Commission Amount (%)",
+          "distanceUnit": "Distance Metric"
         }
       },
       "countries": {
