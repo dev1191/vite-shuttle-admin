@@ -126,11 +126,11 @@ export function useSidebarMenu(role: string) {
         {
 
             icon: useRenderIcon('hugeicons:dashboard-square-setting', { style: { fontSize: '24px' } }),
-            key: `settings-general`,
-            label: t('menu.settings.general'),
-            name: t('menu.settings.general'),
+            key: `application-settings`,
+            label: t('menu.settings.application'),
+            name: t('menu.settings.application'),
             path: `/${role}/settings/general`,
-            namePath: [t('menu.settings.title'), t('menu.settings.general')],
+            namePath: [t('menu.settings.application'), t('menu.settings.general.title')],
         },
     ];
 

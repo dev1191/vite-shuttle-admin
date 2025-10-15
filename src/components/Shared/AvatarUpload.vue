@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { PlusOutlined } from '@ant-design/icons-vue'
+import { PlusOutlined, LoadingOutlined } from '@ant-design/icons-vue'
 import { message } from 'ant-design-vue'
 
 interface Props {
-  modelValue?: File | string | null // ✅ support File or URL
-  size?: number // avatar size
-  maxSizeMB?: number // file size limit
+  modelValue?: File | string | null
+  size?: number
+  shape?: 'circle' | 'square' // default circle
+  label?: string
+  maxSizeMB?: number
 }
 
 interface Emits {
@@ -15,19 +17,20 @@ interface Emits {
 
 const props = withDefaults(defineProps<Props>(), {
   size: 120,
+  shape: 'circle', // ✅ default avatar shape
+  label: 'Upload',
   maxSizeMB: 2,
 })
 
 const emit = defineEmits<Emits>()
 
 const loading = ref(false)
-const previewUrl = ref<string>('') // only for newly selected File
+const previewUrl = ref<string>('')
 
-// Validation before upload
 const beforeUpload = (file: File) => {
   const isImage = file.type.startsWith('image/')
   if (!isImage) {
-    message.error('You can only upload image files!')
+    message.error('Only image files are allowed!')
     return false
   }
   const isLt = file.size / 1024 / 1024 < props.maxSizeMB
@@ -38,26 +41,20 @@ const beforeUpload = (file: File) => {
   return true
 }
 
-// Handle file selection
-const handleChange = async ({ file }: any) => {
-  if (!file || !file.originFileObj) return
+const handleChange = ({ file }: any) => {
+  if (!file?.originFileObj) return
   loading.value = true
   try {
     const selectedFile = file.originFileObj as File
-
-    // ✅ emit File to parent
     emit('update:modelValue', selectedFile)
-
-    // Create preview for UI
     previewUrl.value = URL.createObjectURL(selectedFile)
-  } catch (e) {
-    message.error('Failed to load image!')
+  } catch {
+    message.error('Image load failed!')
   } finally {
     loading.value = false
   }
 }
 
-// Compute preview source: new file preview > URL from modelValue
 const previewSrc = computed(() => {
   if (previewUrl.value) return previewUrl.value
   if (typeof props.modelValue === 'string') return props.modelValue
@@ -71,29 +68,42 @@ const previewSrc = computed(() => {
     :show-upload-list="false"
     :before-upload="beforeUpload"
     @change="handleChange"
-    class="avatar-uploader"
+    class="image-uploader"
   >
-    <div v-if="previewSrc">
-      <a-avatar :src="previewSrc" :size="props.size" />
-    </div>
-    <div v-else>
-      <PlusOutlined />
-      <div>Upload</div>
-    </div>
+    <template v-if="previewSrc">
+      <a-avatar :src="previewSrc" :size="props.size" :shape="props.shape" />
+    </template>
+
+    <template v-else>
+      <div class="upload-placeholder">
+        <LoadingOutlined v-if="loading" />
+        <PlusOutlined v-else />
+        <div class="upload-label">{{ props.label }}</div>
+      </div>
+    </template>
   </a-upload>
 </template>
 
 <style scoped>
-.avatar-uploader > .ant-upload {
+.image-uploader > .ant-upload {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 128px;
   height: 128px;
+  border-radius: 2px;
+  overflow: hidden;
 }
-.ant-upload-select-picture-card i {
-  font-size: 32px;
+.upload-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   color: #999;
 }
-.ant-upload-select-picture-card .ant-upload-text {
-  margin-top: 8px;
+.upload-label {
+  margin-top: 6px;
   color: #666;
+  font-size: 12px;
 }
 </style>

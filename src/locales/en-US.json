@@ -69,9 +69,22 @@
     "payments": "Manage Payments",
     "settings": {
       "title": "Settings",
+      "application": "Application settings",
       "account": "Account Settings",
-      "general": "General Settings",
       "security": "Security Settings",
+      "general": {
+        "title": "General Settings",
+        "form": {
+          "name": "Name",
+          "tagline": "Tag Line",
+          "phone": "Phone number",
+          "address": "Address",
+          "email": "Email Address",
+          "whiteLogo": "WhiteLogo (Recommended: 200X200 px)",
+          "darkLogo": "Dark Logo (Recommended: 200X200 px)",
+          "favicon": "Favicon (Recommended: 32X32 px)"
+        }
+      },
       "app": {
         "title": "App Settings",
         "form": {
@@ -81,10 +94,10 @@
           "defaultTimezone": "Default timezone",
           "dateFormat": "Date Format",
           "timeFormat": "Time Format",
-          "setTax": "Set Tax",
+          "setTax": "Set Taxes",
           "taxName": "Tax Name",
           "taxAmount": "Tax Amount (%)",
-          "setCommission": "Set Commission",
+          "setCommission": "Set Commissions",
           "commissionName": "Commission Name",
           "commissionAmount": "Commission Amount (%)",
           "distanceUnit": "Distance Metric"

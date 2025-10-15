@@ -8,7 +8,16 @@ export const useUserStore = defineStore(
   () => {
     // state
     const user = ref<User | null>(null)
-    const generalSetting = ref<GeneralSetting>({})
+    const generalSetting = ref<GeneralSetting>({
+      name: "",
+      tagline: "",
+      email: "",
+      phone: "",
+      address: "",
+      dark_logo: "",
+      white_logo: "",
+      favicon: "",
+    })
     const roles = ref<Role[]>([]);
     const permissions = ref<Permission[]>([]);
     // actions
@@ -31,16 +40,33 @@ export const useUserStore = defineStore(
     function clearAccess() {
       roles.value = [];
       permissions.value = [];
-      generalSetting.value = {}
+      clearGeneral()
+    }
+    function clearGeneral() {
+      generalSetting.value = {
+        name: "",
+        tagline: "",
+        email: "",
+        phone: "",
+        address: "",
+        dark_logo: "",
+        white_logo: "",
+        favicon: "",
+      }
     }
 
+    function setGeneral(formData: any) {
+      generalSetting.value = formData
+    }
     // getters
     const fullName = computed(() =>
       user.value ? `${user.value.firstname} ${user.value.lastname}` : '',
     )
 
-    const hasPermission = (perm: string) =>
+    function hasPermission(perm: string) {
       permissions.value?.some((p) => p.slug === perm) ?? false
+    }
+
 
     return {
       user,
@@ -53,6 +79,7 @@ export const useUserStore = defineStore(
       clearAccess,
       fullName,
       hasPermission,
+      setGeneral,
     }
   },
   {

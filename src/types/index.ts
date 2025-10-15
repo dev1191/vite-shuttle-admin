@@ -66,32 +66,12 @@ export interface PaginatingParams {
 }
 
 export interface GeneralSetting {
-  timezone: string;
   name: string;
+  tagline: string;
   email: string;
   phone: string;
   address: string;
-  default_country: string;
-  default_currency: string;
-  default_currency_code: string;
-  default_language: string;
-  google_key: string;
-  tax: string;
-  fee: string;
-  date_format: {
-    text: string;
-    value: string;
-  },
-  time_format: {
-    text: string;
-    value: string;
-  },
-  background_location_update_interval: number;
-  driver_online_location_update_interval: number;
-  max_distance: number;
-  prebooking_time: number;
-  distance_unit: string;
   dark_logo: string;
-  light_logo: string;
+  white_logo: string;
   favicon: string;
 }

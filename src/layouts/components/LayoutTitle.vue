@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useLayoutSettingStore } from '@/stores/modules/layout.store'
+import { useUserStore } from '@/stores/modules/user.store'
 
 defineProps({
   collapsed: {
@@ -8,21 +9,28 @@ defineProps({
 })
 
 const { layoutSetting, titleColor } = useLayoutSettingStore()
-const title = computed(() => layoutSetting.title)
-
+const userStore = useUserStore()
+const title = computed(() => userStore.generalSetting.name || layoutSetting.title)
+const logo = computed(() =>
+  layoutSetting.algorithm === 'darkAlgorithm'
+    ? userStore.generalSetting.dark_logo
+    : userStore.generalSetting.white_logo,
+)
 const style = computed(() => {
   return {
     paddingLeft: '10px',
     height: `var(--app-header-height)`,
-    color: titleColor.value,
   }
 })
 </script>
 
 <template>
-  <div class="flex-cc overflow-hidden whitespace-nowrap font-500 text-20px" :style="style">
-    <img class="h32px mr10px" src="#" alt="" />
-    <div v-show="!collapsed">
+  <div
+    class="flex flex-row overflow-hidden whitespace-nowrap font-500 text-20px gap-2 p-2"
+    :style="style"
+  >
+    <img class="h42px mr10px" :src="logo" alt="" />
+    <div v-show="!collapsed" class="mt-2">
       {{ title }}
     </div>
   </div>

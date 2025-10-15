@@ -12,10 +12,9 @@ export class SiteSettingService {
     }
 
     static update(name: string, payload: any) {
-        // const formData = toFormData(payload)
         return request.patch<Record<string, any>>({
             url: `/settings/${name}`,
-            data: payload,
+            data: name === 'general' ? toFormData(payload) : payload,
         })
     }
 }

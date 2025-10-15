@@ -201,7 +201,7 @@ onMounted(() => {
         </a-form-item>
       </a-col>
 
-      <a-col :span="12">
+      <a-col :span="16">
         <a-form-item name="tax_status" :label="t('menu.settings.app.form.setTax')">
           <a-switch v-model:checked="newApp.tax_status" />
         </a-form-item>
@@ -230,7 +230,7 @@ onMounted(() => {
         </a-form-item>
       </a-col>
 
-      <a-col :span="12">
+      <a-col :span="16">
         <a-form-item name="commission_status" :label="t('menu.settings.app.form.setCommission')">
           <a-switch v-model:checked="newApp.commission_status" />
         </a-form-item>
