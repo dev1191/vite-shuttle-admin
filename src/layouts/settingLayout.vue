@@ -1,165 +1,145 @@
 <script setup lang="ts">
 import { useUserStore } from '@/stores/modules/user.store'
 import type { IMenuItem } from '@/types/menu'
-interface Props {
-  title: string
-  description?: string
-}
 
-defineProps<Props>()
-
+const props = defineProps<{ title: string; description?: string }>()
 const { user } = useUserStore()
 const { t } = useI18n()
-const currentRole = computed(() => user?.role.toLocaleLowerCase() || 'admin')
-const selectedKeys = ref<string[]>(['dashboard'])
-const openKeys = ref<string[]>(['dashboard'])
-
 const { useRenderIcon } = useRender()
+const router = useRouter()
+const route = useRoute()
 
-const sidebarNavItems: IMenuItem[] = [
+const currentRole = computed(() => user?.role?.toLowerCase() || 'admin')
+const selectedKeys = ref<string[]>(['general'])
+const openKeys = ref<string[]>(['general'])
+const loading = ref(true)
+
+// Sidebar items
+const sidebarNavItems = computed<IMenuItem[]>(() => [
   {
-    name: 'General Settings',
+    name: t('menu.settings.general.title'),
     key: 'general',
     icon: useRenderIcon('hugeicons:settings-05', { style: { fontSize: '24px' } }),
     path: `/${currentRole.value}/settings/general`,
   },
   {
-    name: 'App Settings',
+    name: t('menu.settings.app.title'),
     key: 'app',
     icon: useRenderIcon('hugeicons:apple-reminder', { style: { fontSize: '24px' } }),
     path: `/${currentRole.value}/settings/app`,
   },
   {
-    name: 'Push Notification Settings',
+    name: t('menu.settings.notifications.title'),
     key: 'notification',
     icon: useRenderIcon('hugeicons:notification-01', { style: { fontSize: '24px' } }),
     path: `/${currentRole.value}/settings/notifications`,
   },
   {
-    name: 'Email Settings',
+    name: t('menu.settings.emails.title'),
     key: 'email',
     icon: useRenderIcon('hugeicons:mail-setting-01', { style: { fontSize: '24px' } }),
     path: `/${currentRole.value}/settings/emails`,
   },
   {
-    name: 'Storage Settings',
+    name: t('menu.settings.storage.title'),
     key: 'storage',
     icon: useRenderIcon('hugeicons:ai-cloud-02', { style: { fontSize: '24px' } }),
     path: `/${currentRole.value}/settings/storage`,
   },
   {
-    name: 'Countries',
+    name: t('menu.settings.countries.title'),
     key: 'countries',
     icon: useRenderIcon('hugeicons:global', { style: { fontSize: '24px' } }),
     path: `/${currentRole.value}/settings/countries`,
-    namePath: [t('menu.settings.title'), t('menu.settings.countries')],
   },
   {
-    name: t('settings.currencies'),
+    name: t('menu.settings.currencies.title'),
     key: 'currencies',
     icon: useRenderIcon('hugeicons:money-01', { style: { fontSize: '24px' } }),
     path: `/${currentRole.value}/settings/currencies`,
-    namePath: [t('menu.settings.title'), t('menu.settings.currencies')],
   },
   {
-    name: t('settings.languages'),
+    name: t('menu.settings.languages.title'),
     key: 'languages',
     icon: useRenderIcon('hugeicons:language-square', { style: { fontSize: '24px' } }),
     path: `/${currentRole.value}/settings/languages`,
-    namePath: [t('menu.settings.title'), t('menu.settings.languages')],
   },
   {
-    name: t('settings.paymentGateway'),
+    name: t('menu.settings.paymentGateway.title'),
     key: 'paymentGateway',
     icon: useRenderIcon('hugeicons:payment-01', { style: { fontSize: '24px' } }),
     path: `/${currentRole.value}/settings/payment-gateways`,
-    namePath: [t('menu.settings.title'), t('menu.settings.paymentGateway')],
   },
   {
-    name: 'Term and Conditions',
+    name: t('menu.settings.terms.title'),
     key: 'terms',
     icon: useRenderIcon('hugeicons:book-open-01', { style: { fontSize: '24px' } }),
     path: `/${currentRole.value}/settings/term-and-conditions`,
   },
-]
+])
 
-const currentRoute = useRoute()
-const router = useRouter()
+// Simulate loading
+onMounted(() => {
+  setTimeout(() => (loading.value = false), 1000)
+})
 
-const flashTimer = ref<number | null>(null)
-const flashMenu = (key: string) => {
-  openKeys.value = [key]
-  if (flashTimer.value) {
-    window.clearTimeout(flashTimer.value)
+// Update menu selection when route changes
+watchEffect(() => {
+  const activeItem = sidebarNavItems.value.find((i) => i.path === route.path)
+  if (activeItem) {
+    selectedKeys.value = [activeItem.key]
+    openKeys.value = [activeItem.key]
   }
-  flashTimer.value = window.setTimeout(() => {
-    openKeys.value = []
-  }, 800)
-}
+})
 
-watch(
-  () => currentRoute.path,
-  (path) => {
-    const findMenuKey = (items: IMenuItem[], path: string): string | undefined => {
-      for (const item of items) {
-        if (item.path === path) return item.key
-      }
-      return undefined
-    }
-
-    const key = findMenuKey(sidebarNavItems, path)
-    if (key) {
-      selectedKeys.value = [key]
-    }
-  },
-  { immediate: true },
-)
-
+// Handle menu click
 const handleMenuClick = (key: string) => {
-  const findPath = (items: IMenuItem[]): string | undefined => {
-    for (const item of items) {
-      if (item.key.toLowerCase() === key.toLowerCase()) return item.path
-    }
-    return undefined
-  }
-
-  const path = findPath(sidebarNavItems)
-  if (path) {
-    router.push(path)
-  }
+  const item = sidebarNavItems.value.find((i) => i.key === key)
+  if (item) router.push(item.path)
 }
 </script>
 
 <template>
   <div class="px-1">
-    <Heading title="Settings" description="Manage your profile and account settings" />
+    <Heading
+      :title="t('menu.settings.title')"
+      :description="props.description || t('menu.settings.account')"
+    />
 
-    <div class="flex flex-col gap-3 space-y-4 md:space-y-0 lg:flex-row lg:space-y-0 lg:space-x-12">
-      <a-layout-sider width="255">
+    <div class="flex flex-col gap-3 lg:flex-row lg:space-x-12">
+      <a-layout-sider width="255" style="min-height: 100vh; background: #fff">
+        <template v-if="loading">
+          <div class="p-10 flex flex-col justify-center space-y-3">
+            <a-skeleton
+              v-for="n in 10"
+              :key="n"
+              active
+              :avatar="{ shape: 'square', size: 28 }"
+              title
+              :paragraph="false"
+            />
+          </div>
+        </template>
+
         <a-menu
+          v-else
           mode="inline"
           :selectedKeys="selectedKeys"
           :openKeys="openKeys"
-          style="height: 100%"
           @select="({ key }) => handleMenuClick(key as string)"
+          style="height: 100%"
         >
           <a-menu-item v-for="item in sidebarNavItems" :key="item.key">
-            <template #icon>
-              <component :is="item.icon" />
-            </template>
-            <span> {{ item.name }}</span>
+            <template #icon><component :is="item.icon" /></template>
+            <span>{{ item.name }}</span>
           </a-menu-item>
         </a-menu>
       </a-layout-sider>
 
-      <a-divider class="my-6 md:hidden" />
-
       <div class="w-full">
-        <section class="w-full space-y-2 space-x-2">
-          <a-card>
-            <slot />
-          </a-card>
-        </section>
+        <a-card>
+          <slot />
+        </a-card>
       </div>
     </div>
   </div>

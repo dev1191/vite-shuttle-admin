@@ -110,10 +110,10 @@ export function useSidebarMenu(role: string) {
         {
             key: `passes`,
             icon: useRenderIcon('hugeicons:scratch-card', { style: { fontSize: '24px' } }),
-            label: t('menu.passes'),
-            name: t('menu.passes'),
+            label: t('menu.passes.title'),
+            name: t('menu.passes.title'),
             path: `/${role}/manage-passes`,
-            namePath: [t('menu.passes')],
+            namePath: [t('menu.passes.title')],
         },
         {
             key: `helpAndSupport`,

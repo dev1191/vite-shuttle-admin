@@ -1,15 +1,20 @@
 
 
 export interface Pass {
-    ids: string;
-    name: string;
-    code: string;
-    symbol: string;
+    ids?: string;
+    no_of_rides: number;
+    no_of_valid_days: number;
+    price_per_km: string;
+    description: string;
+    terms: string;
     status: boolean;
-    rate: string;
-    is_deleted: boolean;
+    discount: number;
 }
 
+
+export interface PassStatus {
+    status: boolean
+}
 
 export interface PassListData {
     items: Pass[];

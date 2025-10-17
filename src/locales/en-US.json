@@ -130,6 +130,14 @@
           "country": "Country"
         }
       },
+      "storage": {
+        "title": "Storage Settings",
+        "form": {}
+      },
+      "notifications": {
+        "title": "Push Notification Settings",
+        "form": {}
+      },
       "emails": {
         "title": "Email Settings",
         "form": {
@@ -137,6 +145,10 @@
           "code": "Code",
           "country": "Country"
         }
+      },
+      "terms": {
+        "title": "Terms and Condtions",
+        "form": {}
       },
       "paymentGateway": {
         "title": "Payment Gateway",
@@ -202,7 +214,19 @@
     "busSchedules": "Bus Schedules",
     "appSettings": "App Settings",
     "notifications": "Notifications",
-    "passes": "Passes",
+    "passes": {
+      "title": "Passes",
+      "pass": "Pass",
+      "newPass": "New Pass",
+      "form": {
+        "validDays": "Valid Days",
+        "noOfRides": "No Of Rides",
+        "pricePerKm": "Price Per Km",
+        "description": "Description",
+        "terms": "Terms and Condtions",
+        "discount": "Discount (%)"
+      }
+    },
     "offers": "Manage Offers",
     "bookings": "Manage Bookings",
     "suggestions": "Suggestions",
@@ -326,6 +350,7 @@
     "maxLength": "Maximum length is {max} characters",
     "lengthBetween": "Length must be between {min} and {max} characters",
     "phoneFormat": "Please enter a valid phone number format",
-    "passwordMismatch": "Passwords do not match"
+    "passwordMismatch": "Passwords do not match",
+    "numberDecimalOnly": "Please enter a valid number (integer or decimal)"
   }
 }

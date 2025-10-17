@@ -1,9 +1,9 @@
 import request from '@/common/http-client'
 import type { OptionLists, PaginatingParams, SearchParams } from '@/types'
-import type { PassListData, Pass, Countriestatus } from '@/types/passes'
+import type { PassListData, Pass, Passestatus, PassStatus } from '@/types/passes'
 
 
-export class CountrieService {
+export class PassService {
     // 🔹 Get paginated country list
     static getPassList(params: PaginatingParams) {
         return request.get<PassListData>({
@@ -37,7 +37,7 @@ export class CountrieService {
     }
 
     // 🔹 Update country
-    static updateCountriestatus(id: string, payload: Partial<Countriestatus>) {
+    static updatePassStatus(id: string, payload: Partial<PassStatus>) {
         return request.patch<Pass>({
             url: `/passes/${id}/status`,
             data: payload

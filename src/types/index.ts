@@ -4,6 +4,13 @@ import * as Country from "./settings/countries";
 import * as Currency from "./settings/currencies";
 import * as Pass from "./passes/index"
 
+export {
+  Pass,
+  Menu,
+  Country,
+  Currency,
+  Users,
+}
 export interface LoginResponse {
   token: string
   expiresIn: number

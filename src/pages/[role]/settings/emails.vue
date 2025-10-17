@@ -35,7 +35,7 @@ const handleEditSetting = async (formData: Record<string, any>) => {
 <route lang="yaml">
 meta:
   layout: defaultLayout
-  title: settings.email
+  title: settings.email.title
   icon: SettingOutlined
   order: 10
   drawerIndex: 10
@@ -43,7 +43,7 @@ meta:
   roles: [admin, agent, staff, manager]
   breadcrumb:
     - settings.title
-    - settings.email
+    - settings.email.title
 </route>
 
 <style scoped></style>

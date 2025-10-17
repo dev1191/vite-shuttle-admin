@@ -58,7 +58,7 @@ const handleFailed = (errorInfo: any) => {
       <slot name="fields" :form="formData"></slot>
 
       <div class="flex justify-end gap-2 mt-4">
-        <a-button size="large" @click="handleClose">
+        <a-button size="large" @click="handleClose" danger>
           {{ t('common.cancel') }}
         </a-button>
         <a-button size="large" type="primary" @click="handleSubmit" :loading="loading">

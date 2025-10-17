@@ -2,17 +2,15 @@
 import { useSidebarMenu } from '@/composables/useSidebarMenu'
 import type { IMenuItem } from '@/types/menu'
 import { getRoleMenu } from '@/utils/router'
-//import SubMenuItem from './SubMenuItem.vue'
 
 const props = defineProps({
-  collapsed: {
-    type: Boolean,
-  },
+  collapsed: Boolean,
   userRole: {
     type: String,
     default: 'admin',
   },
 })
+
 const currentRoute = useRoute()
 const router = useRouter()
 
@@ -20,21 +18,22 @@ const selectedKeys = ref<string[]>(['dashboard'])
 const openKeys = ref<string[]>(['dashboard'])
 
 const { defaultMenus } = useSidebarMenu(props.userRole)
+const menuItems = ref<IMenuItem[]>([])
+const loading = ref(true)
 
-const menuItems = ref([...defaultMenus])
+onMounted(async () => {
+  // simulate async fetch or preparation
+  await new Promise((resolve) => setTimeout(resolve, 800))
+  menuItems.value = [...defaultMenus]
+  loading.value = false
+})
 
 const flashTimer = ref<number | null>(null)
 const flashMenu = (key: string) => {
   openKeys.value = [key]
-  if (!props.collapsed) {
-    return
-  }
-  if (flashTimer.value) {
-    window.clearTimeout(flashTimer.value)
-  }
-  flashTimer.value = window.setTimeout(() => {
-    openKeys.value = []
-  }, 800)
+  if (!props.collapsed) return
+  if (flashTimer.value) window.clearTimeout(flashTimer.value)
+  flashTimer.value = window.setTimeout(() => (openKeys.value = []), 800)
 }
 
 watch(
@@ -53,11 +52,8 @@ watch(
       }
       return undefined
     }
-
     const key = findMenuKey(menuItems.value, path)
-    if (key) {
-      selectedKeys.value = [key]
-    }
+    if (key) selectedKeys.value = [key]
   },
   { immediate: true },
 )
@@ -73,17 +69,28 @@ const handleMenuClick = (key: string) => {
     }
     return undefined
   }
-
   const path = findPath(menuItems.value)
-  if (path) {
-    router.push(path)
-  }
+  if (path) router.push(path)
 }
 </script>
 
 <template>
-  <div class="mt-3">
+  <div class="mt-3 h-full">
+    <!-- Skeleton loader -->
+    <div v-if="loading" class="p-8 h-full flex flex-col justify-center space-y-3">
+      <a-skeleton
+        v-for="n in 15"
+        :key="n"
+        active
+        :avatar="{ shape: 'square', size: 28 }"
+        :title="{ width: '90%' }"
+        :paragraph="false"
+      />
+    </div>
+
+    <!-- Sidebar menu -->
     <a-menu
+      v-else
       :inline-collapsed="collapsed"
       mode="inline"
       :selectedKeys="selectedKeys"
@@ -92,7 +99,6 @@ const handleMenuClick = (key: string) => {
       style="height: 100%"
     >
       <template v-for="item in menuItems" :key="item.key">
-        <!-- If route has children -->
         <a-sub-menu v-if="item.children?.length" :key="item.key">
           <template #icon>
             <component :is="item.icon" />
@@ -101,24 +107,17 @@ const handleMenuClick = (key: string) => {
             <span>{{ item.meta?.title || item.name }}</span>
           </template>
           <a-menu-item v-for="child in item.children" :key="child.key">
-            <span>
-              {{ child.meta?.title || child.name }}
-            </span>
+            <span>{{ child.meta?.title || child.name }}</span>
           </a-menu-item>
         </a-sub-menu>
 
-        <!-- Single route -->
-        <template v-else>
-          <a-menu-item :key="item.key">
-            <template #icon>
-              <component :is="item.icon" />
-            </template>
-            <span>{{ item.meta?.title || item.name }}</span>
-          </a-menu-item>
-        </template>
+        <a-menu-item v-else :key="item.key">
+          <template #icon>
+            <component :is="item.icon" />
+          </template>
+          <span>{{ item.meta?.title || item.name }}</span>
+        </a-menu-item>
       </template>
     </a-menu>
   </div>
 </template>
-
-<style scoped></style>
