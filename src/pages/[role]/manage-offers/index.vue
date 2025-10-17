@@ -1,22 +1,22 @@
 <script setup lang="ts"></script>
 
+<template>
+  <div>
+    <OfferTable />
+  </div>
+</template>
+
 <route lang="yaml">
 meta:
   layout: defaultLayout
-  title: offers
+  title: offers.title
   icon: UsergroupOutlined
   drawerIndex: 0
   order: 3
   roles: [admin, agent, staff, manager]
   hidden: false
   breadcrumb:
-    - offers
+    - offers.title
 </route>
-
-<template>
-  <div>
-    <h1>offers Page</h1>
-  </div>
-</template>
 
 <style scoped></style>

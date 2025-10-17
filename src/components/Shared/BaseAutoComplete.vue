@@ -77,6 +77,7 @@ const onSearch = (value: string) => {
       :allow-clear="allowClear"
       :disabled="disabled"
       backfill
+      clearable
       :style="{ width }"
       @select="onSelect"
       @search="onSearch"

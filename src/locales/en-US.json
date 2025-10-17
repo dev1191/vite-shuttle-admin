@@ -31,6 +31,7 @@
     "cancel": "Cancel",
     "back": "Back",
     "refresh": "Refresh",
+    "reply": "Reply",
     "edit": "Edit {name}",
     "update": "Edit {name}",
     "delete": "Delete {name}",
@@ -45,9 +46,15 @@
     "yes": "Yes",
     "no": "No",
     "male": "Male",
+    "send": "Send",
+    "details": "{name} Details",
+    "close": "Close",
+    "createdAt": "Created At",
     "female": "Female",
     "status": "Status",
     "sending": "sending...",
+    "meters": "Meters",
+    "kilometers": "kilometers",
     "confirmMessage": "Are you sure you want to delete {name}?",
     "createMessage": "{name} has been created",
     "deleteMessage": "{name} has been deleted",
@@ -67,9 +74,22 @@
     "payments": "Manage Payments",
     "settings": {
       "title": "Settings",
+      "application": "Application settings",
       "account": "Account Settings",
-      "general": "General Settings",
       "security": "Security Settings",
+      "general": {
+        "title": "General Settings",
+        "form": {
+          "name": "Name",
+          "tagline": "Tag Line",
+          "phone": "Phone number",
+          "address": "Address",
+          "email": "Email Address",
+          "whiteLogo": "WhiteLogo (Recommended: 200X200 px)",
+          "darkLogo": "Dark Logo (Recommended: 200X200 px)",
+          "favicon": "Favicon (Recommended: 32X32 px)"
+        }
+      },
       "app": {
         "title": "App Settings",
         "form": {
@@ -77,8 +97,15 @@
           "defaultCurrency": "Default Currency",
           "defaultLanguage": "Default Language",
           "defaultTimezone": "Default timezone",
+          "dateFormat": "Date Format",
+          "timeFormat": "Time Format",
+          "setTax": "Set Taxes",
           "taxName": "Tax Name",
-          "taxAmount": "Tax Amount"
+          "taxAmount": "Tax Amount (%)",
+          "setCommission": "Set Commissions",
+          "commissionName": "Commission Name",
+          "commissionAmount": "Commission Amount (%)",
+          "distanceUnit": "Distance Metric"
         }
       },
       "countries": {
@@ -108,6 +135,14 @@
           "country": "Country"
         }
       },
+      "storage": {
+        "title": "Storage Settings",
+        "form": {}
+      },
+      "notifications": {
+        "title": "Push Notification Settings",
+        "form": {}
+      },
       "emails": {
         "title": "Email Settings",
         "form": {
@@ -115,6 +150,10 @@
           "code": "Code",
           "country": "Country"
         }
+      },
+      "terms": {
+        "title": "Terms and Condtions",
+        "form": {}
       },
       "paymentGateway": {
         "title": "Payment Gateway",
@@ -165,7 +204,22 @@
     "countries": "Countries",
     "currencies": "Currencies",
     "languages": "Languages",
-    "helpAndSupport": "Help & Supports",
+    "helpAndSupports": {
+      "title": "Help & Supports",
+      "sendMail": "Send Mail",
+      "pushNotification": "Push Notification",
+      "form": {
+        "ticketNo": "Ticket No.",
+        "fullName": "FullName",
+        "subject": "Subject",
+        "message": "Message",
+        "name": "Name",
+        "email": "Email Address",
+        "phone": "Phone number",
+        "gender": "Gender",
+        "description": "Description"
+      }
+    },
     "vehicles": {
       "title": "Vehicles",
       "buses": "Buses",
@@ -180,8 +234,36 @@
     "busSchedules": "Bus Schedules",
     "appSettings": "App Settings",
     "notifications": "Notifications",
-    "passes": "Passes",
-    "offers": "Manage Offers",
+    "passes": {
+      "title": "Passes",
+      "pass": "Pass",
+      "newPass": "New Pass",
+      "form": {
+        "validDays": "Valid Days",
+        "noOfRides": "No Of Rides",
+        "pricePerKm": "Price Per Km",
+        "description": "Description",
+        "terms": "Terms and Condtions",
+        "discount": "Discount (%)"
+      }
+    },
+    "offers": {
+      "title": "Manage Offers",
+      "offer": "Offer",
+      "newOffer": "New Offer",
+      "form": {
+        "name": "Name",
+        "code": "Code",
+        "discount": "Discount (%)",
+        "attempt": "No of attempt",
+        "date": "Start and End Date",
+        "endDate": "End Date",
+        "type": "Type",
+        "route_name": "Route Name",
+        "terms": "Description",
+        "picture": "Offer image (213x102)"
+      }
+    },
     "bookings": "Manage Bookings",
     "suggestions": "Suggestions",
     "schedules": "Schedule",
@@ -304,6 +386,7 @@
     "maxLength": "Maximum length is {max} characters",
     "lengthBetween": "Length must be between {min} and {max} characters",
     "phoneFormat": "Please enter a valid phone number format",
-    "passwordMismatch": "Passwords do not match"
+    "passwordMismatch": "Passwords do not match",
+    "numberDecimalOnly": "Please enter a valid number (integer or decimal)"
   }
 }

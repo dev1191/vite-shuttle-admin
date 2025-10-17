@@ -54,7 +54,7 @@ const handleFailed = (errorInfo: any) => {
     </a-form>
     <template #extra>
       <a-space>
-        <a-button size="large" @click="handleClose">Cancel</a-button>
+        <a-button size="large" danger @click="handleClose">{{ t('common.cancel') }}</a-button>
         <a-button size="large" type="primary" @click="handleSubmit" :loading="loading">
           {{ isEdit ? t('common.update') : t('common.create') }}
         </a-button>

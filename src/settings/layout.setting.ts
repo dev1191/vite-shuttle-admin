@@ -58,7 +58,7 @@ export const themeColors = [
   {
     title: 'settings.shuttleGreen',
     key: 'shuttleGreen',
-    value: '#2d6774',
+    value: '#3a8696',
     tag: 'checkbox',
   },
   {
@@ -288,12 +288,6 @@ export const uiSettings = [
     value: 'locale',
     tag: 'switch',
   },
-  // {
-  //   label: 'setting.language',
-  //   value: 'language',
-  //   tag: 'select',
-  //   options: i18nSettings
-  // },
   {
     label: 'setting.setting',
     value: 'showSetting',

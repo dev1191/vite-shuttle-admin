@@ -1,4 +1,4 @@
-import dayjs from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
 import relativeTime from "dayjs/plugin/relativeTime";
@@ -9,7 +9,33 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 dayjs.extend(relativeTime);
 
-const DEFAULT_FORMAT = "YYYY-MM-DD hh:mm A";
+
+
+/**
+ * Convert ISO string array from backend to Dayjs[]
+ * @param dates string[] | null
+ */
+export function parseDateRange(dates?: string[] | null): Dayjs[] {
+    if (!Array.isArray(dates)) return []
+    return dates.map(d => (d ? dayjs(d) : dayjs()))
+}
+
+
+/**
+ * Convert Dayjs[] to backend object { start_date, end_date }
+ * @param dates Dayjs[]
+ */
+export function serializeDateRange(dates: Dayjs[]) {
+    if (!Array.isArray(dates) || dates.length < 2) {
+        return { start_date: null, end_date: null }
+    }
+
+    const [start, end] = dates
+    return {
+        start_date: dayjs.isDayjs(start) ? start.toISOString() : null,
+        end_date: dayjs.isDayjs(end) ? end.toISOString() : null,
+    }
+}
 
 /**
  * Format date based on user's timezone from store
@@ -20,10 +46,11 @@ const DEFAULT_FORMAT = "YYYY-MM-DD hh:mm A";
  */
 export function formatDate(date: string | Date, options: any = {}) {
     if (!date) return "";
-
+    const { appSetting } = useUserStore();
+    const DEFAULT_FORMAT = `${appSetting.date_format} ${appSetting.time_format} `;
     const { format = DEFAULT_FORMAT, withRelative = false } = options;
-    const { generalSetting } = useUserStore();
-    const tz = generalSetting?.timezone || "UTC";
+
+    const tz = appSetting?.timezone || "UTC";
 
     const d = dayjs(date).tz(tz);
     const formatted = d.format(format);
@@ -35,32 +62,4 @@ export function formatDate(date: string | Date, options: any = {}) {
 
 
 
-export const toFormData = (data: Record<string, any>) => {
-    const formData = new FormData()
-    Object.entries(data).forEach(([key, value]) => {
-        if (value !== undefined && value !== null) {
-            // If nested object (like admin_details), stringify it
-            if (typeof value === 'object' && !(value instanceof File)) {
-                formData.append(key, JSON.stringify(value))
-            } else {
-                formData.append(key, value)
-            }
-        }
-    })
-    return formData
-}
 
-export const generateReferralCode = (length: number) => {
-    const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-    const digits = '0123456789'
-    const all = letters + digits
-
-    // start with 2 numbers
-    let code = Array.from({ length: 2 }, () => digits[Math.floor(Math.random() * digits.length)]).join('')
-
-    // fill the rest
-    code += Array.from({ length: length - 2 }, () => all[Math.floor(Math.random() * all.length)]).join('')
-
-    // shuffle
-    return code.split('').sort(() => Math.random() - 0.5).join('')
-}

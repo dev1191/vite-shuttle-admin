@@ -8,7 +8,26 @@ export const useUserStore = defineStore(
   () => {
     // state
     const user = ref<User | null>(null)
-    const generalSetting = ref<GeneralSetting>({})
+    const generalSetting = ref<GeneralSetting>({
+      name: "",
+      tagline: "",
+      email: "",
+      phone: "",
+      address: "",
+      dark_logo: "",
+      white_logo: "",
+      favicon: "",
+    })
+    const appSetting = ref({
+      default_currency: '',
+      default_country: '',
+      default_language: '',
+      timezone: '',
+      date_format: '',
+      time_format: '',
+      tax: {},
+      commission: {}
+    })
     const roles = ref<Role[]>([]);
     const permissions = ref<Permission[]>([]);
     // actions
@@ -21,6 +40,7 @@ export const useUserStore = defineStore(
       roles.value = accessData.roles;
       permissions.value = accessData.permissions;
       generalSetting.value = accessData.generalSetting;
+      appSetting.value = accessData.appSetting
     }
 
     function clearUser() {
@@ -31,28 +51,62 @@ export const useUserStore = defineStore(
     function clearAccess() {
       roles.value = [];
       permissions.value = [];
-      generalSetting.value = {}
+      clearGeneral()
+    }
+    function clearGeneral() {
+      generalSetting.value = {
+        name: "",
+        tagline: "",
+        email: "",
+        phone: "",
+        address: "",
+        dark_logo: "",
+        white_logo: "",
+        favicon: "",
+      }
+      appSetting.value = {
+        default_currency: '',
+        default_country: '',
+        default_language: '',
+        timezone: '',
+        date_format: '',
+        time_format: '',
+        tax: {},
+        commission: {}
+      }
     }
 
+    function setGeneral(formData: any) {
+      generalSetting.value = formData
+    }
+
+    function setApp(formData: any) {
+      appSetting.value = formData
+    }
     // getters
     const fullName = computed(() =>
       user.value ? `${user.value.firstname} ${user.value.lastname}` : '',
     )
 
-    const hasPermission = (perm: string) =>
+    function hasPermission(perm: string) {
       permissions.value?.some((p) => p.slug === perm) ?? false
+    }
+
 
     return {
       user,
       roles,
       permissions,
       generalSetting,
+      appSetting,
       setUser,
       setAccess,
       clearUser,
       clearAccess,
       fullName,
       hasPermission,
+      setGeneral,
+      setApp
     }
   },
   {

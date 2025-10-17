@@ -12,6 +12,7 @@ const props = defineProps({
   formData: { type: Object, required: true },
   width: { type: [String, Number], default: 500 },
   rules: { type: Object, required: true },
+  submitLabel: { type: String, default: '' },
 })
 
 const emit = defineEmits(['close', 'submit'])
@@ -58,11 +59,11 @@ const handleFailed = (errorInfo: any) => {
       <slot name="fields" :form="formData"></slot>
 
       <div class="flex justify-end gap-2 mt-4">
-        <a-button size="large" @click="handleClose">
+        <a-button size="large" @click="handleClose" danger>
           {{ t('common.cancel') }}
         </a-button>
         <a-button size="large" type="primary" @click="handleSubmit" :loading="loading">
-          {{ isEdit ? t('common.update') : t('common.create') }}
+          {{ isEdit ? (submitLabel ? submitLabel : t('common.update')) : t('common.create') }}
         </a-button>
       </div>
     </a-form>
