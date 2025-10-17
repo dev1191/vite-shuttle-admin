@@ -18,6 +18,16 @@ export const useUserStore = defineStore(
       white_logo: "",
       favicon: "",
     })
+    const appSetting = ref({
+      default_currency: '',
+      default_country: '',
+      default_language: '',
+      timezone: '',
+      date_format: '',
+      time_format: '',
+      tax: {},
+      commission: {}
+    })
     const roles = ref<Role[]>([]);
     const permissions = ref<Permission[]>([]);
     // actions
@@ -30,6 +40,7 @@ export const useUserStore = defineStore(
       roles.value = accessData.roles;
       permissions.value = accessData.permissions;
       generalSetting.value = accessData.generalSetting;
+      appSetting.value = accessData.appSetting
     }
 
     function clearUser() {
@@ -53,10 +64,24 @@ export const useUserStore = defineStore(
         white_logo: "",
         favicon: "",
       }
+      appSetting.value = {
+        default_currency: '',
+        default_country: '',
+        default_language: '',
+        timezone: '',
+        date_format: '',
+        time_format: '',
+        tax: {},
+        commission: {}
+      }
     }
 
     function setGeneral(formData: any) {
       generalSetting.value = formData
+    }
+
+    function setApp(formData: any) {
+      appSetting.value = formData
     }
     // getters
     const fullName = computed(() =>
@@ -73,6 +98,7 @@ export const useUserStore = defineStore(
       roles,
       permissions,
       generalSetting,
+      appSetting,
       setUser,
       setAccess,
       clearUser,
@@ -80,6 +106,7 @@ export const useUserStore = defineStore(
       fullName,
       hasPermission,
       setGeneral,
+      setApp
     }
   },
   {

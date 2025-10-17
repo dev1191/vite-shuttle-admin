@@ -3,19 +3,19 @@
 <route lang="yaml">
 meta:
   layout: defaultLayout
-  title: helpAndSupport
+  title: helpAndSupports.title
   icon: UsergroupOutlined
   drawerIndex: 0
   order: 3
   roles: [admin, agent, staff, manager]
   hidden: false
   breadcrumb:
-    - helpAndSupport
+    - helpAndSupports.title
 </route>
 
 <template>
   <div>
-    <h1>Help and Supports Page</h1>
+    <HelpAndSupportTable />
   </div>
 </template>
 

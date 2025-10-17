@@ -102,10 +102,10 @@ export function useSidebarMenu(role: string) {
         {
             key: `offers`,
             icon: useRenderIcon('hugeicons:coupon-percent', { style: { fontSize: '24px' } }),
-            label: t('menu.offers'),
-            name: t('menu.offers'),
+            label: t('menu.offers.title'),
+            name: t('menu.offers.title'),
             path: `/${role}/manage-offers`,
-            namePath: [t('menu.offers')],
+            namePath: [t('menu.offers.title')],
         },
         {
             key: `passes`,
@@ -118,10 +118,10 @@ export function useSidebarMenu(role: string) {
         {
             key: `helpAndSupport`,
             icon: useRenderIcon('hugeicons:customer-support', { style: { fontSize: '24px' } }),
-            label: t('menu.helpAndSupport'),
-            name: t('menu.helpAndSupport'),
+            label: t('menu.helpAndSupports.title'),
+            name: t('menu.helpAndSupports.title'),
             path: `/${role}/help-and-supports`,
-            namePath: [t('menu.helpAndSupport')],
+            namePath: [t('menu.helpAndSupports.title')],
         },
         {
 

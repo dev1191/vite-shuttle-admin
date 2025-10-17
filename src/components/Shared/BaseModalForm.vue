@@ -12,6 +12,7 @@ const props = defineProps({
   formData: { type: Object, required: true },
   width: { type: [String, Number], default: 500 },
   rules: { type: Object, required: true },
+  submitLabel: { type: String, default: '' },
 })
 
 const emit = defineEmits(['close', 'submit'])
@@ -62,7 +63,7 @@ const handleFailed = (errorInfo: any) => {
           {{ t('common.cancel') }}
         </a-button>
         <a-button size="large" type="primary" @click="handleSubmit" :loading="loading">
-          {{ isEdit ? t('common.update') : t('common.create') }}
+          {{ isEdit ? (submitLabel ? submitLabel : t('common.update')) : t('common.create') }}
         </a-button>
       </div>
     </a-form>

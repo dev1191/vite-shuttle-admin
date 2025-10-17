@@ -1,18 +1,20 @@
 <script setup lang="ts">
 import { useSiteSettings } from '@/composables/modules/useSiteSettings'
 import SettingLayout from '@/layouts/settingLayout.vue'
+import { useUserStore } from '@/stores/modules/user.store'
 import { message } from 'ant-design-vue'
 
 const { t } = useI18n()
 const { fetchSetting, item, isLoading, editSetting } = useSiteSettings()
-
+const userStore = useUserStore()
 onMounted(() => {
   fetchSetting('app')
 })
 
 const handleEditSetting = async (formData: Record<string, any>) => {
   try {
-    await editSetting('app', formData)
+    const result = await editSetting('app', formData)
+    await userStore.setApp({ ...userStore.appSetting, ...result })
     message.success(
       t('common.updateMessage', {
         title: t('menu.settings.app.title'),

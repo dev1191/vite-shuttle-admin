@@ -40,7 +40,7 @@ export function useRender() {
       {
         default: () => [
           // Avatar
-          h(Image, {
+          image ? h(Image, {
             src: image,
             fallbackSrc: 'assets/images/fallback.png',
             width: 40,
@@ -50,7 +50,7 @@ export function useRender() {
               objectFit: 'cover',
             },
             preview: false,
-          }),
+          }) : '',
 
           // Text details
           h('div', { style: { display: 'flex', flexDirection: 'column' } }, [

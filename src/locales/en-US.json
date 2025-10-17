@@ -31,6 +31,7 @@
     "cancel": "Cancel",
     "back": "Back",
     "refresh": "Refresh",
+    "reply": "Reply",
     "edit": "Edit {name}",
     "update": "Edit {name}",
     "delete": "Delete {name}",
@@ -45,6 +46,10 @@
     "yes": "Yes",
     "no": "No",
     "male": "Male",
+    "send": "Send",
+    "details": "{name} Details",
+    "close": "Close",
+    "createdAt": "Created At",
     "female": "Female",
     "status": "Status",
     "sending": "sending...",
@@ -199,7 +204,22 @@
     "countries": "Countries",
     "currencies": "Currencies",
     "languages": "Languages",
-    "helpAndSupport": "Help & Supports",
+    "helpAndSupports": {
+      "title": "Help & Supports",
+      "sendMail": "Send Mail",
+      "pushNotification": "Push Notification",
+      "form": {
+        "ticketNo": "Ticket No.",
+        "fullName": "FullName",
+        "subject": "Subject",
+        "message": "Message",
+        "name": "Name",
+        "email": "Email Address",
+        "phone": "Phone number",
+        "gender": "Gender",
+        "description": "Description"
+      }
+    },
     "vehicles": {
       "title": "Vehicles",
       "buses": "Buses",
@@ -227,7 +247,23 @@
         "discount": "Discount (%)"
       }
     },
-    "offers": "Manage Offers",
+    "offers": {
+      "title": "Manage Offers",
+      "offer": "Offer",
+      "newOffer": "New Offer",
+      "form": {
+        "name": "Name",
+        "code": "Code",
+        "discount": "Discount (%)",
+        "attempt": "No of attempt",
+        "date": "Start and End Date",
+        "endDate": "End Date",
+        "type": "Type",
+        "route_name": "Route Name",
+        "terms": "Description",
+        "picture": "Offer image (213x102)"
+      }
+    },
     "bookings": "Manage Bookings",
     "suggestions": "Suggestions",
     "schedules": "Schedule",
