@@ -102,9 +102,10 @@ declare module 'vue' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     StorageForm: typeof import('./../components/Settings/Storage/StorageForm.vue')['default']
+    TestMail: typeof import('./../components/Settings/Email/TestMail.vue')['default']
     ThemeSwitch: typeof import('./../components/Shared/ThemeSwitch.vue')['default']
     UserProfile: typeof import('./../components/User/UserProfile.vue')['default']
-    View: typeof import('./../components/HelpAndSupports/View.vue')['default']
+    View: typeof import('../components/HelpAndSupports/ViewHelpAndSupport.vue')['default']
     ViewHelpAndSupport: typeof import('./../components/HelpAndSupports/ViewHelpAndSupport.vue')['default']
   }
 }

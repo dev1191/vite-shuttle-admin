@@ -13,6 +13,7 @@ const props = defineProps({
   width: { type: [String, Number], default: 500 },
   rules: { type: Object, required: true },
   submitLabel: { type: String, default: '' },
+  description: { type: String, default: '' },
 })
 
 const emit = defineEmits(['close', 'submit'])
@@ -48,12 +49,19 @@ const handleFailed = (errorInfo: any) => {
     @cancel="handleClose"
     :footer="null"
   >
+    <a-space v-if="props.description">
+      <a-paragraph>
+        {{ props.description }}
+      </a-paragraph>
+    </a-space>
+
     <a-form
       layout="vertical"
       ref="formRef"
       :rules="rules"
       :model="formData"
       @finishFailed="handleFailed"
+      class="mt-4"
     >
       <!-- Slot for form fields -->
       <slot name="fields" :form="formData"></slot>

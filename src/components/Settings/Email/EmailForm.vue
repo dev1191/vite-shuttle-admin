@@ -8,7 +8,8 @@ interface Emits {
   (e: 'submit', newEmail: any): void
 }
 const emit = defineEmits<Emits>()
-
+const doShowTestModal = ref(false)
+const { t } = useI18n()
 const newEmail = reactive({
   is_production: false,
   type: 'SMTP',
@@ -53,19 +54,23 @@ const onSave = async () => {
   console.log('Form submitted:', newEmail)
   emit('submit', newEmail)
 }
+
+const handleSendMail = async () => {
+  doShowTestModal.value = false
+}
 </script>
 
 <template>
   <a-form layout="vertical" ref="addEmailForm" :model="newEmail" :rules="rules" @finish="onSave">
     <a-row :gutter="[16, 16]">
       <a-col :xs="24" :sm="12">
-        <a-form-item label="Is Production" name="is_production">
+        <a-form-item :label="t('menu.settings.emails.form.toProduction')" name="is_production">
           <a-switch v-model:checked="newEmail.is_production" />
         </a-form-item>
       </a-col>
 
       <a-col :xs="24" :sm="12">
-        <a-form-item label="Default Type" name="type">
+        <a-form-item :label="t('menu.settings.emails.form.defaultType')" name="type">
           <a-radio-group v-model:value="newEmail.type">
             <a-radio-button value="SMTP">SMTP</a-radio-button>
             <a-radio-button value="RESEND">RESEND</a-radio-button>
@@ -75,7 +80,7 @@ const onSave = async () => {
 
       <!-- ✅ Show only if type is RESEND -->
       <a-col v-if="newEmail.type === 'RESEND'" :xs="24" :sm="12">
-        <a-form-item label="API Key" name="key" :rules="rules.key">
+        <a-form-item :label="t('menu.settings.emails.form.apiKey')" name="key" :rules="rules.key">
           <a-input size="large" v-model:value="newEmail.key" placeholder="Enter API Key" />
         </a-form-item>
       </a-col>
@@ -83,13 +88,13 @@ const onSave = async () => {
       <!-- SMTP fields -->
       <template v-if="newEmail.type === 'SMTP'">
         <a-col :xs="24" :sm="12">
-          <a-form-item label="Host" name="host" :rules="rules.host">
+          <a-form-item :label="t('menu.settings.emails.form.host')" name="host" :rules="rules.host">
             <a-input size="large" v-model:value="newEmail.host" placeholder="Enter host" />
           </a-form-item>
         </a-col>
 
         <a-col :xs="24" :sm="12">
-          <a-form-item label="Port" name="port" :rules="rules.port">
+          <a-form-item :label="t('menu.settings.emails.form.port')" name="port" :rules="rules.port">
             <a-input-number
               size="large"
               v-model:value="newEmail.port"
@@ -100,7 +105,11 @@ const onSave = async () => {
         </a-col>
 
         <a-col :xs="24" :sm="12">
-          <a-form-item label="Encryption" name="encryption" :rules="rules.encryption">
+          <a-form-item
+            :label="t('menu.settings.emails.form.encryption')"
+            name="encryption"
+            :rules="rules.encryption"
+          >
             <a-input
               size="large"
               v-model:value="newEmail.encryption"
@@ -110,13 +119,21 @@ const onSave = async () => {
         </a-col>
 
         <a-col :xs="24" :sm="12">
-          <a-form-item label="Username" name="username" :rules="rules.username">
+          <a-form-item
+            :label="t('menu.settings.emails.form.username')"
+            name="username"
+            :rules="rules.username"
+          >
             <a-input size="large" v-model:value="newEmail.username" placeholder="Enter username" />
           </a-form-item>
         </a-col>
 
         <a-col :xs="24" :sm="12">
-          <a-form-item label="Password" name="password" :rules="rules.password">
+          <a-form-item
+            :label="t('menu.settings.emails.form.password')"
+            name="password"
+            :rules="rules.password"
+          >
             <a-input-password
               size="large"
               v-model:value="newEmail.password"
@@ -127,22 +144,31 @@ const onSave = async () => {
       </template>
 
       <a-col :xs="24" :sm="12">
-        <a-form-item label="Email" name="email" :rules="rules.email">
+        <a-form-item
+          :label="t('menu.settings.emails.form.email')"
+          name="email"
+          :rules="rules.email"
+        >
           <a-input size="large" v-model:value="newEmail.email" placeholder="Enter email" />
         </a-form-item>
       </a-col>
 
       <a-col :xs="24" :sm="12">
-        <a-form-item label="Name" name="name" :rules="rules.name">
+        <a-form-item :label="t('menu.settings.emails.form.name')" name="name" :rules="rules.name">
           <a-input size="large" v-model:value="newEmail.name" placeholder="Enter name" />
         </a-form-item>
       </a-col>
 
-      <a-col :span="24" class="text-right">
-        <a-button size="large" type="primary" html-type="submit" :loading="props.isLoading"
-          >Submit</a-button
-        >
+      <a-col :span="24" class="flex flex-row gap-2 justify-end">
+        <a-button size="large" dash @click="doShowTestModal = true">{{
+          t('menu.settings.emails.sendTestMail')
+        }}</a-button>
+        <a-button size="large" type="primary" html-type="submit" :loading="props.isLoading">{{
+          t('common.submit')
+        }}</a-button>
       </a-col>
     </a-row>
   </a-form>
+
+  <TestMail :visible="doShowTestModal" @close="doShowTestModal = false" @submit="handleSendMail" />
 </template>

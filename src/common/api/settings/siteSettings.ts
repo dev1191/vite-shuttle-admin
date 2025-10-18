@@ -1,5 +1,6 @@
 import request from '@/common/http-client'
-import { toFormData } from '@/utils'
+import { toFormData } from 'axios'
+
 
 export class SiteSettingService {
 

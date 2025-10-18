@@ -145,10 +145,23 @@
       },
       "emails": {
         "title": "Email Settings",
+        "sendTestMail": "Send Test Mail",
+        "email": "Email Address",
+        "description": "Enter your email address and a test message will be sent to it to verify that system is able to send emails.",
         "form": {
           "label": "Label",
           "code": "Code",
-          "country": "Country"
+          "country": "Country",
+          "apiKey": "API Key",
+          "username": "SMTP Username",
+          "password": "SMTP Password",
+          "port": "SMTP Port",
+          "host": "SMTP Host",
+          "encryption": "Encryption",
+          "toProduction": "Is Production",
+          "defaultType": "Default Type",
+          "email": "Email Address ('From' header)",
+          "name": "Name ('From' header)"
         }
       },
       "terms": {
