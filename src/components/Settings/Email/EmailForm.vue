@@ -1,4 +1,8 @@
 <script setup lang="ts">
+import { useSendMessages } from '@/composables/modules/useSendMessages'
+import { MailOutlined } from '@ant-design/icons-vue'
+import { message } from 'ant-design-vue'
+
 interface Props {
   item: any
   isLoading: boolean
@@ -10,6 +14,8 @@ interface Emits {
 const emit = defineEmits<Emits>()
 const doShowTestModal = ref(false)
 const { t } = useI18n()
+
+const { sendTestMail, loadingEnable } = useSendMessages()
 const newEmail = reactive({
   is_production: false,
   type: 'SMTP',
@@ -55,8 +61,18 @@ const onSave = async () => {
   emit('submit', newEmail)
 }
 
-const handleSendMail = async () => {
-  doShowTestModal.value = false
+const handleSendMail = async (payload: { mail: string }) => {
+  try {
+    await sendTestMail(payload)
+    doShowTestModal.value = false
+    message.success(
+      t('common.sendMessage', {
+        name: t('menu.settings.emails.sendTestMail'),
+      }),
+    )
+  } catch (error) {
+    console.error('❌ Failed to send test mail:', error)
+  }
 }
 </script>
 
@@ -160,9 +176,12 @@ const handleSendMail = async () => {
       </a-col>
 
       <a-col :span="24" class="flex flex-row gap-2 justify-end">
-        <a-button size="large" dash @click="doShowTestModal = true">{{
-          t('menu.settings.emails.sendTestMail')
-        }}</a-button>
+        <a-button size="large" dash @click="doShowTestModal = true">
+          <template #icon>
+            <MailOutlined />
+          </template>
+          {{ t('menu.settings.emails.sendTestMail') }}</a-button
+        >
         <a-button size="large" type="primary" html-type="submit" :loading="props.isLoading">{{
           t('common.submit')
         }}</a-button>
@@ -170,5 +189,11 @@ const handleSendMail = async () => {
     </a-row>
   </a-form>
 
-  <TestMail :visible="doShowTestModal" @close="doShowTestModal = false" @submit="handleSendMail" />
+  <TestMail
+    :visible="doShowTestModal"
+    @close="doShowTestModal = false"
+    @submit="handleSendMail"
+    :isEdit="true"
+    :loading="loadingEnable"
+  />
 </template>

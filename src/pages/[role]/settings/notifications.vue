@@ -17,18 +17,20 @@ const handleEditSetting = async (formData: Record<string, any>) => {
     await editSetting('notifications', formData)
     message.success(
       t('common.updateMessage', {
-        title: t('menu.settings.storage.title'),
-        name: 'storage SMTP',
+        title: t('menu.settings.notifications.title'),
       }),
     )
   } catch (error) {
-    console.error('❌ Failed to update SMTP settings:', error)
+    console.error('❌ Failed to update notification settings:', error)
   }
 }
 </script>
 
 <template>
-  <SettingLayout :title="t('settings.storage')">
+  <SettingLayout
+    :title="t('settings.notification.title')"
+    :description="t('settings.notification.description')"
+  >
     <NotificationForm :item="item" :isLoading="isLoading" @submit="handleEditSetting" />
   </SettingLayout>
 </template>
@@ -36,7 +38,7 @@ const handleEditSetting = async (formData: Record<string, any>) => {
 <route lang="yaml">
 meta:
   layout: defaultLayout
-  title: settings.notification
+  title: settings.notifications.title
   icon: SettingOutlined
   order: 10
   drawerIndex: 10
@@ -44,7 +46,7 @@ meta:
   roles: [admin, agent, staff, manager]
   breadcrumb:
     - settings.title
-    - settings.notification
+    - settings.notifications.title
 </route>
 
 <style scoped></style>

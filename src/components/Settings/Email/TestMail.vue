@@ -32,6 +32,7 @@ const handleSubmit = (data: any) => {
     @close="$emit('close')"
     @submit="handleSubmit"
     :description="t('menu.settings.emails.description')"
+    :submitLabel="t('common.send')"
   >
     <template #fields="{ form }">
       <a-form-item :label="t('menu.settings.emails.email')" name="email">

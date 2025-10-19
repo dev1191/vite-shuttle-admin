@@ -8,6 +8,12 @@
     "status": {
       "active": "Active",
       "inactive": "Inactive"
+    },
+    "ticketStatus": {
+      "Open": "Open",
+      "InProgress": "In Progress",
+      "Replied": "Replied",
+      "Closed": "Closed"
     }
   },
   "httpMsg": {
@@ -55,6 +61,7 @@
     "sending": "sending...",
     "meters": "Meters",
     "kilometers": "kilometers",
+    "sendMessage": "{name} Successfully.",
     "confirmMessage": "Are you sure you want to delete {name}?",
     "createMessage": "{name} has been created",
     "deleteMessage": "{name} has been deleted",
@@ -141,7 +148,10 @@
       },
       "notifications": {
         "title": "Push Notification Settings",
-        "form": {}
+        "form": {
+          "isEnabled": "Is Enabled",
+          "firebase_key": "Firebase Key (.json file)"
+        }
       },
       "emails": {
         "title": "Email Settings",
@@ -230,7 +240,8 @@
         "email": "Email Address",
         "phone": "Phone number",
         "gender": "Gender",
-        "description": "Description"
+        "description": "Description",
+        "replies": "Replies"
       }
     },
     "vehicles": {

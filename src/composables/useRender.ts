@@ -129,16 +129,13 @@ export function useRender() {
 
   function renderTag(
     text: string,
-    color: 'error' | 'default' | 'success' | 'warning' | 'primary' | 'info',
-    stateEnum: any,
+    color: string,
     typename: string,
-    round = false,
-    bordered = true,
   ) {
     return h(
       Tag,
-      { color, bordered, round, size: 'small' },
-      { default: () => t(`enums.${typename}.${stateEnum[text]}`) },
+      { color, bordered: true, round: false, size: 'small' },
+      { default: () => t(`enums.${typename}.${text}`) || text },
     )
   }
 

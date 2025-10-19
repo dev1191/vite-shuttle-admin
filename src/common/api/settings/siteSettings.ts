@@ -15,7 +15,7 @@ export class SiteSettingService {
     static update(name: string, payload: any) {
         return request.patch<Record<string, any>>({
             url: `/settings/${name}`,
-            data: name === 'general' ? toFormData(payload) : payload,
+            data: name === 'general' || name === 'notifications' ? toFormData(payload) : payload,
         })
     }
 }

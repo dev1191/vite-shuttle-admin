@@ -8,14 +8,14 @@ export class HelpAndSupportService {
     // 🔹 Get paginated country list
     static getHelpAndSupportList(params: PaginatingParams) {
         return request.get<HelpAndSupportListData>({
-            url: '/helpers/search',
+            url: '/support-tickets/search',
             params,
         })
     }
 
     static fetchHelpAndSupportOptions(params: SearchParams) {
         return request.get<OptionLists>({
-            url: '/helpers',
+            url: '/support-tickets',
             params,
         })
     }
@@ -27,7 +27,7 @@ export class HelpAndSupportService {
     static updateHelpAndSupport(id: string, payload: Partial<HelpAndSupport>) {
         const formData = toFormData(payload)
         return request.patch<HelpAndSupport>({
-            url: `/helpers/${id}`,
+            url: `/support-tickets/${id}`,
             data: formData,
         })
     }
@@ -35,7 +35,7 @@ export class HelpAndSupportService {
     // 🔹 Update country
     static updateHelpAndSupportStatus(id: string, payload: Partial<HelpAndSupportStatus>) {
         return request.patch<HelpAndSupport>({
-            url: `/helpers/${id}/status`,
+            url: `/support-tickets/${id}/status`,
             data: payload
         })
     }
@@ -43,7 +43,7 @@ export class HelpAndSupportService {
     // 🔹 Delete country
     static deleteHelpAndSupport(id: string) {
         return request.del<void>({
-            url: `/helpers/${id}`,
+            url: `/support-tickets/${id}`,
             showSuccessMessage: true
         })
     }

@@ -45,14 +45,11 @@ const handleFailed = (errorInfo: any) => {
     :width="width"
     centered
     maskClosable
-    destroyOnClose
     @cancel="handleClose"
     :footer="null"
   >
     <a-space v-if="props.description">
-      <a-paragraph>
-        {{ props.description }}
-      </a-paragraph>
+      {{ props.description }}
     </a-space>
 
     <a-form
@@ -71,7 +68,13 @@ const handleFailed = (errorInfo: any) => {
           {{ t('common.cancel') }}
         </a-button>
         <a-button size="large" type="primary" @click="handleSubmit" :loading="loading">
-          {{ isEdit ? (submitLabel ? submitLabel : t('common.update')) : t('common.create') }}
+          {{
+            isEdit
+              ? props.submitLabel
+                ? props.submitLabel
+                : t('common.update')
+              : t('common.create')
+          }}
         </a-button>
       </div>
     </a-form>
