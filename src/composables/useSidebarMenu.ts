@@ -48,6 +48,14 @@ export function useSidebarMenu(role: string) {
         },
         {
             key: `customers`,
+            icon: useRenderIcon('hugeicons:super-mario', { style: { fontSize: '24px' } }),
+            label: t('menu.manageOperators.title'),
+            name: t('menu.manageOperators.title'),
+            path: `/${role}/manage-operators`,
+            namePath: [t('menu.manageOperators.title')],
+        },
+        {
+            key: `customers`,
             icon: useRenderIcon('mdi:account-group', { style: { fontSize: '24px' } }),
             label: t('menu.manageCustomers.title'),
             name: t('menu.manageCustomers.title'),
@@ -59,7 +67,7 @@ export function useSidebarMenu(role: string) {
             icon: useRenderIcon('mdi:account-group', { style: { fontSize: '24px' } }),
             label: t('menu.manageDrivers.title'),
             name: t('menu.manageDrivers.title'),
-            path: `/${role}/drivers`,
+            path: `/${role}/manage-drivers`,
             namePath: [t('menu.manageDrivers.title')],
         },
         {

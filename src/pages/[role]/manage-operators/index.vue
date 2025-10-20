@@ -1,22 +1,22 @@
 <script setup lang="ts"></script>
 
+<template>
+  <div>
+    <OperatorTable />
+  </div>
+</template>
+
 <route lang="yaml">
 meta:
   layout: defaultLayout
-  title: drivers
+  title: manageOperators.title
   icon: UsergroupOutlined
   drawerIndex: 0
   order: 3
-  roles: [admin, agent, staff, manager]
+  roles: [admin, operator, staff, manager]
   hidden: false
   breadcrumb:
-    - drivers
+    - manageOperators.title
 </route>
-
-<template>
-  <div>
-    <h1>Driver Page</h1>
-  </div>
-</template>
 
 <style scoped></style>

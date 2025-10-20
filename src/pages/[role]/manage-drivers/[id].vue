@@ -1,9 +1,13 @@
 <script setup lang="ts"></script>
 
+<template>
+  <div></div>
+</template>
+
 <route lang="yaml">
 meta:
   layout: defaultLayout
-  title: managedrivers.title
+  title: manageDrivers.editDriver
   icon: UsergroupOutlined
   drawerIndex: 0
   order: 3
@@ -11,12 +15,7 @@ meta:
   hidden: false
   breadcrumb:
     - manageDrivers.title
+    - manageDrivers.editDriver
 </route>
-
-<template>
-  <div>
-    <DriverTable />
-  </div>
-</template>
 
 <style scoped></style>

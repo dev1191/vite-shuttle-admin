@@ -5,74 +5,74 @@ import type {
   TableChangeEvent,
   PaginationData,
 } from '@/components/Shared/DataTable.vue'
-import { useUsers } from '@/composables/modules/useUsers'
-import type { User } from '@/types/users'
+import { useOperators } from '@/composables/modules/useOperators'
+import type { Operator } from '@/types/Operators'
 import { Space } from 'ant-design-vue'
 
-import { PlusOutlined } from '@ant-design/icons-vue'
-import { message, Modal } from 'ant-design-vue'
-import { useUserStore } from '@/stores/modules/user.store'
-
-const { users, pagination, isLoading, fetchUsers, addUser, editUser, removeUser } = useUsers()
+const {
+  Operators,
+  pagination,
+  isLoading,
+  fetchOperators,
+  addOperator,
+  editOperator,
+  statusOperator,
+  removeOperator,
+} = useOperators()
 
 const { t } = useI18n()
-const { renderUserAvatar, renderTag, renderActionButton, renderDeleteActionButton, useRenderIcon } =
+const { renderUserAvatar, renderSwitchButton, renderActionButton, renderDeleteActionButton } =
   useRender()
 
-const userStore = useUserStore()
-const userInfo = computed(() => userStore.user)
+import { PlusOutlined, ReloadOutlined } from '@ant-design/icons-vue'
+import { message, Modal } from 'ant-design-vue'
+import { useUserStore } from '@/stores/modules/user.store'
+const dataTableRef = ref()
 const statusFilter = ref<string>('')
 const selectedRowKeys = ref<(string | number)[]>([])
-const selectedRows = ref<User[]>([])
-const selectedRow = ref<User>({})
-const dialogVisible = ref<boolean>(false)
-const dialogType = ref('add')
+const selectedRows = ref<Operator[]>([])
+const selectedRow = ref<Operator>({})
+const isEdit = ref<boolean>(false)
+const OperatorFormRef = ref()
+const router = useRouter()
+
+const { user } = useUserStore()
 
 const columns: DataTableColumn[] = [
   {
-    title: 'FullName',
+    title: t('menu.manageOperators.form.company'),
+    dataIndex: 'company',
+    key: 'company',
+    sorter: true,
+  }, //
+  {
+    title: t('menu.manageOperators.form.fullname'),
     dataIndex: 'fullname',
     key: 'fullname', // Fixed: key should match dataIndex
     sorter: true,
     customRender: ({ record }) => {
       return renderUserAvatar(
         record.picture,
-        record.fullname,
+        `${record.firstname} ${record.lastname}`,
         `${record.country_code} ${record.phone}`,
       )
     },
   },
   {
-    title: 'Email',
-    dataIndex: 'email',
-    key: 'email',
-    sorter: true,
+    title: t('menu.manageOperators.form.phone'),
+    dataIndex: 'phone',
+    key: 'phone',
   },
   {
-    title: 'Role',
-    dataIndex: 'role',
-    key: 'role',
-    sorter: true,
-  },
-  {
-    title: 'Status',
-    dataIndex: 'is_active',
-    key: 'is_active',
-    customRender: ({ record }) => {
-      const StatusEnum = {
-        true: 'active',
-        false: 'inactive',
-      } as const
-
-      const statusColorMap: Record<string, string> = {
-        false: 'red',
-        true: 'success',
-      }
-
-      const upperText = record.is_active as keyof typeof StatusEnum
-      const color = statusColorMap[upperText] || 'default'
-      return renderTag(StatusEnum[upperText], color, 'status')
-    },
+    title: t('common.status'),
+    dataIndex: 'status',
+    key: 'status',
+    customRender: ({ record }) =>
+      renderSwitchButton(
+        record.status ? t('common.active') : t('common.inactive'),
+        record.status,
+        () => handleStatusOperator(record),
+      ),
   },
   {
     title: 'Action',
@@ -86,15 +86,13 @@ const columns: DataTableColumn[] = [
         {
           default: () => [
             renderActionButton('hugeicons:pencil-edit-02', t('common.edit'), () =>
-              handleEditUser(record),
+              handleEditOperator(record),
             ),
-            userInfo.value?.id !== record.ids
-              ? renderDeleteActionButton(
-                  t('common.delete', { name: record.fullname }),
-                  t('common.confirmMessage', { name: record.fullname }),
-                  () => handleDeleteUser(record),
-                )
-              : null,
+            renderDeleteActionButton(
+              t('common.delete', { name: record.fullname }),
+              t('common.confirmMessage', { name: record.fullname }),
+              () => handleDeleteOperator(record),
+            ),
           ],
         },
       ),
@@ -104,14 +102,14 @@ const columns: DataTableColumn[] = [
 // Row selection configuration
 const rowSelection = computed(() => ({
   selectedRowKeys: selectedRowKeys.value,
-  onChange: (keys: (string | number)[], rows: User[]) => {
+  onChange: (keys: (string | number)[], rows: Operator[]) => {
     selectedRowKeys.value = keys
     selectedRows.value = rows
   },
-  onSelect: (record: User, selected: boolean) => {
+  onSelect: (record: Operator, selected: boolean) => {
     console.log('Selected:', record, selected)
   },
-  onSelectAll: (selected: boolean, rows: User[], changeRows: User[]) => {
+  onSelectAll: (selected: boolean, rows: Operator[], changeRows: Operator[]) => {
     console.log('Select all:', selected, rows, changeRows)
   },
 }))
@@ -131,10 +129,9 @@ const handleStatusFilter = (): void => {
   // Reset to first page when filtering
   pagination.value.page = 1
   // Add status filter to your pagination or handle separately
-  console.log('Status filter:', statusFilter.value)
   pagination.value.filters = {
     type: 'simple',
-    name: typeof statusFilter.value == 'undefined' ? '' : 'is_active',
+    name: typeof statusFilter.value == 'undefined' ? '' : 'status',
     value:
       typeof statusFilter.value == 'undefined' ? '' : statusFilter.value == 'active' ? true : false,
   }
@@ -158,7 +155,7 @@ const handleSearch = (value: string): void => {
   pagination.value.page = 1 // Reset to first page on search
   pagination.value.globalSearch = value
 
-  // The composable watch will automatically trigger fetchUsers
+  // The composable watch will automatically trigger fetchOperators
 }
 
 // Handle pagination changes from DataTable
@@ -171,39 +168,47 @@ const handlePaginationChange = (newPagination: PaginationData): void => {
   pagination.value.sortDesc = newPagination.sortDesc
   pagination.value.range = newPagination.range
 
-  // The composable watch will automatically trigger fetchUsers
+  // The composable watch will automatically trigger fetchOperators
 }
 
-const showDialog = async (): void => {
-  // Add user logic - you might want to open a modal/form
-  dialogVisible.value = true
-  selectedRow.value = {}
+const showDialog = async (): Promise<void> => {
+  // Add Operator logic - you might want to open a modal/form
+  router.push({
+    path: `/${user?.role}/manage-operators/create`,
+  })
 }
 
-const handleDialogSubmit = async (formData: User) => {
+const handleDialogSubmit = async (formData: Operator) => {
   try {
     isLoading.value = true
-    if (dialogType.value === 'add') {
-      // ✅ Create new user
-      await addUser(formData)
-      message.success(t('common.createMessage', { name: formData.fullname }))
-    } else if (dialogType.value === 'edit') {
-      // ✅ Update existing user
+    if (isEdit.value) {
+      // ✅ Update existing Operator
       if (!formData?.ids) {
-        message.error(t('common.noUserSelected'))
+        message.error(t('common.noOperatorSelected'))
         return
       }
-      await editUser(formData.ids, formData)
+      await editOperator(formData.ids, {
+        name: formData.name,
+        short_name: formData.short_name,
+        phone_code: formData.phone_code,
+        status: formData.status,
+      })
       message.success(
-        t('common.updateMessage', { title: t('manageUsers.users.user'), name: formData.fullname }),
+        t('common.updateMessage', {
+          title: t('menu.settings.Operators.title'),
+          name: formData.name,
+        }),
       )
+    } else {
+      // ✅ Create new Operator
+      await addOperator(formData)
+      message.success(t('common.createMessage', { name: formData.name }))
     }
 
     // ✅ Close dialog + refresh table
-    dialogVisible.value = false
     isLoading.value = false
-    await fetchUsers()
-    formData.value = {}
+    isEdit.value = false
+    await fetchOperators()
   } catch (error: any) {
     console.error('Submit failed:', error)
     message.error(error.message || t('common.submitFailed'))
@@ -211,20 +216,29 @@ const handleDialogSubmit = async (formData: User) => {
   }
 }
 
-const handleEditUser = async (user: User): void => {
-  selectedRow.value = user
-  dialogVisible.value = true
-  dialogType.value = 'edit'
+const handleEditOperator = async (Operator: Operator) => {
+  OperatorFormRef.value.openDrawer(true, Operator)
+  isEdit.value = true
 }
 
-const handleDeleteUser = async (user: User): void => {
+const handleDeleteOperator = async (Operator: Operator) => {
   try {
-    await removeUser(user.ids)
-    await fetchUsers() // ✅ Refresh table after deletion
-    message.success(t('common.deleteMessage', { name: user.fullname }))
+    const response = await removeOperator(Operator.ids)
+    await fetchOperators() // ✅ Refresh table after deletion
   } catch (error: any) {
-    //console.error('Failed to delete user:', error)
+    //console.error('Failed to delete Operator:', error)
     message.error(`${t('common.deleteFailed')} ${error.message || ''}`)
+  }
+}
+
+const handleStatusOperator = async (Operator: Operator) => {
+  try {
+    const newStatus = !Operator.status
+    await statusOperator(Operator.ids, { status: newStatus })
+    Operator.status = newStatus
+  } catch (error: any) {
+    //console.error('Failed to delete Operator:', error)
+    message.error(`${t('common.deleteFailed')} ${error || ''}`)
   }
 }
 </script>
@@ -232,15 +246,16 @@ const handleDeleteUser = async (user: User): void => {
 <template>
   <div>
     <DataTable
-      title="Users Management"
-      :data="users"
+      ref="dataTableRef"
+      title="Operators Management"
+      :data="Operators"
       :columns="columns"
       :loading="isLoading"
       :pagination="tablesPagination"
       searchable
       remote
       dateRange
-      search-placeholder="Search users..."
+      search-placeholder="Search Operators..."
       :row-selection="rowSelection"
       @change="handleTableChange"
       @search="handleSearch"
@@ -248,11 +263,20 @@ const handleDeleteUser = async (user: User): void => {
     >
       <!-- Custom action buttons in header -->
       <template #headerActions>
+        <!-- Refresh Button -->
+        <a-tooltip>
+          <template #title>{{ t('common.refresh') }}</template>
+          <a-button size="large" type="default" :loading="isLoading" @click="fetchOperators">
+            <template #icon>
+              <ReloadOutlined spin />
+            </template>
+          </a-button>
+        </a-tooltip>
         <a-button size="large" type="primary" @click="showDialog">
           <template #icon>
             <PlusOutlined />
           </template>
-          {{ t('common.create', { name: t('manageUsers.users.newUser') }) }}
+          {{ t('common.create', { name: t('menu.manageOperators.newOperator') }) }}
         </a-button>
       </template>
 
@@ -270,52 +294,10 @@ const handleDeleteUser = async (user: User): void => {
           <a-select-option value="inactive">{{ t('common.inactive') }}</a-select-option>
         </a-select>
       </template>
-
-      <!-- Action buttons -->
-      <!-- <template #action="{ record }">
-        <a-space>
-          <a-tooltip :title="t('common.edit')">
-            <a-button size="small" type="link" @click="handleEditUser(record)">
-              <template #icon>
-                <Icon name="hugeicons:pencil-edit-02" :size="5" />
-              </template>
-            </a-button>
-          </a-tooltip>
-          <a-tooltip :title="t('common.delete')">
-            <a-button size="small" type="link" danger @click="handleDeleteUser(record)">
-              <template #icon>
-                <Icon name="hugeicons:delete-02" :size="5" />
-              </template>
-            </a-button>
-          </a-tooltip>
-        </a-space>
-      </template> -->
     </DataTable>
 
-    <AdminUserDialog
-      v-model:visible="dialogVisible"
-      :isLoading="isLoading"
-      :type="dialogType"
-      :user-data="selectedRow"
-      @submit="handleDialogSubmit"
-    />
+    <!-- <OperatorForm ref="OperatorFormRef" :isEdit="isEdit" @submit="handleDialogSubmit" /> -->
   </div>
 </template>
 
-<route lang="yaml">
-meta:
-  layout: defaultLayout
-  title: manageUsers.users
-  icon: UsergroupOutlined
-  drawerIndex: 0
-  order: 3
-  roles: [admin, agent, staff, manager]
-  hidden: false
-  breadcrumb:
-    - manageUsers.title
-    - manageUsers.users
-</route>
-
-<style scoped>
-/* Add any custom styles here */
-</style>
+<style scoped></style>

@@ -1,7 +1,7 @@
 import request from '@/common/http-client'
 import type { PaginatingParams } from '@/types'
 import type { UserListData, User } from '@/types/users'
-import { toFormData } from '@/utils'
+import { toFormData } from 'axios'
 
 
 export class UserService {

@@ -1,4 +1,6 @@
 import * as Users from './users'
+import * as Driver from './drivers'
+import * as Operator from './operators'
 import * as Menu from "./menu";
 import * as Country from "./settings/countries";
 import * as Currency from "./settings/currencies";
@@ -10,6 +12,8 @@ export {
   Country,
   Currency,
   Users,
+  Driver,
+  Operator
 }
 export interface LoginResponse {
   token: string
