@@ -28,6 +28,7 @@ declare module 'vue-router/auto-routes' {
     '/[role]/manage-drivers/create': RouteRecordInfo<'/[role]/manage-drivers/create', '/:role/manage-drivers/create', { role: ParamValue<true> }, { role: ParamValue<false> }>,
     '/[role]/manage-offers/': RouteRecordInfo<'/[role]/manage-offers/', '/:role/manage-offers', { role: ParamValue<true> }, { role: ParamValue<false> }>,
     '/[role]/manage-operators/': RouteRecordInfo<'/[role]/manage-operators/', '/:role/manage-operators', { role: ParamValue<true> }, { role: ParamValue<false> }>,
+    '/[role]/manage-operators/[id]': RouteRecordInfo<'/[role]/manage-operators/[id]', '/:role/manage-operators/:id', { role: ParamValue<true>, id: ParamValue<true> }, { role: ParamValue<false>, id: ParamValue<false> }>,
     '/[role]/manage-operators/create': RouteRecordInfo<'/[role]/manage-operators/create', '/:role/manage-operators/create', { role: ParamValue<true> }, { role: ParamValue<false> }>,
     '/[role]/manage-passes/': RouteRecordInfo<'/[role]/manage-passes/', '/:role/manage-passes', { role: ParamValue<true> }, { role: ParamValue<false> }>,
     '/[role]/manage-trips/[booking]/': RouteRecordInfo<'/[role]/manage-trips/[booking]/', '/:role/manage-trips/:booking', { role: ParamValue<true>, booking: ParamValue<true> }, { role: ParamValue<false>, booking: ParamValue<false> }>,
@@ -103,6 +104,10 @@ declare module 'vue-router/auto-routes' {
     }
     'src/pages/[role]/manage-operators/index.vue': {
       routes: '/[role]/manage-operators/'
+      views: never
+    }
+    'src/pages/[role]/manage-operators/[id].vue': {
+      routes: '/[role]/manage-operators/[id]'
       views: never
     }
     'src/pages/[role]/manage-operators/create.vue': {

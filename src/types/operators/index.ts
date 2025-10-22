@@ -13,6 +13,8 @@ export interface Operator {
     password?: string;
     confirmPassword?: string;
     picture?: string
+    business_email?: string;
+    business_contactno?: string;
     address_1?: string | null
     address_2?: string | null
     city?: string | null
@@ -20,8 +22,11 @@ export interface Operator {
     pincode?: string | null
     company?: string
     commission?: number
-    document_gst_certificate?: string
-    document_pan_card?: string
+    commission_type?: 'percentage' | 'fixed'
+    gst_certificate?: string | [];
+    tax_document?: string | [];
+    transport_permit?: string | [];
+    registration_certificate?: string | [];
     is_active?: string | boolean
 }
 

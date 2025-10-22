@@ -59,7 +59,7 @@ const handleNext = async () => {
     <a-row :gutter="16">
       <a-col :span="12">
         <a-form-item :label="t('menu.manageOperators.form.companyLogo')" name="avatar">
-          <AvatarUpload v-model="modelValue.picture" :size="80" :maxSizeMB="3" />
+          <AvatarUpload v-model="modelValue.picture" :size="80" shape="square" :maxSizeMB="3" />
         </a-form-item>
       </a-col>
     </a-row>
@@ -186,7 +186,7 @@ const handleNext = async () => {
       </a-col>
     </a-row>
     <div class="flex justify-between mt-4">
-      <a-button size="large" @click="handlePrev">Previous</a-button>
+      <a-button size="large" @click="handlePrev">{{ t('common.previous') }}</a-button>
       <a-button size="large" type="primary" @click="handleNext">
         {{ t('common.next') }}
         <template #icon>

@@ -44,7 +44,9 @@ const currentRole = computed(() => user?.role.toLocaleLowerCase() || 'admin')
           </keep-alive>
         </router-view>
       </div>
-      <LayoutFooter v-if="showFooter" />
+      <a-layout-footer style="padding: 0px">
+        <LayoutFooter v-if="showFooter" />
+      </a-layout-footer>
     </a-layout>
   </a-layout>
 </template>

@@ -376,6 +376,7 @@ export const defaultSettings = {
   sidemenuWidth: 270,
   navThemeFollowMenu: false,
   colorPrimary: '#2d6774',
+  copyright: '2025 © Vite Shuttle Admin',
   showTitle: true,
   showHeader: true,
   showFooter: true,

@@ -76,21 +76,8 @@ const handleMenuClick = (key: string) => {
 
 <template>
   <div class="mt-3 h-full">
-    <!-- Skeleton loader -->
-    <div v-if="loading" class="p-8 h-full flex flex-col justify-center space-y-3">
-      <a-skeleton
-        v-for="n in 15"
-        :key="n"
-        active
-        :avatar="{ shape: 'square', size: 28 }"
-        :title="{ width: '90%' }"
-        :paragraph="false"
-      />
-    </div>
-
     <!-- Sidebar menu -->
     <a-menu
-      v-else
       :inline-collapsed="collapsed"
       mode="inline"
       :selectedKeys="selectedKeys"

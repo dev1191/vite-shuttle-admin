@@ -3,6 +3,7 @@ import { defineEmits, defineProps } from 'vue'
 import type { FormInstance } from 'ant-design-vue'
 import { RightOutlined } from '@ant-design/icons-vue'
 import type { Rule } from 'ant-design-vue/es/form'
+import { useOperators } from '@/composables/modules/useOperators'
 
 const { t } = useI18n()
 const props = defineProps({
@@ -11,6 +12,7 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['update:modelValue', 'next'])
+const { checkOperatorExists } = useOperators()
 const formRef = ref<FormInstance>()
 const isEditable = computed(() => props.isEdit)
 const setPassword = ref(isEditable.value ? false : true)
@@ -36,6 +38,15 @@ const rules: Record<string, Rule[]> = {
       trigger: 'blur',
     },
     { pattern: /^\d{9,11}$/, message: t('validation.phoneFormat'), trigger: 'blur' },
+    {
+      validator: async (_rule, value) => {
+        if (!value) return Promise.resolve()
+        const { exists } = await checkOperatorExists('', value, isEditable.value)
+        if (exists) return Promise.reject(t('validation.phoneExists'))
+        return Promise.resolve()
+      },
+      trigger: ['blur', 'change'],
+    },
   ],
   email: [
     {
@@ -46,6 +57,15 @@ const rules: Record<string, Rule[]> = {
     {
       type: 'email',
       message: t('validation.invalid', { name: t('menu.manageOperators.form.email') }),
+      trigger: ['blur', 'change'],
+    },
+    {
+      validator: async (_rule, value) => {
+        if (!value) return Promise.resolve()
+        const { exists } = await checkOperatorExists(value, '', isEditable.value)
+        if (exists) return Promise.reject(t('validation.emailExists'))
+        return Promise.resolve()
+      },
       trigger: ['blur', 'change'],
     },
   ],
@@ -88,7 +108,7 @@ const handleNext = async () => {
 
 <template>
   <a-form ref="formRef" layout="vertical" :rules="rules" :model="modelValue">
-    <a-row :gutter="24">
+    <a-row :gutter="24" class="">
       <a-col :span="12">
         <a-form-item :label="t('menu.manageOperators.form.fullname')" name="fullname">
           <a-input
@@ -127,7 +147,7 @@ const handleNext = async () => {
       </a-col>
       <a-col :span="12">
         <a-form-item :label="t('common.status')" name="status">
-          <a-radio-group v-model:value="modelValue.status">
+          <a-radio-group v-model:value="modelValue.is_active">
             <a-radio-button :value="true">{{ t('common.active') }}</a-radio-button>
             <a-radio-button :value="false">{{ t('common.inactive') }}</a-radio-button>
           </a-radio-group>
@@ -135,12 +155,12 @@ const handleNext = async () => {
       </a-col>
     </a-row>
     <a-row :gutter="24">
-      <a-col :span="16" v-if="!isEditable">
+      <a-col :span="16" v-if="isEditable">
         <a-form-item :label="t('menu.manageOperators.form.setPassword')" name="roles">
           <a-switch v-model:checked="setPassword" />
         </a-form-item>
       </a-col>
-      <a-col :span="12" v-if="!isEditable || setPassword === true">
+      <a-col :span="12" v-if="!setPassword">
         <a-form-item :label="t('menu.manageOperators.form.password')" name="password">
           <a-input-password
             v-model:value="modelValue.password"
@@ -151,7 +171,7 @@ const handleNext = async () => {
           />
         </a-form-item>
       </a-col>
-      <a-col :span="12" v-if="!isEditable || setPassword === true">
+      <a-col :span="12" v-if="!setPassword">
         <a-form-item :label="t('menu.manageOperators.form.confirmPassword')" name="confirmPassword">
           <a-input-password
             v-model:value="modelValue.confirmPassword"

@@ -20,6 +20,14 @@ export class OperatorService {
         })
     }
 
+    // 🔹 Get Operator
+    static findOperator(id: string) {
+        return request.get<void>({
+            url: `/operators/${id}`,
+            showSuccessMessage: false
+        })
+    }
+
 
     // 🔹 Create Operator
     static createOperator(payload: Partial<Operator>) {
@@ -52,6 +60,14 @@ export class OperatorService {
         return request.del<void>({
             url: `/operators/${id}`,
             showSuccessMessage: true
+        })
+    }
+
+    // 🔹 Check if email or phone exists
+    static checkExists(params: { email?: string; phone?: string }) {
+        return request.get<{ type: 'email' | 'phone'; exists: boolean }>({
+            url: '/operators/check-exists',
+            params,
         })
     }
 }

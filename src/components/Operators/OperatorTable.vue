@@ -41,8 +41,8 @@ const { user } = useUserStore()
 const columns: DataTableColumn[] = [
   {
     title: t('menu.manageOperators.form.company'),
-    dataIndex: 'company',
-    key: 'company',
+    dataIndex: 'admin_details.company',
+    key: 'admin_details.company',
     sorter: true,
   }, //
   {
@@ -51,11 +51,7 @@ const columns: DataTableColumn[] = [
     key: 'fullname', // Fixed: key should match dataIndex
     sorter: true,
     customRender: ({ record }) => {
-      return renderUserAvatar(
-        record.picture,
-        `${record.firstname} ${record.lastname}`,
-        `${record.country_code} ${record.phone}`,
-      )
+      return renderUserAvatar(record.picture, `${record.fullname}`, `${record.email}`)
     },
   },
   {
@@ -217,7 +213,9 @@ const handleDialogSubmit = async (formData: Operator) => {
 }
 
 const handleEditOperator = async (Operator: Operator) => {
-  OperatorFormRef.value.openDrawer(true, Operator)
+  router.push({
+    path: `/${user?.role}/manage-operators/${Operator.ids}`,
+  })
   isEdit.value = true
 }
 

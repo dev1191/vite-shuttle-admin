@@ -84,6 +84,7 @@ declare module 'vue' {
     DataTable: typeof import('./../components/Shared/DataTable.vue')['default']
     DocumentForm: typeof import('./../components/Drivers/DocumentForm.vue')['default']
     DocumentsForm: typeof import('./../components/Drivers/DocumentsForm.vue')['default']
+    DocumentUpload: typeof import('./../components/Shared/DocumentUpload.vue')['default']
     DriverForm: typeof import('./../components/Drivers/DriverForm.vue')['default']
     DriverTable: typeof import('./../components/Drivers/DriverTable.vue')['default']
     EmailForm: typeof import('./../components/Settings/Email/EmailForm.vue')['default']

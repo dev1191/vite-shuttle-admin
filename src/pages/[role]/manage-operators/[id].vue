@@ -1,30 +1,36 @@
 <script setup lang="ts">
 import { useOperators } from '@/composables/modules/useOperators'
-import { message, type UploadFile } from 'ant-design-vue'
+import type { Operator } from '@/types/operators'
+import { message } from 'ant-design-vue'
+
+const { getOperator, editOperator, isLoading } = useOperators()
 
 const { t } = useI18n()
 const current = ref<number>(0)
 const isEdit = ref<boolean>(false)
-const { addOperator, isLoading } = useOperators()
-
-const formData = ref({
+const route = useRoute()
+const formData = ref<Operator>({
+  id: '',
+  firstname: '',
+  lastname: '',
+  role: '',
   ids: '',
-  fullname: 'asdasd',
-  email: 'asdasd@gmail.com',
-  password: '123456',
-  confirmPassword: '123456',
+  fullname: '',
+  email: '',
+  password: '',
+  confirmPassword: '',
   country_code: '91',
-  phone: '88788888888',
+  phone: '',
   is_active: true,
-  picture: null,
-  company: 'Operator pvt. ltd.',
-  business_email: 'business@operator.com',
-  business_contactno: '23445345345',
-  address_1: '23423423432',
+  picture: '',
+  company: '',
+  business_email: '',
+  business_contactno: '',
+  address_1: '',
   city: '',
-  pincode: '12333',
+  pincode: '',
   commission_type: 'percentage',
-  commission: 15,
+  commission: 10,
   registration_certificate: [],
   gst_certificate: [],
   tax_document: [],
@@ -48,7 +54,7 @@ const handleFileObject = (file: any) => {
 }
 const handleSubmit = async () => {
   try {
-    const result = await addOperator({
+    const result = await editOperator(formData.value.id, {
       ...formData.value,
       picture: formData.value.picture,
       registration_certificate: handleFileObject(formData.value.registration_certificate[0]),
@@ -68,17 +74,24 @@ const handleSubmit = async () => {
     message.error(t('common.errorMessage'))
   }
 }
+
+onMounted(async () => {
+  const operatorId = route.params.id as string
+  const operatorData = await getOperator(operatorId)
+  formData.value = operatorData
+  isEdit.value = true
+})
 </script>
 
 <template>
-  <a-card :title="t('menu.manageOperators.newOperator')" :bordered="false">
+  <a-card :title="t('menu.manageOperators.editOperator')" :bordered="false">
     <a-steps :current="current" type="navigation" :style="stepStyle">
       <a-step :title="t('menu.manageOperators.basicDetails')" />
       <a-step :title="t('menu.manageOperators.companyDetails')" />
       <a-step :title="t('menu.manageOperators.operatorDocuments')" />
     </a-steps>
 
-    <div class="mt-5 max-w-7xl flex gap-4 justify-center">
+    <div class="mt-2">
       <OperatorBasicDetailsForm
         v-if="current === 0"
         v-model:modelValue="formData"
@@ -88,14 +101,12 @@ const handleSubmit = async () => {
       <OperatorCompanyForm
         v-else-if="current === 1"
         v-model:modelValue="formData"
-        :isEdit="isEdit"
         @prev="prev"
         @next="next"
       />
       <OperatorDocumentsForm
         v-else
         v-model:modelValue="formData"
-        :isEdit="isEdit"
         @prev="prev"
         @submit="handleSubmit"
         :isLoading="isLoading"
@@ -107,7 +118,7 @@ const handleSubmit = async () => {
 <route lang="yaml">
 meta:
   layout: defaultLayout
-  title: manageOperators.title
+  title: manageOperators.editOperator
   icon: UsergroupOutlined
   drawerIndex: 0
   order: 3
@@ -115,7 +126,7 @@ meta:
   hidden: false
   breadcrumb:
     - manageOperators.title
-    - manageOperators.createOperator
+    - manageOperators.editOperator
 </route>
 
 <style scoped></style>

@@ -70,6 +70,7 @@
     "createMessage": "{name} has been created",
     "deleteMessage": "{name} has been deleted",
     "deleteFailed": "Failed to delete {name} : ",
+    "errorMessage": "Error message {name}",
     "cancelDelete": "Cancelled deleting {name}",
     "updateMessage": "{title} : {name} has been updated",
     "statusMessage": "{name} has been updated"
@@ -231,9 +232,9 @@
         "city": "City",
         "pincode": "Pincode",
         "GSTCertificate": "GST Certificate",
-        "panCard": "Pan Card",
+        "taxDocument": "Tax Identification Number (TIN / PAN / VAT / GST)",
         "registrationCertificate": "Registration Certificate",
-        "transportPermit": "Transport Permit",
+        "transportPermit": "Operating/Transport Permit",
         "commissionType": "Commission Type",
         "commission": "Platform Commission {name}",
         "status": "Status"
@@ -469,6 +470,8 @@
     "required": "This {name} is required",
     "placeholder": "Enter a {name}",
     "invalid": "Please enter a valid {name}",
+    "emailExists": "This email is already registered",
+    "phoneExists": "This phone number is already registered",
     "minLength": "Minimum length is {min} characters",
     "maxLength": "Maximum length is {max} characters",
     "lengthBetween": "Length must be between {min} and {max} characters",

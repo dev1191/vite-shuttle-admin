@@ -3,7 +3,7 @@ import type { PaginatingParams } from '@/types'
 import { OperatorService } from '@/common/api/operator'
 import type { Operator } from '@/types'
 
-const { getOperatorList, createOperator, updateOperator, deleteOperator, updateOperatorStatus } = OperatorService // api Operators call
+const { getOperatorList, findOperator, createOperator, updateOperator, deleteOperator, updateOperatorStatus, checkExists } = OperatorService // api Operators call
 
 // Default pagination
 const makePaginationRef = () =>
@@ -53,6 +53,38 @@ export const useOperators = (opts?: { pagination?: Ref<PaginatingParams> }) => {
         },
         { deep: true },
     )
+
+    const checkOperatorExists = async (email?: string, phone?: string, isEditable?: boolean) => {
+
+        try {
+            const params: { email?: string; phone?: string; isEditable?: boolean } = {}
+            if (email) params.email = email
+            if (phone) params.phone = phone
+            if (isEditable) params.isEditable = isEditable
+
+            const response = await checkExists(params)
+            return response
+        } catch (error) {
+            console.error('Failed to check Operator existence:', error)
+            throw error
+        }
+
+    }
+
+
+
+    const getOperator = async (id: string) => {
+        try {
+            isLoading.value = true
+            const response = await findOperator(id)
+            return response
+        } catch (error) {
+            console.error('Failed to fetch Operator:', error)
+            throw error
+        } finally {
+            isLoading.value = false
+        }
+    }
 
     // 🔹 Create new Operator
     const addOperator = async (payload: Partial<Operator>) => {
@@ -117,9 +149,11 @@ export const useOperators = (opts?: { pagination?: Ref<PaginatingParams> }) => {
         pagination,
         isLoading,
         fetchOperators,
+        getOperator,
         addOperator,
         editOperator,
         statusOperator,
         removeOperator,
+        checkOperatorExists
     }
 }
