@@ -4,22 +4,11 @@ import metadata from 'libphonenumber-js/metadata.full.json'
 import { getCountries, getCountryCallingCode } from 'libphonenumber-js'
 
 interface Props {
-  /** v-model value -> only phone digits */
   modelValue: string
-
-  /** label for the form item */
   label?: string
-
-  /** field name (used in a-form validation) */
   name: string
-
-  /** placeholder for phone input */
   placeHolderPhone: string
-
-  /** validation rules */
   rules?: Record<string, any>[]
-
-  /** default country (ISO code, e.g., IN, US) */
   defaultCountry?: string
 }
 
@@ -29,16 +18,11 @@ const props = withDefaults(defineProps<Props>(), {
   rules: () => [],
 })
 
-const emit = defineEmits([
-  'update:modelValue', // phone number only
-  'update:countryCode', // separate dial code
-])
+const emit = defineEmits(['update:modelValue', 'update:countryCode'])
 
-// reactive states
 const selectedCountry = ref(props.defaultCountry)
 const phoneNumber = ref(props.modelValue)
 
-// all country options
 const countries = computed(() =>
   getCountries().map((c) => ({
     code: c,
@@ -47,20 +31,29 @@ const countries = computed(() =>
   })),
 )
 
-// selected dial code
 const countryCode = computed(() => {
   return countries.value.find((c) => c.code === selectedCountry.value)?.dialCode || ''
 })
 
-// 🔄 keep parent v-models synced
-watch(phoneNumber, (val) => {
-  emit('update:modelValue', val) // only phone digits
-})
-watch(selectedCountry, () => {
-  emit('update:countryCode', countryCode.value) // dial code separately
-})
+// sync to parent
+watch(phoneNumber, (val) => emit('update:modelValue', val))
+watch(selectedCountry, () => emit('update:countryCode', countryCode.value))
 
-// search filter for select
+// sync from parent
+watch(
+  () => props.modelValue,
+  (val) => {
+    if (val !== phoneNumber.value) phoneNumber.value = val
+  },
+)
+
+watch(
+  () => props.defaultCountry,
+  (val) => {
+    if (val && val !== selectedCountry.value) selectedCountry.value = val
+  },
+)
+
 const filterOption = (input: string, option: any) => {
   const country = countries.value.find((c) => c.code === option.value)
   if (!country) return false
@@ -76,12 +69,11 @@ const filterOption = (input: string, option: any) => {
 <template>
   <a-form-item :label="label" :name="name" :rules="rules">
     <a-input-group compact>
-      <!-- Country Select -->
       <a-form-item-rest>
         <a-select
           size="large"
           v-model:value="selectedCountry"
-          style="width: 130px"
+          style="width: 160px"
           show-search
           :filter-option="filterOption"
           placeholder="Select country"
@@ -92,11 +84,10 @@ const filterOption = (input: string, option: any) => {
         </a-select>
       </a-form-item-rest>
 
-      <!-- Phone input -->
       <a-input
         size="large"
         v-model:value="phoneNumber"
-        style="width: calc(100% - 130px)"
+        style="width: calc(100% - 160px)"
         :placeholder="placeHolderPhone"
       />
     </a-input-group>

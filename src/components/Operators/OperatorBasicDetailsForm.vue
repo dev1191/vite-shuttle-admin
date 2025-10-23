@@ -136,10 +136,11 @@ const handleNext = async () => {
       <a-col :span="12">
         <PhoneNumberInput
           v-model="modelValue.phone"
+          :defaultCountry="modelValue.country_code"
           v-model:countryCode="modelValue.country_code"
           name="phone"
           :rules="rules.phone"
-          label="Phone Number"
+          :label="t('menu.manageOperators.form.phone')"
           :placeHolderPhone="
             t('validation.placeholder', { name: t('menu.manageOperators.form.phone') })
           "

@@ -65,10 +65,10 @@ const handleNext = async () => {
     </a-row>
     <a-row :gutter="24">
       <a-col :span="8">
-        <a-form-item :label="t('menu.manageOperators.form.company')" name="company">
+        <a-form-item :label="t('menu.manageOperators.form.company')" name="business_name">
           <a-input
             size="large"
-            v-model:value="modelValue.company"
+            v-model:value="modelValue.business_name"
             :placeholder="
               t('validation.placeholder', { name: t('menu.manageOperators.form.company') })
             "

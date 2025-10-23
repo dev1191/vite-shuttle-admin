@@ -47,7 +47,7 @@ export function useSidebarMenu(role: string) {
             ],
         },
         {
-            key: `customers`,
+            key: `operators`,
             icon: useRenderIcon('hugeicons:super-mario', { style: { fontSize: '24px' } }),
             label: t('menu.manageOperators.title'),
             name: t('menu.manageOperators.title'),

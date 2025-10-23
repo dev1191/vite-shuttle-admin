@@ -20,13 +20,17 @@ export interface Operator {
     city?: string | null
     contact_no?: string | null
     pincode?: string | null
-    company?: string
+    business_name?: string
     commission?: number
     commission_type?: 'percentage' | 'fixed'
-    gst_certificate?: string | [];
-    tax_document?: string | [];
-    transport_permit?: string | [];
-    registration_certificate?: string | [];
+    gst_certificate?: File | null;
+    registration_certificate_url?: string;
+    tax_document_url?: string;
+    transport_permit_url?: string;
+    gst_certificate_url?: string;
+    tax_document?: File | null;
+    transport_permit?: File | null;
+    registration_certificate?: File | null;
     is_active?: string | boolean
 }
 

@@ -1,14 +1,16 @@
 <script setup lang="ts">
 import { useOperators } from '@/composables/modules/useOperators'
+import { useUserStore } from '@/stores/modules/user.store'
 import type { Operator } from '@/types/operators'
 import { message } from 'ant-design-vue'
 
 const { getOperator, editOperator, isLoading } = useOperators()
-
+const { user } = useUserStore()
 const { t } = useI18n()
 const current = ref<number>(0)
 const isEdit = ref<boolean>(false)
 const route = useRoute()
+const router = useRouter()
 const formData = ref<Operator>({
   id: '',
   firstname: '',
@@ -23,7 +25,7 @@ const formData = ref<Operator>({
   phone: '',
   is_active: true,
   picture: '',
-  company: '',
+  business_name: '',
   business_email: '',
   business_contactno: '',
   address_1: '',
@@ -31,10 +33,10 @@ const formData = ref<Operator>({
   pincode: '',
   commission_type: 'percentage',
   commission: 10,
-  registration_certificate: [],
-  gst_certificate: [],
-  tax_document: [],
-  transport_permit: [],
+  registration_certificate: null,
+  gst_certificate: null,
+  tax_document: null,
+  transport_permit: null,
 })
 
 const stepStyle = {
@@ -57,20 +59,25 @@ const handleSubmit = async () => {
     const result = await editOperator(formData.value.id, {
       ...formData.value,
       picture: formData.value.picture,
-      registration_certificate: handleFileObject(formData.value.registration_certificate[0]),
-      gst_certificate: handleFileObject(formData.value.gst_certificate[0]),
-      tax_document: handleFileObject(formData.value.tax_document[0]),
-      transport_permit: handleFileObject(formData.value.transport_permit[0]),
+      registration_certificate: formData.value.registration_certificate,
+      gst_certificate: formData.value.gst_certificate,
+      tax_document: formData.value.tax_document,
+      transport_permit: formData.value.transport_permit,
     })
 
     message.success(
-      t('common.createMessage', {
+      t('common.updateMessage', {
         title: t('menu.manageOperators.Operator'),
         name: formData.value.fullname,
       }),
     )
+    setTimeout(() => {
+      router.push({
+        path: `/${user?.role}/manage-operators`,
+      })
+    }, 1500)
   } catch (error) {
-    console.error('Failed to create Operator:', error)
+    console.error('Failed to update Operator:', error)
     message.error(t('common.errorMessage'))
   }
 }

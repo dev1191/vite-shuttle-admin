@@ -41,8 +41,8 @@ const { user } = useUserStore()
 const columns: DataTableColumn[] = [
   {
     title: t('menu.manageOperators.form.company'),
-    dataIndex: 'admin_details.company',
-    key: 'admin_details.company',
+    dataIndex: 'admin_details.business_name',
+    key: 'admin_details.business_name',
     sorter: true,
   }, //
   {
