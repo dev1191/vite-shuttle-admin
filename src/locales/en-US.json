@@ -231,7 +231,7 @@
         "address1": "Address 1",
         "city": "City",
         "pincode": "Pincode",
-        "GSTCertificate": "GST Certificate",
+        "gstCertificate": "GST Certificate",
         "taxDocument": "Tax Identification Number (TIN / PAN / VAT / GST)",
         "registrationCertificate": "Registration Certificate",
         "transportPermit": "Operating/Transport Permit",

@@ -2,7 +2,7 @@
   <div class="document-upload">
     <a-upload
       v-model:file-list="internalList"
-      list-type="picture-card"
+      list-type="picture"
       :before-upload="beforeUpload"
       :on-remove="onRemove"
       :max-count="1"
@@ -10,8 +10,12 @@
       @preview="handlePreview"
     >
       <div v-if="!internalList.length">
-        <plus-outlined />
-        <div style="margin-top: 8px">{{ uploadText }}</div>
+        <a-button size="large">
+          <template #icon>
+            <plus-outlined />
+          </template>
+          {{ uploadText }}
+        </a-button>
       </div>
     </a-upload>
 
@@ -53,7 +57,7 @@ const removedManually = ref(false)
 function normalizeToUploadFile(value: string | File): UploadFile[] {
   if (!value) return []
   if (typeof value === 'string') {
-    return [{ uid: '-1', name: 'existing', url: value }]
+    return [{ uid: '-1', name: 'no image', url: value }]
   }
   return [{ uid: String(Date.now()), name: value.name, originFileObj: value }]
 }
@@ -112,8 +116,4 @@ function handlePreview(file: UploadFile) {
 }
 </script>
 
-<style scoped>
-.document-upload {
-  display: inline-block;
-}
-</style>
+<style scoped></style>

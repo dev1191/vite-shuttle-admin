@@ -15,7 +15,7 @@ const handleSubmit = () => emit('submit')
 <template>
   <a-form layout="vertical">
     <a-row :gutter="16">
-      <a-col :span="10">
+      <a-col :span="12">
         <a-form-item
           :label="t('menu.manageOperators.form.registrationCertificate')"
           name="registration_certificate"
@@ -24,18 +24,57 @@ const handleSubmit = () => emit('submit')
             v-model="modelValue.registration_certificate"
             :initial-url="modelValue.registration_certificate_url"
             accept="image/*"
+            :uploadText="
+              t('menu.manageOperators.form.uploadDocument', {
+                name: t('menu.manageOperators.form.registrationCertificate'),
+              })
+            "
           />
         </a-form-item>
       </a-col>
-      <a-col :span="10">
-        <a-form-item :label="t('menu.manageOperators.form.taxDocument')" name="tax_document">
+      <a-col :span="12">
+        <a-form-item :label="t('menu.manageOperators.form.gstCertificate')" name="gst_certificate">
+          <document-upload
+            v-model="modelValue.gst_certificate"
+            :initial-url="modelValue.gst_certificate_url"
+            accept="image/*"
+            :uploadText="
+              t('menu.manageOperators.form.uploadDocument', {
+                name: t('menu.manageOperators.form.gstCertificate'),
+              })
+            "
+          />
         </a-form-item>
       </a-col>
-      <a-col :span="10">
+      <a-col :span="12">
+        <a-form-item :label="t('menu.manageOperators.form.taxDocument')" name="tax_document">
+          <document-upload
+            v-model="modelValue.tax_document"
+            :initial-url="modelValue.tax_document_url"
+            accept="image/*"
+            :uploadText="
+              t('menu.manageOperators.form.uploadDocument', {
+                name: t('menu.manageOperators.form.taxDocument'),
+              })
+            "
+          />
+        </a-form-item>
+      </a-col>
+      <a-col :span="12">
         <a-form-item
           :label="t('menu.manageOperators.form.transportPermit')"
           name="transport_permit"
         >
+          <document-upload
+            v-model="modelValue.transport_permit"
+            :initial-url="modelValue.transport_permit_url"
+            accept="image/*"
+            :uploadText="
+              t('menu.manageOperators.form.uploadDocument', {
+                name: t('menu.manageOperators.form.transportPermit'),
+              })
+            "
+          />
         </a-form-item>
       </a-col>
     </a-row>
