@@ -29,6 +29,26 @@ export function useRender() {
     }
   }
 
+  function renderUserIcon(iconName: string, name?: string, email?: string) {
+    if (!name) {
+      return h(Text, { type: 'secondary' }, { default: () => '-' })
+    }
+
+    return h(
+      Space,
+      { align: 'start', size: 'middle' },
+      {
+        default: () => [
+          h(Icon, { icon: iconName, width: 24, height: 24 }),
+          h('div', { style: { display: 'flex', flexDirection: 'column' } }, [
+            h(Text, { type: 'secondary' }, { default: () => name }),
+            email ? h(Text, { type: 'secondary' }, { default: () => email }) : null,
+          ]),
+        ],
+      },
+    )
+  }
+
   function renderUserAvatar(
     image: string,
     email: string,
@@ -41,8 +61,8 @@ export function useRender() {
         default: () => [
           // Avatar
           image ? h(Image, {
-            src: image,
-            fallbackSrc: 'assets/images/fallback.png',
+            src: `/public/profiles/${image}`,
+            fallbackSrc: '/public/profiles/default.svg',
             width: 40,
             height: 40,
             style: {
@@ -164,6 +184,7 @@ export function useRender() {
 
   return {
     useRenderIcon,
+    renderUserIcon,
     renderUserAvatar,
     renderActionButton,
     renderDeleteActionButton,

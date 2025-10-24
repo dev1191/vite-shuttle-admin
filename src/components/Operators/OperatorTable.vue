@@ -21,8 +21,13 @@ const {
 } = useOperators()
 
 const { t } = useI18n()
-const { renderUserAvatar, renderSwitchButton, renderActionButton, renderDeleteActionButton } =
-  useRender()
+const {
+  renderUserAvatar,
+  renderSwitchButton,
+  renderUserIcon,
+  renderActionButton,
+  renderDeleteActionButton,
+} = useRender()
 
 import { PlusOutlined, ReloadOutlined } from '@ant-design/icons-vue'
 import { message, Modal } from 'ant-design-vue'
@@ -44,29 +49,46 @@ const columns: DataTableColumn[] = [
     dataIndex: 'admin_details.business_name',
     key: 'admin_details.business_name',
     sorter: true,
-  }, //
+    customRender: ({ record }) => {
+      return renderUserIcon(
+        'hugeicons:building-03',
+        record.admin_details.business_name,
+        record.admin_details.business_email,
+      )
+    },
+  },
   {
     title: t('menu.manageOperators.form.fullname'),
     dataIndex: 'fullname',
     key: 'fullname', // Fixed: key should match dataIndex
     sorter: true,
     customRender: ({ record }) => {
-      return renderUserAvatar(record.picture, `${record.fullname}`, `${record.email}`)
+      return renderUserAvatar(
+        record.picture,
+        `${record.fullname}`,
+        `${record.email}`,
+        `${record.phone}`,
+      )
     },
   },
   {
-    title: t('menu.manageOperators.form.phone'),
-    dataIndex: 'phone',
-    key: 'phone',
+    title: t('menu.manageOperators.form.commission'),
+    dataIndex: 'admin_details.commission',
+    key: 'admin_details.commission',
+    customRender: ({ record }) => {
+      return record.admin_details.commission_type == 'percentage'
+        ? `${record.admin_details.commission}%`
+        : record.admin_details.commission
+    },
   },
   {
     title: t('common.status'),
-    dataIndex: 'status',
-    key: 'status',
+    dataIndex: 'is_active',
+    key: 'is_active',
     customRender: ({ record }) =>
       renderSwitchButton(
-        record.status ? t('common.active') : t('common.inactive'),
-        record.status,
+        record.is_active ? t('common.active') : t('common.inactive'),
+        record.is_active,
         () => handleStatusOperator(record),
       ),
   },
@@ -231,9 +253,9 @@ const handleDeleteOperator = async (Operator: Operator) => {
 
 const handleStatusOperator = async (Operator: Operator) => {
   try {
-    const newStatus = !Operator.status
-    await statusOperator(Operator.ids, { status: newStatus })
-    Operator.status = newStatus
+    const newStatus = !Operator.is_active
+    await statusOperator(Operator.ids, { is_active: newStatus })
+    Operator.is_active = newStatus
   } catch (error: any) {
     //console.error('Failed to delete Operator:', error)
     message.error(`${t('common.deleteFailed')} ${error || ''}`)

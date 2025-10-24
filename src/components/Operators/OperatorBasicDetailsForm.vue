@@ -4,6 +4,7 @@ import type { FormInstance } from 'ant-design-vue'
 import { RightOutlined } from '@ant-design/icons-vue'
 import type { Rule } from 'ant-design-vue/es/form'
 import { useOperators } from '@/composables/modules/useOperators'
+import { useUserStore } from '@/stores/modules/user.store'
 
 const { t } = useI18n()
 const props = defineProps({
@@ -16,6 +17,8 @@ const { checkOperatorExists } = useOperators()
 const formRef = ref<FormInstance>()
 const isEditable = computed(() => props.isEdit)
 const setPassword = ref(isEditable.value ? false : true)
+const { user } = useUserStore()
+const router = useRouter()
 
 const rules: Record<string, Rule[]> = {
   fullname: [
@@ -185,7 +188,10 @@ const handleNext = async () => {
       </a-col>
     </a-row>
 
-    <div class="flex justify-end">
+    <div class="flex gap-2 justify-end">
+      <a-button size="large" @click="() => router.push(`/${user?.role}/manage-operators`)">
+        {{ t('common.back') }}
+      </a-button>
       <a-button size="large" type="primary" @click="handleNext">
         {{ t('common.next') }}
         <template #icon>
