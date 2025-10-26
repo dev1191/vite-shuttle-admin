@@ -4,31 +4,33 @@ import { message, type UploadFile } from 'ant-design-vue'
 
 const { t } = useI18n()
 const current = ref<number>(0)
-const isEdit = ref<boolean>(false)
+const isEdit = ref<boolean>(true)
 const { addOperator, isLoading } = useOperators()
 
 const formData = ref({
-  ids: '',
-  fullname: 'asdasd',
-  email: 'asdasd@gmail.com',
-  password: '123456',
-  confirmPassword: '123456',
+  id: '',
+  firstname: '',
+  lastname: '',
+  fullname: '',
+  email: '',
+  password: '',
+  confirmPassword: '',
   country_code: '91',
-  phone: '88788888888',
+  phone: '',
   is_active: true,
-  picture: null,
-  company: 'Operator pvt. ltd.',
-  business_email: 'business@operator.com',
-  business_contactno: '23445345345',
-  address_1: '23423423432',
+  picture: '',
+  business_name: '',
+  business_email: '',
+  business_contactno: '',
+  address_1: '',
   city: '',
-  pincode: '12333',
+  pincode: '',
   commission_type: 'percentage',
-  commission: 15,
-  registration_certificate: [],
-  gst_certificate: [],
-  tax_document: [],
-  transport_permit: [],
+  commission: 10,
+  registration_certificate: null,
+  gst_certificate: null,
+  tax_document: null,
+  transport_permit: null,
 })
 
 const stepStyle = {
@@ -78,7 +80,7 @@ const handleSubmit = async () => {
       <a-step :title="t('menu.manageOperators.operatorDocuments')" />
     </a-steps>
 
-    <div class="mt-5 max-w-7xl flex gap-4 justify-center">
+    <div class="mt-5">
       <OperatorBasicDetailsForm
         v-if="current === 0"
         v-model:modelValue="formData"

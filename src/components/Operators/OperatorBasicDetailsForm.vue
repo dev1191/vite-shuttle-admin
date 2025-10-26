@@ -16,7 +16,7 @@ const emit = defineEmits(['update:modelValue', 'next'])
 const { checkOperatorExists } = useOperators()
 const formRef = ref<FormInstance>()
 const isEditable = computed(() => props.isEdit)
-const setPassword = ref(isEditable.value ? false : true)
+const setPassword = ref(isEditable.value)
 const { user } = useUserStore()
 const router = useRouter()
 
@@ -74,7 +74,7 @@ const rules: Record<string, Rule[]> = {
   ],
   password: [
     {
-      required: !isEditable.value || setPassword.value,
+      required: isEditable.value && setPassword.value,
       message: t('validation.required', { name: t('menu.manageOperators.form.password') }),
       trigger: 'blur',
     },
@@ -87,7 +87,7 @@ const rules: Record<string, Rule[]> = {
   ],
   confirmPassword: [
     {
-      required: !isEditable.value || setPassword.value,
+      required: isEditable.value && setPassword.value,
       message: t('validation.required', { name: t('menu.manageOperators.form.confirmPassword') }),
       trigger: 'blur',
     },
@@ -159,12 +159,12 @@ const handleNext = async () => {
       </a-col>
     </a-row>
     <a-row :gutter="24">
-      <a-col :span="16" v-if="isEditable">
+      <a-col :span="16">
         <a-form-item :label="t('menu.manageOperators.form.setPassword')" name="roles">
           <a-switch v-model:checked="setPassword" />
         </a-form-item>
       </a-col>
-      <a-col :span="12" v-if="!setPassword">
+      <a-col :span="12" v-if="isEditable && setPassword">
         <a-form-item :label="t('menu.manageOperators.form.password')" name="password">
           <a-input-password
             v-model:value="modelValue.password"
@@ -175,7 +175,7 @@ const handleNext = async () => {
           />
         </a-form-item>
       </a-col>
-      <a-col :span="12" v-if="!setPassword">
+      <a-col :span="12" v-if="isEditable && setPassword">
         <a-form-item :label="t('menu.manageOperators.form.confirmPassword')" name="confirmPassword">
           <a-input-password
             v-model:value="modelValue.confirmPassword"

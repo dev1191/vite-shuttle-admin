@@ -20,19 +20,16 @@ const handleSubmit = () => emit('submit')
       </a-col>
       <a-col :span="12">
         <a-form-item :label="t('menu.manageDrivers.form.drivingLicence')" name="licenseFile">
-          <a-upload
-            v-model:file-list="modelValue.document_licence"
-            list-type="picture"
-            :multiple="false"
-            :max-count="1"
-            :before-upload="() => false"
-          >
-            <a-button>{{
+          <document-upload
+            v-model="modelValue.document_licence"
+            :initial-url="modelValue.document_licence_url"
+            accept="image/*"
+            :uploadText="
               t('menu.manageDrivers.form.uploadDocument', {
                 name: t('menu.manageDrivers.form.drivingLicence'),
               })
-            }}</a-button>
-          </a-upload>
+            "
+          />
         </a-form-item>
       </a-col>
     </a-row>
@@ -42,19 +39,16 @@ const handleSubmit = () => emit('submit')
           :label="t('menu.manageDrivers.form.nationalIcard')"
           name="document_national_icard"
         >
-          <a-upload
-            v-model:file-list="modelValue.document_national_icard"
-            list-type="picture"
-            :multiple="false"
-            :max-count="1"
-            :before-upload="() => false"
-          >
-            <a-button>{{
+          <document-upload
+            v-model="modelValue.document_national_icard"
+            :initial-url="modelValue.document_national_icard_url"
+            accept="image/*"
+            :uploadText="
               t('menu.manageDrivers.form.uploadDocument', {
                 name: t('menu.manageDrivers.form.nationalIcard'),
               })
-            }}</a-button>
-          </a-upload>
+            "
+          />
         </a-form-item>
       </a-col>
       <a-col :span="12">
@@ -62,19 +56,16 @@ const handleSubmit = () => emit('submit')
           :label="t('menu.manageDrivers.form.policeVertification')"
           name="document_police_vertification"
         >
-          <a-upload
-            v-model:file-list="modelValue.document_police_vertification"
-            list-type="picture"
-            :multiple="false"
-            :max-count="1"
-            :before-upload="() => false"
-          >
-            <a-button>{{
+          <document-upload
+            v-model="modelValue.document_police_vertification"
+            :initial-url="modelValue.document_police_vertification_url"
+            accept="image/*"
+            :uploadText="
               t('menu.manageDrivers.form.uploadDocument', {
                 name: t('menu.manageDrivers.form.policeVertification'),
               })
-            }}</a-button>
-          </a-upload>
+            "
+          />
         </a-form-item>
       </a-col>
     </a-row>

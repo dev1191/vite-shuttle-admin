@@ -9,17 +9,17 @@ const { addDriver, isLoading } = useDrivers()
 const formData = ref({
   ids: '',
   picture: '',
-  firstname: 'sdfsdf',
-  lastname: 'sdfdsf',
-  national_id: '23424234',
+  firstname: '',
+  lastname: '',
+  national_id: '',
   type: 'driver',
   country_code: '91',
-  phone: '67567567',
-  email: 'dsfsdfds@gmail.com',
+  phone: '',
+  email: '',
   status: true,
-  document_licence: [],
-  document_national_icard: [],
-  document_police_vertification: [],
+  document_licence: null,
+  document_national_icard: null,
+  document_police_vertification: null,
 })
 
 const stepStyle = {

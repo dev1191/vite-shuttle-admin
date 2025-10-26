@@ -15,7 +15,6 @@ const formData = ref<Operator>({
   id: '',
   firstname: '',
   lastname: '',
-  role: '',
   ids: '',
   fullname: '',
   email: '',

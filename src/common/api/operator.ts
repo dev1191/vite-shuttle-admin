@@ -64,7 +64,7 @@ export class OperatorService {
     }
 
     // 🔹 Check if email or phone exists
-    static checkExists(params: { email?: string; phone?: string }) {
+    static checkExists(params: { email?: string; phone?: string, isEditable?: boolean }) {
         return request.get<{ type: 'email' | 'phone'; exists: boolean }>({
             url: '/operators/check-exists',
             params,

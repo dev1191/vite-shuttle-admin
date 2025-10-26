@@ -53,4 +53,13 @@ export class DriverService {
             showSuccessMessage: true
         })
     }
+
+
+    // 🔹 Check if email or phone exists
+    static checkExists(params: { email?: string; phone?: string, isEditable?: boolean }) {
+        return request.get<{ type: 'email' | 'phone'; exists: boolean }>({
+            url: '/drivers/check-exists',
+            params,
+        })
+    }
 }
