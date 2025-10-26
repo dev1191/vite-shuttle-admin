@@ -79,17 +79,17 @@ export function useSidebarMenu(role: string) {
             children: [
                 {
                     key: `vehicles-busTypes`,
-                    label: t('menu.vehicles.busTypes'),
-                    name: t('menu.vehicles.busTypes'),
+                    label: t('menu.vehicles.busTypes.title'),
+                    name: t('menu.vehicles.busTypes.title'),
                     path: `/${role}/vehicles/bus-types`,
-                    namePath: [t('menu.vehicles.title'), t('menu.vehicles.busTypes')],
+                    namePath: [t('menu.vehicles.title'), t('menu.vehicles.busTypes.title')],
                 },
                 {
                     key: `vehicles-busLayouts`,
-                    label: t('menu.vehicles.busLayouts'),
-                    name: t('menu.vehicles.busLayouts'),
+                    label: t('menu.vehicles.busLayouts.title'),
+                    name: t('menu.vehicles.busLayouts.title'),
                     path: `/${role}/vehicles/bus-layouts`,
-                    namePath: [t('menu.vehicles.title'), t('menu.vehicles.busLayouts')],
+                    namePath: [t('menu.vehicles.title'), t('menu.vehicles.busLayouts.title')],
                     children: [
                         {
                             key: `vehicles-createBusLayouts`,
@@ -101,8 +101,8 @@ export function useSidebarMenu(role: string) {
                 },
                 {
                     key: `vehicles-buses`,
-                    label: t('menu.vehicles.buses'),
-                    name: t('menu.vehicles.buses'),
+                    label: t('menu.vehicles.title'),
+                    name: t('menu.vehicles.title'),
                     path: `/${role}/vehicles/buses`,
                 },
             ],

@@ -1,9 +1,15 @@
 <script setup lang="ts"></script>
 
+<template>
+  <div>
+    <BusTypeTable />
+  </div>
+</template>
+
 <route lang="yaml">
 meta:
   layout: defaultLayout
-  title: vehicles.busTypes
+  title: vehicles.busTypes.title
   icon: UsergroupOutlined
   drawerIndex: 0
   order: 3
@@ -11,13 +17,7 @@ meta:
   hidden: false
   breadcrumb:
     - vehicles.title
-    - vehicles.busTypes
+    - vehicles.busTypes.title
 </route>
-
-<template>
-  <div>
-    <h1>Bus Types Page</h1>
-  </div>
-</template>
 
 <style scoped></style>

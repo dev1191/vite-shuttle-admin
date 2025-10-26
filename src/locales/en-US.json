@@ -309,10 +309,23 @@
       }
     },
     "vehicles": {
-      "title": "Vehicles",
-      "buses": "Buses",
-      "busTypes": "Bus Types",
-      "busLayouts": "Bus Layouts",
+      "title": "Buses",
+      "busTypes": {
+        "title": "Bus Types",
+        "newBusType": "New Bus Type",
+        "form": {
+          "name": "Name",
+          "seatCapacity": "Seat Capacity",
+          "description": "Description"
+        }
+      },
+      "busLayouts": {
+        "title": "Bus Layouts",
+        "newBusLayout": "New Bus Layout",
+        "form": {
+          "name": "Name"
+        }
+      },
       "create": "Create",
       "edit": "Edit"
     },

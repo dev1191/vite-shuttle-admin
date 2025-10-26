@@ -20,7 +20,7 @@ const currentRole = computed(() => user?.role.toLocaleLowerCase() || 'admin')
 </script>
 
 <template>
-  <a-layout class="app-layout">
+  <a-layout has-sider>
     <a-layout-sider
       v-model:collapsed="collapsed"
       :width="sidemenuWidth"
