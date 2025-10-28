@@ -36,6 +36,7 @@
     "create": "Create {name}",
     "cancel": "Cancel",
     "back": "Back",
+    "clearAll": "Clear All",
     "refresh": "Refresh",
     "reply": "Reply",
     "edit": "Edit {name}",
@@ -322,8 +323,15 @@
       "busLayouts": {
         "title": "Bus Layouts",
         "newBusLayout": "New Bus Layout",
+        "fixed": "Fixed Layout",
+        "custom": "Custom Layout",
+        "addSeat": "Add Seat",
         "form": {
-          "name": "Name"
+          "name": "Name",
+          "seatCapacity": "Seat Capacity",
+          "layoutMode": "Layout Mode",
+          "rows": "Total Rows",
+          "columns": "Total Columns"
         }
       },
       "create": "Create",

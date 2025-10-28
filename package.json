@@ -25,6 +25,7 @@
     "ant-design-vue": "~4.2.6",
     "axios": "^1.12.2",
     "dayjs": "^1.11.18",
+    "konva": "^10.0.8",
     "libphonenumber-js": "^1.12.23",
     "lodash-es": "^4.17.21",
     "nprogress": "^0.2.0",
@@ -32,7 +33,9 @@
     "pinia-plugin-persistedstate": "^4.5.0",
     "timezones-list": "^3.1.0",
     "vue": "^3.5.18",
+    "vue-draggable-plus": "^0.6.0",
     "vue-i18n": "^11.1.12",
+    "vue-konva": "^3.2.6",
     "vue-router": "^4.5.1",
     "xlsx": "^0.18.5"
   },

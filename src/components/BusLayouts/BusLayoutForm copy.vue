@@ -38,13 +38,12 @@ const defaultFormData = {
   status: true,
   total_columns: 0,
   total_rows: 0,
-  layout_image_url: '',
   seats: [] as Seat[],
 }
 
 const formData = reactive({ ...defaultFormData })
 
-// validation
+// Validation rules
 const rules: Record<string, Rule[]> = {
   name: [
     {
@@ -66,52 +65,26 @@ const rules: Record<string, Rule[]> = {
   ],
 }
 
+// Layout constants (could be moved to props)
 const gridSize = 60
-const canvasWidth = 350
-const canvasHeight = 500
+const canvasWidth = 800
+const canvasHeight = 600
 const seatWidth = 50
 const seatHeight = 50
+
 const canvasRef = ref<HTMLDivElement | null>(null)
-
-const layoutImageList = ref<any[]>([])
-const layoutImageUrl = ref<string | null>(null)
-
-function onLayoutImageChange({ fileList }) {
-  layoutImageList.value = fileList
-  if (fileList.length > 0) {
-    const file = fileList[0].originFileObj
-    layoutImageUrl.value = URL.createObjectURL(file)
-    formData.layout_image_url = layoutImageUrl.value
-  } else {
-    layoutImageUrl.value = null
-    formData.layout_image_url = ''
-  }
-}
 
 function openDrawer(edit = false, record?: BusLayout) {
   localIsEdit.value = edit
   drawerVisible.value = true
   if (edit && record) {
     Object.assign(formData, JSON.parse(JSON.stringify(record)))
-    if (formData.layout_image_url) {
-      layoutImageUrl.value = formData.layout_image_url
-      layoutImageList.value = [
-        {
-          uid: '-1',
-          name: 'layout.jpg',
-          status: 'done',
-          url: formData.layout_image_url,
-        },
-      ]
-    }
   }
 }
 
 function handleClose() {
   drawerVisible.value = false
   Object.assign(formData, JSON.parse(JSON.stringify(defaultFormData)))
-  layoutImageList.value = []
-  layoutImageUrl.value = null
 }
 
 function generateFixedSeats() {
@@ -229,7 +202,13 @@ defineExpose({
       <a-row :gutter="24">
         <a-col :span="12">
           <a-form-item :label="t('menu.vehicles.busLayouts.form.name')" name="name">
-            <a-input size="large" v-model:value="form.name" />
+            <a-input
+              size="large"
+              v-model:value="form.name"
+              :placeholder="
+                t('validation.placeholder', { name: t('menu.vehicles.busLayouts.form.name') })
+              "
+            />
           </a-form-item>
         </a-col>
 
@@ -272,21 +251,6 @@ defineExpose({
         </a-col>
       </a-row>
 
-      <!-- Upload layout image for custom mode -->
-      <div v-if="formData.layout_mode === 'custom'" class="mb-4">
-        <a-form-item label="Layout Image">
-          <a-upload
-            :before-upload="() => false"
-            list-type="picture-card"
-            :max-count="1"
-            v-model:file-list="layoutImageList"
-            @change="onLayoutImageChange"
-          >
-            <div v-if="!layoutImageList.length">Upload</div>
-          </a-upload>
-        </a-form-item>
-      </div>
-
       <a-divider orientation="left">{{ t('menu.vehicles.busLayouts.layoutConfig') }}</a-divider>
 
       <div v-if="formData.layout_mode === 'fixed'">
@@ -328,8 +292,6 @@ defineExpose({
         </a-row>
       </div>
 
-      <BusLayoutKonva />
-
       <div v-if="formData.layout_mode === 'custom'">
         <a-space class="mb-4">
           <a-button type="primary" @click="addCustomSeat" :icon="h(PlusOutlined)">
@@ -341,23 +303,24 @@ defineExpose({
         </a-space>
       </div>
 
-      <!-- Canvas -->
       <div v-if="formData.seats.length > 0" class="mt-6">
         <a-divider orientation="left">{{ t('menu.vehicles.busLayouts.preview') }}</a-divider>
 
         <div
           ref="canvasRef"
+          id="seat-canvas"
           class="relative border-2 border-dashed border-gray-300 bg-gray-50 mx-auto overflow-hidden"
           :style="{
             width: canvasWidth + 'px',
             height: canvasHeight + 'px',
-            backgroundImage: layoutImageUrl ? `url(${layoutImageUrl})` : undefined,
-            backgroundSize: 'contain',
-            backgroundRepeat: 'no-repeat',
-            backgroundPosition: 'center',
+            backgroundImage:
+              'linear-gradient(to right, #e5e7eb 1px, transparent 1px), linear-gradient(to bottom, #e5e7eb 1px, transparent 1px)',
+            backgroundSize: gridSize + 'px ' + gridSize + 'px',
           }"
         >
-          <div class="absolute top-2 left-2 px-3 py-1 bg-blue-500 text-white rounded font-semibold">
+          <div
+            class="absolute top-10px left-10px px-4 py-2 bg-blue-500 text-white rounded font-semibold"
+          >
             🚗 {{ t('menu.vehicles.busLayouts.driver') }}
           </div>
 
@@ -411,7 +374,6 @@ defineExpose({
           </div>
         </div>
 
-        <!-- Seat Config Table -->
         <div class="mt-6">
           <a-divider orientation="left">{{ t('menu.vehicles.busLayouts.seatConfig') }}</a-divider>
           <a-table

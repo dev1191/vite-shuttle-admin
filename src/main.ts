@@ -4,7 +4,7 @@ import App from '@/App.vue'
 import router from '@/router'
 import i18n from '@/plugins/i18n'
 import pinia from '@/plugins/pinia'
-
+import VueKonva from 'vue-konva';
 import '@/styles/main.css'
 import 'virtual:uno.css'
 
@@ -16,6 +16,7 @@ async function setupApp() {
   app.use(pinia)
   app.use(router)
   app.use(i18n)
+  app.use(VueKonva);
 
   setupNProgress(router) // Nprogress
 
