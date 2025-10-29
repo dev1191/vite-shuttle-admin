@@ -79,6 +79,7 @@ declare module 'vue' {
     BusLayoutForm: typeof import('./../components/BusLayouts/BusLayoutForm.vue')['default']
     'BusLayoutForm copy': typeof import('./../components/BusLayouts/BusLayoutForm copy.vue')['default']
     BusLayoutKonva: typeof import('./../components/BusLayouts/BusLayoutKonva.vue')['default']
+    'BusLayoutKonva copy': typeof import('./../components/BusLayouts/BusLayoutKonva copy.vue')['default']
     BusLayoutTable: typeof import('./../components/BusLayouts/BusLayoutTable.vue')['default']
     BusTypeForm: typeof import('./../components/BusTypes/BusTypeForm.vue')['default']
     BusTypeTable: typeof import('./../components/BusTypes/BusTypeTable.vue')['default']

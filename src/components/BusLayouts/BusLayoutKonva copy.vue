@@ -34,20 +34,6 @@
 
           <!-- Seats -->
           <v-group v-for="seat in seats" :key="seat.id" class="cursor-pointer">
-            <!-- Blue border when selected -->
-            <v-rect
-              v-if="selectedSeat?.id === seat.id"
-              :config="{
-                x: seat.x - 4,
-                y: seat.y - 4,
-                width: seatWidth + 6,
-                height: seatHeight + 6,
-                stroke: '#1890ff',
-                strokeWidth: 3,
-                cornerRadius: 6,
-                cursor: 'pointer',
-              }"
-            />
             <v-image
               :config="{
                 x: seat.x,
@@ -56,21 +42,34 @@
                 height: seatHeight,
                 image: seatImages[seat.type],
                 draggable: true,
-                cursor: 'pointer',
+                shadowBlur: selectedSeat?.id === seat.id ? 20 : 0,
+                cornerRadius: 20,
               }"
               @dragend="(e) => onDragEnd(e, seat)"
               @click="() => selectSeat(seat)"
               @dblclick="() => toggleType(seat)"
             />
-            <v-text
+
+            <!-- <v-text
               :config="{
-                x: seat.x + 20,
-                y: seat.y + 25,
+                x: seat.x + 6,
+                y: seat.y + 4,
                 text: seat.label,
                 fontSize: 15,
                 fill: '#000',
-                background: '#fff',
               }"
+            /> -->
+
+            <v-text
+              :config="{
+                x: seat.x + seatWidth - 10,
+                y: seat.y - 8,
+                text: '❌',
+                fontSize: 12,
+                fill: '#f44336',
+                cursor: 'pointer',
+              }"
+              @click="() => removeSeat(seat.id)"
             />
           </v-group>
 
@@ -117,12 +116,9 @@
           </a-col>
         </a-row> -->
 
-        <div class="flex flex-column gap-2 mt-5">
-          <a-button type="primary" size="large" block @click="updateSeat">Apply Changes</a-button>
-          <a-button danger size="large" block @click="removeSeat(selectedSeat.id)"
-            >Remove Seat</a-button
-          >
-        </div>
+        <a-button type="primary" size="large" class="mt-5" block @click="updateSeat"
+          >Apply Changes</a-button
+        >
       </a-form>
     </div>
   </div>
@@ -132,27 +128,8 @@
 import { ref, computed, onMounted } from 'vue'
 import { message } from 'ant-design-vue'
 
-interface Seat {
-  id: string
-  row: number
-  col: number
-  x: number
-  y: number
-  label: string
-  type: 'male' | 'old' | 'female'
-}
-
-interface BusLayoutValue {
-  rows: number
-  cols: number
-  steeringSide: 'left' | 'right'
-  seats: Seat[]
-}
-
-const props = defineProps<{ modelValue: BusLayoutValue }>()
-
-const rows = ref(props.modelValue.rows || 5)
-const cols = ref(props.modelValue.cols || 4)
+const rows = ref(5)
+const cols = ref(4)
 const seatWidth = 60
 const seatHeight = 60
 const gap = 10
@@ -160,7 +137,7 @@ const width = computed(() => cols.value * (seatWidth + gap) + 150)
 const height = computed(() => rows.value * (seatHeight + gap) + 250)
 const scale = ref(1)
 
-const steeringSide = ref(props.modelValue.steeringSide || 'left')
+const steeringSide = ref<'left' | 'right'>('left')
 const steeringImg = ref<HTMLImageElement | null>(null)
 const stageRef = ref()
 
@@ -183,7 +160,7 @@ interface Seat {
   selected: boolean
 }
 
-const seats = ref<Seat[]>(props.modelValue.seats || [])
+const seats = ref<Seat[]>([])
 const selectedSeat = ref<Seat | null>(null)
 const totalSeats = computed(() => seats.value.length)
 
@@ -194,9 +171,9 @@ onMounted(() => {
     return img
   }
 
-  seatImages.value.male = loadImg('/images/seat-male.png')
-  seatImages.value.old = loadImg('/images/seat-old.png')
-  seatImages.value.female = loadImg('/images/seat-female.png')
+  seatImages.value.male = loadImg('/images/seat-male.svg')
+  seatImages.value.old = loadImg('/images/seat-old.svg')
+  seatImages.value.female = loadImg('/images/seat-female.svg')
 
   const img = new Image()
   img.src = '/images/steering.svg'
@@ -211,8 +188,6 @@ function generateSeats() {
       const label = String.fromCharCode(65 + r) + (c + 1)
       seats.value.push({
         id,
-        row: r,
-        col: c,
         x: c * (seatWidth + gap) + 40,
         y: r * (seatHeight + gap) + 100,
         label,
@@ -230,7 +205,7 @@ function addSeat() {
   const label = `${rowLetter}${nextIndex % 10 || 1}`
   seats.value.push({
     id,
-    x: 50,
+    x: 40,
     y: 100,
     label,
     type: 'male',
