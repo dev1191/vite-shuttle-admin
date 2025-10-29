@@ -19,12 +19,11 @@ const {
 } = useHelpAndSupport()
 
 const { t } = useI18n()
-const { renderUserAvatar, renderSwitchButton, renderActionButton, renderDeleteActionButton } =
-  useRender()
+const { renderUserAvatar, renderTag, renderActionButton, renderDeleteActionButton } = useRender()
 
 import { PlusOutlined } from '@ant-design/icons-vue'
 import { message, Modal } from 'ant-design-vue'
-import type { HelpAndSupport } from '@/types/helpAndSupports'
+import type { HelpAndSupport, Reply } from '@/types/helpAndSupports'
 import { formatDate } from '@/utils'
 
 const statusFilter = ref<string>('')
@@ -53,10 +52,35 @@ const columns: DataTableColumn[] = [
     },
   }, //
   {
-    title: t('menu.helpAndSupports.form.title'),
+    title: t('menu.helpAndSupports.form.description'),
     dataIndex: 'description_short',
     key: 'description_short',
     sorter: true,
+  },
+  {
+    title: t('common.status'),
+    dataIndex: 'status',
+    key: 'status',
+    sorter: true,
+    customRender: ({ record }) => {
+      const ticketStatusEnum = {
+        OPEN: 'Open',
+        IN_PROGRESS: 'In Progress',
+        REPLIED: 'Replied',
+        CLOSED: 'Closed',
+      } as const
+
+      const statusColorMap: Record<string, string> = {
+        OPEN: 'red',
+        IN_PROGRESS: 'processing',
+        REPLIED: 'warning',
+        CLOSED: 'success',
+      }
+
+      const upperText = record.status.toUpperCase() as keyof typeof ticketStatusEnum
+      const color = statusColorMap[upperText] || 'default'
+      return renderTag(ticketStatusEnum[upperText], color, 'ticketStatus')
+    },
   },
   {
     title: 'Created At',
@@ -125,8 +149,7 @@ const handleStatusFilter = (): void => {
   pagination.value.filters = {
     type: 'simple',
     name: typeof statusFilter.value == 'undefined' ? '' : 'status',
-    value:
-      typeof statusFilter.value == 'undefined' ? '' : statusFilter.value == 'active' ? true : false,
+    value: typeof statusFilter.value == 'undefined' ? '' : statusFilter.value,
   }
   // The composable will automatically fetch due to watch on pagination
 }
@@ -169,7 +192,7 @@ const showDialog = async (): void => {
   helperFormRef.value.openDrawer(false)
 }
 
-const handleDialogSubmit = async (formData: HelpAndSupport) => {
+const handleDialogSubmit = async (formData: Reply) => {
   try {
     isLoading.value = true
     helperFormRef.value.loading = true
@@ -184,15 +207,9 @@ const handleDialogSubmit = async (formData: HelpAndSupport) => {
         return
       }
       await editHelpAndSupport(formData.ids, {
-        name: formData.name,
-        code: formData.code,
-        attempt: formData.attempt,
-        discount: formData.discount,
-        terms: formData.terms,
-        start_date: formData.start_date,
-        end_date: formData.end_date,
+        subject: formData.subject,
+        message: formData.message,
         type: formData.type,
-        routeId: formData.routeId,
         status: formData.status,
       })
       message.success(
@@ -205,8 +222,7 @@ const handleDialogSubmit = async (formData: HelpAndSupport) => {
     // ✅ Close dialog + refresh table
     isLoading.value = false
     await fetchHelpAndSupports()
-    helperFormRef.value.handleClose()
-    helperFormRef.value.loading = false
+    modalEditVisible.value = false
   } catch (error: any) {
     console.error('Submit failed:', error)
     message.error(error.message || t('common.submitFailed'))
@@ -227,7 +243,7 @@ const handleViewHelpAndSupport = async (helper: HelpAndSupport) => {
 
 const handleDeleteHelpAndSupport = async (helper: HelpAndSupport) => {
   try {
-    await removeHelpAndSupport(helper.ids)
+    await removeHelpAndSupport(helper._id)
     await fetchHelpAndSupports() // ✅ Refresh table after deletion
   } catch (error: any) {
     //console.error('Failed to delete helper:', error)
@@ -249,7 +265,6 @@ const handleStatusHelpAndSupport = async (helper: HelpAndSupport) => {
 </script>
 
 <template>
-  <>
   <DataTable
     title="Help And Support Management"
     :data="helpers"
@@ -258,6 +273,7 @@ const handleStatusHelpAndSupport = async (helper: HelpAndSupport) => {
     :pagination="tablesPagination"
     searchable
     remote
+    dateRange
     search-placeholder="Search query..."
     @change="handleTableChange"
     @search="handleSearch"
@@ -276,14 +292,17 @@ const handleStatusHelpAndSupport = async (helper: HelpAndSupport) => {
         @change="handleStatusFilter"
         allow-clear
       >
-        <a-select-option value="active">{{ t('common.active') }}</a-select-option>
-        <a-select-option value="inactive">{{ t('common.inactive') }}</a-select-option>
+        <a-select-option value="Open">Open</a-select-option>
+        <a-select-option value="In Progress">In Progress</a-select-option>
+        <a-select-option value="Replied">Replied</a-select-option>
+        <a-select-option value="Closed">Closed</a-select-option>
       </a-select>
     </template>
   </DataTable>
 
   <HelpAndSupportForm
-    v-model:visible="modalEditVisible"
+    ref="helperFormRef"
+    :visible="modalEditVisible"
     :item="selectedRow"
     @submit="handleDialogSubmit"
     :isEdit="isEdit"

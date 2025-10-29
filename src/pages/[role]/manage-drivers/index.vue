@@ -3,20 +3,19 @@
 <route lang="yaml">
 meta:
   layout: defaultLayout
-  title: managedrivers.drivers.title
+  title: managedrivers.title
   icon: UsergroupOutlined
   drawerIndex: 0
   order: 3
   roles: [admin, agent, staff, manager]
   hidden: false
   breadcrumb:
-    - managedrivers.title
-    - managedrivers.drivers
+    - manageDrivers.title
 </route>
 
 <template>
   <div>
-    <h1>Driver Page</h1>
+    <DriverTable />
   </div>
 </template>
 

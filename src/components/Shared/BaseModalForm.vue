@@ -13,6 +13,7 @@ const props = defineProps({
   width: { type: [String, Number], default: 500 },
   rules: { type: Object, required: true },
   submitLabel: { type: String, default: '' },
+  description: { type: String, default: '' },
 })
 
 const emit = defineEmits(['close', 'submit'])
@@ -44,16 +45,20 @@ const handleFailed = (errorInfo: any) => {
     :width="width"
     centered
     maskClosable
-    destroyOnClose
     @cancel="handleClose"
     :footer="null"
   >
+    <a-space v-if="props.description">
+      {{ props.description }}
+    </a-space>
+
     <a-form
       layout="vertical"
       ref="formRef"
       :rules="rules"
       :model="formData"
       @finishFailed="handleFailed"
+      class="mt-4"
     >
       <!-- Slot for form fields -->
       <slot name="fields" :form="formData"></slot>
@@ -63,7 +68,13 @@ const handleFailed = (errorInfo: any) => {
           {{ t('common.cancel') }}
         </a-button>
         <a-button size="large" type="primary" @click="handleSubmit" :loading="loading">
-          {{ isEdit ? (submitLabel ? submitLabel : t('common.update')) : t('common.create') }}
+          {{
+            isEdit
+              ? props.submitLabel
+                ? props.submitLabel
+                : t('common.update')
+              : t('common.create')
+          }}
         </a-button>
       </div>
     </a-form>

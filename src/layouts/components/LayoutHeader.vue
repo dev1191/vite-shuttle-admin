@@ -41,7 +41,7 @@ const pageHeaderStyle = computed<Record<string, string>>(() => ({
 </script>
 
 <template>
-  <APageHeader :ghost="true">
+  <APageHeader :ghost="true" class="relative navbar z-100">
     <!-- Left Section -->
     <template #title>
       <div class="flex items-center gap-4">
@@ -73,4 +73,9 @@ const pageHeaderStyle = computed<Record<string, string>>(() => ({
   </APageHeader>
 </template>
 
-<style scoped></style>
+<style scoped>
+.navbar {
+  border-bottom: solid 1px #dcdcdc;
+  padding-bottom: 0.4rem;
+}
+</style>

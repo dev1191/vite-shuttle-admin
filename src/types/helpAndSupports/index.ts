@@ -19,6 +19,14 @@ export interface HelpAndSupport {
 
 }
 
+export interface Reply {
+    subject: string,
+    message: string,
+    type: string,
+    status?: string
+    ids: string;
+}
+
 
 export interface HelpAndSupportStatus {
     status: boolean

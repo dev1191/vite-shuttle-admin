@@ -59,13 +59,19 @@ const columns: DataTableColumn[] = [
     dataIndex: 'is_active',
     key: 'is_active',
     customRender: ({ record }) => {
-      const ActiveEnum = {
+      const StatusEnum = {
         true: 'active',
         false: 'inactive',
+      } as const
+
+      const statusColorMap: Record<string, string> = {
+        false: 'red',
+        true: 'success',
       }
-      return record.is_active
-        ? renderTag(record.is_active, 'success', ActiveEnum, 'status')
-        : renderTag(record.is_active, 'error', ActiveEnum, 'status')
+
+      const upperText = record.is_active as keyof typeof StatusEnum
+      const color = statusColorMap[upperText] || 'default'
+      return renderTag(StatusEnum[upperText], color, 'status')
     },
   },
   {

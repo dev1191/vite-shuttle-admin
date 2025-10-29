@@ -21,12 +21,15 @@ declare module 'vue-router/auto-routes' {
     '/': RouteRecordInfo<'/', '/', Record<never, never>, Record<never, never>>,
     '/[role]/customers/': RouteRecordInfo<'/[role]/customers/', '/:role/customers', { role: ParamValue<true> }, { role: ParamValue<false> }>,
     '/[role]/dashboard/': RouteRecordInfo<'/[role]/dashboard/', '/:role/dashboard', { role: ParamValue<true> }, { role: ParamValue<false> }>,
-    '/[role]/drivers/': RouteRecordInfo<'/[role]/drivers/', '/:role/drivers', { role: ParamValue<true> }, { role: ParamValue<false> }>,
     '/[role]/eagle-eye/': RouteRecordInfo<'/[role]/eagle-eye/', '/:role/eagle-eye', { role: ParamValue<true> }, { role: ParamValue<false> }>,
     '/[role]/help-and-supports/': RouteRecordInfo<'/[role]/help-and-supports/', '/:role/help-and-supports', { role: ParamValue<true> }, { role: ParamValue<false> }>,
     '/[role]/manage-drivers/': RouteRecordInfo<'/[role]/manage-drivers/', '/:role/manage-drivers', { role: ParamValue<true> }, { role: ParamValue<false> }>,
+    '/[role]/manage-drivers/[id]': RouteRecordInfo<'/[role]/manage-drivers/[id]', '/:role/manage-drivers/:id', { role: ParamValue<true>, id: ParamValue<true> }, { role: ParamValue<false>, id: ParamValue<false> }>,
     '/[role]/manage-drivers/create': RouteRecordInfo<'/[role]/manage-drivers/create', '/:role/manage-drivers/create', { role: ParamValue<true> }, { role: ParamValue<false> }>,
     '/[role]/manage-offers/': RouteRecordInfo<'/[role]/manage-offers/', '/:role/manage-offers', { role: ParamValue<true> }, { role: ParamValue<false> }>,
+    '/[role]/manage-operators/': RouteRecordInfo<'/[role]/manage-operators/', '/:role/manage-operators', { role: ParamValue<true> }, { role: ParamValue<false> }>,
+    '/[role]/manage-operators/[id]': RouteRecordInfo<'/[role]/manage-operators/[id]', '/:role/manage-operators/:id', { role: ParamValue<true>, id: ParamValue<true> }, { role: ParamValue<false>, id: ParamValue<false> }>,
+    '/[role]/manage-operators/create': RouteRecordInfo<'/[role]/manage-operators/create', '/:role/manage-operators/create', { role: ParamValue<true> }, { role: ParamValue<false> }>,
     '/[role]/manage-passes/': RouteRecordInfo<'/[role]/manage-passes/', '/:role/manage-passes', { role: ParamValue<true> }, { role: ParamValue<false> }>,
     '/[role]/manage-trips/[booking]/': RouteRecordInfo<'/[role]/manage-trips/[booking]/', '/:role/manage-trips/:booking', { role: ParamValue<true>, booking: ParamValue<true> }, { role: ParamValue<false>, booking: ParamValue<false> }>,
     '/[role]/manage-users/roles/': RouteRecordInfo<'/[role]/manage-users/roles/', '/:role/manage-users/roles', { role: ParamValue<true> }, { role: ParamValue<false> }>,
@@ -75,10 +78,6 @@ declare module 'vue-router/auto-routes' {
       routes: '/[role]/dashboard/'
       views: never
     }
-    'src/pages/[role]/drivers/index.vue': {
-      routes: '/[role]/drivers/'
-      views: never
-    }
     'src/pages/[role]/eagle-eye/index.vue': {
       routes: '/[role]/eagle-eye/'
       views: never
@@ -91,12 +90,28 @@ declare module 'vue-router/auto-routes' {
       routes: '/[role]/manage-drivers/'
       views: never
     }
+    'src/pages/[role]/manage-drivers/[id].vue': {
+      routes: '/[role]/manage-drivers/[id]'
+      views: never
+    }
     'src/pages/[role]/manage-drivers/create.vue': {
       routes: '/[role]/manage-drivers/create'
       views: never
     }
     'src/pages/[role]/manage-offers/index.vue': {
       routes: '/[role]/manage-offers/'
+      views: never
+    }
+    'src/pages/[role]/manage-operators/index.vue': {
+      routes: '/[role]/manage-operators/'
+      views: never
+    }
+    'src/pages/[role]/manage-operators/[id].vue': {
+      routes: '/[role]/manage-operators/[id]'
+      views: never
+    }
+    'src/pages/[role]/manage-operators/create.vue': {
+      routes: '/[role]/manage-operators/create'
       views: never
     }
     'src/pages/[role]/manage-passes/index.vue': {

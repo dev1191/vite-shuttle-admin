@@ -1,9 +1,15 @@
 <script setup lang="ts"></script>
 
+<template>
+  <div>
+    <BusLayoutTable />
+  </div>
+</template>
+
 <route lang="yaml">
 meta:
   layout: defaultLayout
-  title: vehicles.busLayouts
+  title: vehicles.busLayouts.title
   icon: UsergroupOutlined
   drawerIndex: 0
   order: 3
@@ -11,13 +17,7 @@ meta:
   hidden: false
   breadcrumb:
     - vehicles.title
-    - vehicles.busLayouts
+    - vehicles.busLayouts.title
 </route>
-
-<template>
-  <div>
-    <h1>Bus Layout Page</h1>
-  </div>
-</template>
 
 <style scoped></style>

@@ -11,18 +11,26 @@ interface Emits {
   (e: 'submit', newStorage: any): void
 }
 const emit = defineEmits<Emits>()
+const { t } = useI18n()
 
 const addNotificationForm = ref<FormInstance>()
 const isLoading = ref(false)
 
 const newNotification = reactive({
-  otp_validation_via: false,
-  firebase_database_url: '',
+  setEnabled: true,
   firebase_key: null as File | null,
 })
 
+watch(
+  () => props.item,
+  (val) => {
+    if (val) Object.assign(newNotification, val)
+  },
+  { immediate: true },
+)
+
 const rules = {
-  firebase_database_url: [{ required: true, message: 'Firebase Database URL is required' }],
+  firebase_key: [{ required: true, message: 'Firebase Key is required' }],
 }
 
 const beforeUpload: UploadProps['beforeUpload'] = (file) => {
@@ -39,7 +47,7 @@ const onSave = async () => {
   try {
     await addNotificationForm.value?.validate()
     isLoading.value = true
-    console.log('Submitted:', newNotification)
+    emit('submit', newNotification)
     // handle submit logic here
   } catch (error) {
     console.log('Validation failed:', error)
@@ -60,27 +68,10 @@ const onSave = async () => {
     <!-- Switch + URL -->
     <a-row :gutter="[16, 16]">
       <a-col :xs="24" :sm="12">
-        <a-form-item label="Is Production" name="otp_validation_via">
-          <a-switch v-model:checked="newNotification.otp_validation_via" />
+        <a-form-item label="Set Enabled" name="setEnabled">
+          <a-switch v-model:checked="newNotification.setEnabled" />
         </a-form-item>
       </a-col>
-
-      <a-col :xs="24" :sm="12">
-        <a-form-item
-          label="Firebase Database URL"
-          name="firebase_database_url"
-          :rules="rules.firebase_database_url"
-        >
-          <a-input
-            v-model:value="newNotification.firebase_database_url"
-            placeholder="Enter Firebase URL"
-          />
-        </a-form-item>
-      </a-col>
-    </a-row>
-
-    <!-- File Upload -->
-    <a-row :gutter="[16, 16]">
       <a-col :xs="24" :sm="12">
         <a-form-item label="Firebase Key (.json)" name="firebase_key">
           <a-upload
@@ -88,9 +79,7 @@ const onSave = async () => {
             :maxCount="1"
             accept=".json"
             :showUploadList="true"
-            :fileList="
-              newNotification.firebase_key ? [{ name: newNotification.firebase_key.name }] : []
-            "
+            :fileList="newNotification.firebase_key ? [{ name: newNotification.firebase_key }] : []"
           >
             <a-button>Click or Drop Firebase .json File</a-button>
           </a-upload>
@@ -100,7 +89,9 @@ const onSave = async () => {
 
     <!-- Submit Button -->
     <div class="flex gap-2 flex-col-reverse sm:flex-row justify-end items-stretch sm:items-center">
-      <a-button type="primary" :loading="isLoading" @click="onSave">Submit</a-button>
+      <a-button size="large" type="primary" :loading="isLoading" @click="onSave">{{
+        t('common.submit')
+      }}</a-button>
     </div>
   </a-form>
 </template>

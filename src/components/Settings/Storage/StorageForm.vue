@@ -40,7 +40,8 @@ watch(
 
 const options = [
   { label: 'Cloudinary', value: 'cloudinary' },
-  { label: 'Spaces', value: 'spaces' },
+  { label: 'Spaces (Digital Ocean)', value: 'spaces' },
+  //{ label: 'Cloudflare R2', value: 'r2' },
   { label: 'Local', value: 'local' },
 ]
 

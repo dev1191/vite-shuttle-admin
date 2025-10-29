@@ -1,7 +1,9 @@
 <script setup lang="ts">
+import { ref, watch, onMounted, nextTick } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { useSidebarMenu } from '@/composables/useSidebarMenu'
+import { Spin } from 'ant-design-vue'
 import type { IMenuItem } from '@/types/menu'
-import { getRoleMenu } from '@/utils/router'
 
 const props = defineProps({
   collapsed: Boolean,
@@ -14,110 +16,174 @@ const props = defineProps({
 const currentRoute = useRoute()
 const router = useRouter()
 
-const selectedKeys = ref<string[]>(['dashboard'])
-const openKeys = ref<string[]>(['dashboard'])
-
-const { defaultMenus } = useSidebarMenu(props.userRole)
+const selectedKeys = ref<string[]>([])
+const openKeys = ref<string[]>([])
+const lastOpenKeys = ref<string[]>([])
+const isNavigating = ref(false)
 const menuItems = ref<IMenuItem[]>([])
 const loading = ref(true)
 
-onMounted(async () => {
-  // simulate async fetch or preparation
-  await new Promise((resolve) => setTimeout(resolve, 800))
+const findMenuKeysByPath = (
+  items: IMenuItem[],
+  path: string,
+): { selectedKey?: string; parentKey?: string } => {
+  for (const item of items) {
+    // Match exact path or path with trailing slash
+    if (item.path === path || item.path + '/' === path) {
+      return { selectedKey: item.key }
+    }
+    if (item.children?.length) {
+      const result = findMenuKeysByPath(item.children, path)
+      if (result.selectedKey) {
+        return {
+          selectedKey: result.selectedKey,
+          parentKey: item.key,
+        }
+      }
+    }
+  }
+  return {}
+}
+
+const initializeMenu = async () => {
+  const { defaultMenus } = useSidebarMenu(props.userRole)
   menuItems.value = [...defaultMenus]
-  loading.value = false
+
+  await nextTick()
+  const currentPath = currentRoute.path
+  const { selectedKey, parentKey } = findMenuKeysByPath(menuItems.value, currentPath)
+
+  if (selectedKey) {
+    selectedKeys.value = [selectedKey]
+    if (parentKey && !props.collapsed) {
+      openKeys.value = [parentKey]
+      lastOpenKeys.value = [parentKey]
+    }
+  }
+}
+
+onMounted(async () => {
+  loading.value = true
+  try {
+    await initializeMenu()
+  } finally {
+    loading.value = false
+  }
 })
 
-const flashTimer = ref<number | null>(null)
-const flashMenu = (key: string) => {
-  openKeys.value = [key]
-  if (!props.collapsed) return
-  if (flashTimer.value) window.clearTimeout(flashTimer.value)
-  flashTimer.value = window.setTimeout(() => (openKeys.value = []), 800)
-}
+watch(
+  () => props.collapsed,
+  (newCollapsed) => {
+    if (newCollapsed) {
+      lastOpenKeys.value = [...openKeys.value]
+      openKeys.value = []
+    } else {
+      openKeys.value = lastOpenKeys.value
+    }
+  },
+)
 
 watch(
   () => currentRoute.path,
-  (path) => {
-    const findMenuKey = (items: IMenuItem[], path: string): string | undefined => {
-      for (const item of items) {
-        if (item.path === path) return item.key
-        if (item.children) {
-          const key = findMenuKey(item.children, path)
-          if (key) {
-            flashMenu(item.key)
-            return key
-          }
-        }
+  async (path) => {
+    if (isNavigating.value) return
+
+    const { selectedKey, parentKey } = findMenuKeysByPath(menuItems.value, path)
+    if (selectedKey) {
+      selectedKeys.value = [selectedKey]
+      if (parentKey && !props.collapsed) {
+        openKeys.value = [parentKey]
       }
-      return undefined
     }
-    const key = findMenuKey(menuItems.value, path)
-    if (key) selectedKeys.value = [key]
   },
   { immediate: true },
 )
 
-const handleMenuClick = (key: string) => {
-  const findPath = (items: IMenuItem[]): string | undefined => {
-    for (const item of items) {
-      if (item.key.toLowerCase() === key.toLowerCase()) return item.path
-      if (item.children) {
-        const path = findPath(item.children)
-        if (path) return path
-      }
-    }
-    return undefined
+const handleOpenChange = (keys: string[]) => {
+  if (!props.collapsed) {
+    openKeys.value = keys
+    lastOpenKeys.value = keys
   }
-  const path = findPath(menuItems.value)
-  if (path) router.push(path)
+}
+
+const handleMenuClick = async (key: string) => {
+  try {
+    isNavigating.value = true
+
+    const findMenuItem = (items: IMenuItem[], searchKey: string): IMenuItem | undefined => {
+      for (const item of items) {
+        if (item.key === searchKey) return item
+        if (item.children?.length) {
+          const found = findMenuItem(item.children, searchKey)
+          if (found) return found
+        }
+      }
+      return undefined
+    }
+
+    const menuItem = findMenuItem(menuItems.value, key)
+    if (!menuItem?.path) return
+
+    // Prevent unnecessary navigation
+    if (currentRoute.path === menuItem.path) return
+
+    selectedKeys.value = [key]
+    await nextTick()
+
+    await router.push({
+      path: menuItem.path,
+      replace: false,
+    })
+  } catch (error) {
+    console.error('Navigation error:', error)
+  } finally {
+    isNavigating.value = false
+  }
 }
 </script>
 
 <template>
-  <div class="mt-3 h-full">
-    <!-- Skeleton loader -->
-    <div v-if="loading" class="p-8 h-full flex flex-col justify-center space-y-3">
-      <a-skeleton
-        v-for="n in 15"
-        :key="n"
-        active
-        :avatar="{ shape: 'square', size: 28 }"
-        :title="{ width: '90%' }"
-        :paragraph="false"
-      />
-    </div>
+  <div class="mt-3 h-full relative">
+    <Spin :spinning="loading" class="w-full h-full">
+      <a-menu
+        :inline-collapsed="collapsed"
+        mode="inline"
+        :selectedKeys="selectedKeys"
+        :openKeys="openKeys"
+        @select="({ key }) => handleMenuClick(key as string)"
+        @openChange="handleOpenChange"
+        class="h-full border-r-0"
+      >
+        <template v-for="item in menuItems" :key="item.key">
+          <a-sub-menu v-if="item.children?.length" :key="item.key">
+            <template #icon>
+              <component :is="item.icon" />
+            </template>
+            <template #title>
+              <span>{{ item.meta?.title || item.name }}</span>
+            </template>
+            <a-menu-item v-for="child in item.children" :key="child.key" :disabled="child.disabled">
+              <template #icon v-if="child.icon">
+                <component :is="child.icon" />
+              </template>
+              <span>{{ child.meta?.title || child.name }}</span>
+            </a-menu-item>
+          </a-sub-menu>
 
-    <!-- Sidebar menu -->
-    <a-menu
-      v-else
-      :inline-collapsed="collapsed"
-      mode="inline"
-      :selectedKeys="selectedKeys"
-      :openKeys="openKeys"
-      @select="({ key }) => handleMenuClick(key as string)"
-      style="height: 100%"
-    >
-      <template v-for="item in menuItems" :key="item.key">
-        <a-sub-menu v-if="item.children?.length" :key="item.key">
-          <template #icon>
-            <component :is="item.icon" />
-          </template>
-          <template #title>
+          <a-menu-item v-else :key="item.key" :disabled="item.disabled">
+            <template #icon>
+              <component :is="item.icon" />
+            </template>
             <span>{{ item.meta?.title || item.name }}</span>
-          </template>
-          <a-menu-item v-for="child in item.children" :key="child.key">
-            <span>{{ child.meta?.title || child.name }}</span>
           </a-menu-item>
-        </a-sub-menu>
-
-        <a-menu-item v-else :key="item.key">
-          <template #icon>
-            <component :is="item.icon" />
-          </template>
-          <span>{{ item.meta?.title || item.name }}</span>
-        </a-menu-item>
-      </template>
-    </a-menu>
+        </template>
+      </a-menu>
+    </Spin>
   </div>
 </template>
+
+<style scoped>
+.ant-menu {
+  transition: width 0.3s ease;
+}
+</style>

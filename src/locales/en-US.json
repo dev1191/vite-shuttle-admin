@@ -8,6 +8,12 @@
     "status": {
       "active": "Active",
       "inactive": "Inactive"
+    },
+    "ticketStatus": {
+      "Open": "Open",
+      "InProgress": "In Progress",
+      "Replied": "Replied",
+      "Closed": "Closed"
     }
   },
   "httpMsg": {
@@ -30,6 +36,7 @@
     "create": "Create {name}",
     "cancel": "Cancel",
     "back": "Back",
+    "clearAll": "Clear All",
     "refresh": "Refresh",
     "reply": "Reply",
     "edit": "Edit {name}",
@@ -47,6 +54,8 @@
     "no": "No",
     "male": "Male",
     "send": "Send",
+    "next": "Next",
+    "previous": "Previous",
     "details": "{name} Details",
     "close": "Close",
     "createdAt": "Created At",
@@ -55,10 +64,14 @@
     "sending": "sending...",
     "meters": "Meters",
     "kilometers": "kilometers",
+    "percentage": "Percentage",
+    "fixed": "Fixed",
+    "sendMessage": "{name} Successfully.",
     "confirmMessage": "Are you sure you want to delete {name}?",
     "createMessage": "{name} has been created",
     "deleteMessage": "{name} has been deleted",
     "deleteFailed": "Failed to delete {name} : ",
+    "errorMessage": "Error message {name}",
     "cancelDelete": "Cancelled deleting {name}",
     "updateMessage": "{title} : {name} has been updated",
     "statusMessage": "{name} has been updated"
@@ -141,14 +154,30 @@
       },
       "notifications": {
         "title": "Push Notification Settings",
-        "form": {}
+        "form": {
+          "isEnabled": "Is Enabled",
+          "firebase_key": "Firebase Key (.json file)"
+        }
       },
       "emails": {
         "title": "Email Settings",
+        "sendTestMail": "Send Test Mail",
+        "email": "Email Address",
+        "description": "Enter your email address and a test message will be sent to it to verify that system is able to send emails.",
         "form": {
           "label": "Label",
           "code": "Code",
-          "country": "Country"
+          "country": "Country",
+          "apiKey": "API Key",
+          "username": "SMTP Username",
+          "password": "SMTP Password",
+          "port": "SMTP Port",
+          "host": "SMTP Host",
+          "encryption": "Encryption",
+          "toProduction": "Is Production",
+          "defaultType": "Default Type",
+          "email": "Email Address ('From' header)",
+          "name": "Name ('From' header)"
         }
       },
       "terms": {
@@ -180,9 +209,68 @@
     "walletRecharge": "Wallet Recharge",
     "walletHistory": "Wallet Histories",
     "bookingHistory": "Booking Histories",
+    "manageOperators": {
+      "title": "Manage Operators",
+      "newOperator": "New Operator",
+      "editOperator": "Edit Operator",
+      "operatorDocuments": "Operator Documents",
+      "companyDetails": "Company Details",
+      "basicDetails": "Basic Details",
+      "form": {
+        "uploadDocument": "Upload document {name}",
+        "avatar": "Avatar",
+        "companyLogo": "Business Logo",
+        "fullname": "Fullname",
+        "email": "Email",
+        "phone": "Phone number",
+        "setPassword": "Set Password",
+        "password": "Password",
+        "confirmPassword": "Confirm Password",
+        "company": "Business Name",
+        "businessEmail": "Business Email",
+        "businessContactNo": "Business Contact No",
+        "address1": "Address 1",
+        "city": "City",
+        "pincode": "Pincode",
+        "gstCertificate": "GST Certificate",
+        "taxDocument": "Tax Identification Number (TIN / PAN / VAT / GST)",
+        "registrationCertificate": "Registration Certificate",
+        "transportPermit": "Operating/Transport Permit",
+        "commissionType": "Commission Type",
+        "commission": "Platform Commission {name}",
+        "status": "Status"
+      }
+    },
     "manageDrivers": {
       "title": "Manage Drivers",
-      "create": "Create New Driver"
+      "create": "Create New Driver",
+      "total": "Total Drivers",
+      "newDriver": "New Driver",
+      "editDriver": "Edit Driver",
+      "driverDocuments": "Driver Documents",
+      "basicDetails": "Basic Details",
+      "assistant": "Assistant",
+      "driver": "Driver",
+      "form": {
+        "avatar": "Avatar",
+        "uploadDocument": "Upload document {name}",
+        "policeVertification": "Police Vertification",
+        "nationalIcard": "National Icard",
+        "drivingLicence": "Driving Licence",
+        "picture": "Picture",
+        "vendorName": "Vendor Name",
+        "fullname": "Full name",
+        "firstname": "First name",
+        "lastname": "Last name",
+        "nationalId": "National Id",
+        "type": "Type",
+        "countryCode": "Country Code",
+        "phone": "Phone number",
+        "email": "Email",
+        "vendor": "Vendor Name",
+        "status": "Status",
+        "documents": "Documents"
+      }
     },
     "manageCustomers": {
       "title": "Manage Customers",
@@ -217,14 +305,37 @@
         "email": "Email Address",
         "phone": "Phone number",
         "gender": "Gender",
-        "description": "Description"
+        "description": "Description",
+        "replies": "Replies"
       }
     },
     "vehicles": {
-      "title": "Vehicles",
-      "buses": "Buses",
-      "busTypes": "Bus Types",
-      "busLayouts": "Bus Layouts",
+      "title": "Buses",
+      "busTypes": {
+        "title": "Bus Types",
+        "newBusType": "New Bus Type",
+        "form": {
+          "name": "Name",
+          "seatCapacity": "Seat Capacity",
+          "description": "Description"
+        }
+      },
+      "busLayouts": {
+        "title": "Bus Layouts",
+        "newBusLayout": "New Bus Layout",
+        "fixed": "Fixed Layout",
+        "custom": "Custom Layout",
+        "addSeat": "Add Seat",
+        "layoutConfig": "Layout configuration",
+        "form": {
+          "busType": "Bus Type",
+          "name": "Name",
+          "seatCapacity": "Seat Capacity",
+          "layoutMode": "Layout Mode",
+          "rows": "Total Rows",
+          "columns": "Total Columns"
+        }
+      },
       "create": "Create",
       "edit": "Edit"
     },
@@ -381,7 +492,9 @@
     "permissionMessage": "Permission denied : You cannot {name} {menu}",
     "required": "This {name} is required",
     "placeholder": "Enter a {name}",
-    "email": "Please enter a valid email address",
+    "invalid": "Please enter a valid {name}",
+    "emailExists": "This email is already registered",
+    "phoneExists": "This phone number is already registered",
     "minLength": "Minimum length is {min} characters",
     "maxLength": "Maximum length is {max} characters",
     "lengthBetween": "Length must be between {min} and {max} characters",

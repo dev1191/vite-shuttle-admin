@@ -6,9 +6,32 @@ const copyright = computed(() => layoutThemeStore.layoutSetting.copyright)
 </script>
 
 <template>
-  <a-layout-footer>
-    <a-card class="text-center"> Copyright ©2025 {{ copyright }} </a-card>
-  </a-layout-footer>
+  <div class="footer">
+    <!-- <div class="links">
+      <a
+        target="_blank"
+        :key="index"
+        :href="item.link ? item.link : 'javascript: void(0)'"
+        v-for="(item, index) in linkList"
+      >
+        {{ item.name }}
+      </a>
+    </div> -->
+    <div class="copyright">Copyright<a-icon type="copyright" />{{ copyright }}</div>
+  </div>
 </template>
 
-<style lang="less" scoped></style>
+<style scoped>
+.footer {
+  padding: 48px 16px 24px;
+  /*margin: 48px 0 24px;*/
+  text-align: center;
+  .copyright {
+    color: rgba(0, 0, 0, 0.45);
+    font-size: 14px;
+    i {
+      margin: 0 4px;
+    }
+  }
+}
+</style>

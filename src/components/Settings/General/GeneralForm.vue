@@ -79,7 +79,7 @@ const onSave = () => {
       </a-col>
       <a-col :span="12">
         <a-form-item label="Address" name="address">
-          <a-textarea v-model:value="newGeneral.address" rows="3" placeholder="Address" />
+          <a-textarea v-model:value="newGeneral.address" :rows="3" placeholder="Address" />
         </a-form-item>
       </a-col>
     </a-row>
