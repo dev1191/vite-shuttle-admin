@@ -41,13 +41,9 @@ const columns: DataTableColumn[] = [
     sorter: true,
   },
   {
-    title: 'Seat Capacity',
-    dataIndex: 'seat_capacity',
-    key: 'seat_capacity',
-    sorter: true,
-    customRender: ({ record }: { record: BusType }) => {
-      return h('div', { class: 'font-bold ' }, record.seat_capacity)
-    },
+    title: 'Description',
+    dataIndex: 'description',
+    key: 'description', // Fixed: key should match dataIndex
   },
   {
     title: 'Status',

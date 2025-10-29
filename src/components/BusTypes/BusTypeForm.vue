@@ -23,7 +23,6 @@ const { addBusType, editBusType, fetchBusTypes } = useBusTypes()
 
 const formData = reactive({
   name: '',
-  seat_capacity: '',
   description: '',
   status: true,
 })
@@ -34,15 +33,6 @@ const rules: Record<string, Rule[]> = {
       required: true,
       message: t('validation.required', {
         name: t('menu.vehicles.busTypes.form.name'),
-      }),
-      trigger: 'blur',
-    },
-  ],
-  seat_capacity: [
-    {
-      required: true,
-      message: t('validation.required', {
-        name: t('menu.vehicles.busTypes.form.seatCapacity'),
       }),
       trigger: 'blur',
     },
@@ -60,7 +50,6 @@ function handleClose() {
   Object.assign(formData, {
     ids: '',
     name: '',
-    seat_capacity: '',
     description: '',
     status: true,
   })
@@ -102,17 +91,6 @@ defineExpose({
           v-model:value="form.name"
           :placeholder="
             t('validation.placeholder', { name: t('menu.vehicles.busTypes.form.name') })
-          "
-        />
-      </a-form-item>
-      <a-form-item :label="t('menu.vehicles.busTypes.form.seatCapacity')" name="seat_capacity">
-        <a-input-number
-          class="w-full"
-          size="large"
-          :min="0"
-          v-model:value="form.seat_capacity"
-          :placeholder="
-            t('validation.placeholder', { name: t('menu.vehicles.busTypes.form.seatCapacity') })
           "
         />
       </a-form-item>

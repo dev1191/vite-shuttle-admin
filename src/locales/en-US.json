@@ -326,7 +326,9 @@
         "fixed": "Fixed Layout",
         "custom": "Custom Layout",
         "addSeat": "Add Seat",
+        "layoutConfig": "Layout configuration",
         "form": {
+          "busType": "Bus Type",
           "name": "Name",
           "seatCapacity": "Seat Capacity",
           "layoutMode": "Layout Mode",

@@ -4,6 +4,7 @@ import { message } from 'ant-design-vue'
 import type { Rule } from 'ant-design-vue/es/form'
 import { useBusLayouts } from '@/composables/modules/useBusLayouts'
 import { ReloadOutlined, PlusOutlined, DeleteOutlined } from '@ant-design/icons-vue'
+import { useOptions } from '@/composables/modules/useOptions'
 
 interface Props {
   isEdit: boolean
@@ -30,8 +31,10 @@ const localIsEdit = ref(props.isEdit)
 const loading = ref(false)
 
 const { addBusLayout, editBusLayout } = useBusLayouts()
+const { busTypeOptions, searchBusType, fetchBusTypes } = useOptions()
 
 const defaultFormData = {
+  busTypeId: '',
   name: '',
   seat_capacity: 0,
   layout_mode: 'fixed' as 'fixed' | 'custom',
@@ -39,25 +42,36 @@ const defaultFormData = {
   layout: {
     rows: 8,
     cols: 4,
-    steeringSide: 'left',
+    steeringSide: 'left' as 'left' | 'right',
     seats: [] as Seat[],
   },
 }
 
 const formData = reactive({ ...defaultFormData })
 
-watch(formData, (newValue) => {
-  formData.seat_capacity = newValue.layout.seats.length
-  if (formData.layout_mode == 'fixed') {
-    formData.seat_capacity = 0
-    formData.layout = {
-      rows: 8,
-      cols: 4,
-      steeringSide: 'left',
-      seats: [] as Seat[],
+watch(
+  () => formData.layout.seats,
+  (seats) => {
+    formData.seat_capacity = seats.length
+  },
+  { deep: true },
+)
+
+watch(
+  () => formData.layout_mode,
+  (mode) => {
+    if (mode === 'fixed') {
+      formData.seat_capacity = 0
+      formData.layout = {
+        rows: 8,
+        cols: 4,
+        steeringSide: 'left',
+        seats: [],
+      }
     }
-  }
-})
+  },
+)
+
 // validation
 const rules: Record<string, Rule[]> = {
   name: [
@@ -106,10 +120,18 @@ async function handleSubmit(formData: BusLayout) {
   }
 }
 
+const handleCountryBusType = (query: string) => {
+  searchBusType.value = query
+}
+
 defineExpose({
   openDrawer,
   drawerVisible,
   localIsEdit,
+})
+
+onMounted(() => {
+  fetchBusTypes()
 })
 </script>
 
@@ -128,6 +150,18 @@ defineExpose({
   >
     <template #fields="{ form }">
       <a-row :gutter="24">
+        <a-col :span="12">
+          <a-form-item name="busTypeId">
+            <BaseAutoComplete
+              v-model="formData.busTypeId"
+              :label="t('menu.vehicles.busLayouts.form.busType')"
+              name="busTypeId"
+              :options="busTypeOptions"
+              placeholder="Search or select a bus type"
+              @search="handleCountryBusType"
+            />
+          </a-form-item>
+        </a-col>
         <a-col :span="12">
           <a-form-item :label="t('menu.vehicles.busLayouts.form.name')" name="name">
             <a-input size="large" v-model:value="form.name" />
